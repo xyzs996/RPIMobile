@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RootViewController.h"
+#import "PrettyNavigationController.h"
+@class MyLauncherViewController;
 
-@class ViewController;
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : NSObject <UIApplicationDelegate> {
+    UIWindow *window;
+    PrettyNavigationController *navigationController;
+}
 
 @property (strong, nonatomic) UIWindow *window;
-
-@property (strong, nonatomic) ViewController *viewController;
+@property (strong, nonatomic) PrettyNavigationController *navigationController;
 
 @end

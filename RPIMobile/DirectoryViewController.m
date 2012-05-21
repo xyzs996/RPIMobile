@@ -6,16 +6,16 @@
 //  Copyright (c) 2012 Brendon Justin. All rights reserved.
 //
 
-#import "MasterViewController.h"
+#import "DirectoryViewController.h"
 
-#import "DetailViewController.h"
+#import "DirectoryDetailViewController.h"
 
 #import "Person.h"
 
 const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  Base search URL
 const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  3 seconds
 
-@interface MasterViewController () {
+@interface DirectoryViewController () {
     NSMutableArray      *m_people;
     NSTimer             *m_searchTimer;
     NSString            *m_searchString;
@@ -32,14 +32,14 @@ const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  
 
 @end
 
-@implementation MasterViewController
+@implementation DirectoryViewController
 
 @synthesize detailViewController = _detailViewController;
-
+@synthesize directoryTable;
 - (void)awakeFromNib
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.clearsSelectionOnViewWillAppear = NO;
+        //self.clearsSelectionOnViewWillAppear = NO;
         self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
     }
     [super awakeFromNib];
@@ -50,7 +50,7 @@ const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    self.detailViewController = (DirectoryDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
     m_searchTimer = nil;
     m_queue = nil;
@@ -63,7 +63,7 @@ const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  
                                                   usingBlock:^(NSNotification *notification) {
                                                       m_people = [notification object];
                                                       [self.searchDisplayController.searchResultsTableView reloadData];
-                                                      [self.tableView reloadData];
+                                                      [self.directoryTable reloadData];
                                                   }];
 }
 

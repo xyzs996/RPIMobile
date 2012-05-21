@@ -7,7 +7,13 @@
 //
 
 #import "PrettyTableViewCell.h"
+#import "PrettyKit.h"
 
-@interface NewsViewCellController : PrettyTableViewCell
+@interface NewsViewCellController : UIView {
+    IBOutlet UILabel *titleLabel, *summaryLabel;
+}
 
+@property (nonatomic, retain) IBOutlet UILabel *titleLabel, *summaryLabel;
+
+//-(void) setTitle:(NSString *) t summary:(NSString *) s;
 @end

@@ -354,6 +354,9 @@ static const CGFloat iPadLandscapeYPadding = 30;
                                                   rowCount * itemHeight);
 	
 	itemsAdded = YES;
+    
+    //Hack - MUST FIX
+    [_pages retain];
 }
 
 -(void)organizePages

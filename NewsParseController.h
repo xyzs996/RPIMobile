@@ -6,8 +6,11 @@
 //  Copyright (c) 2012 Rensselaer Polytechnic Institute. All rights reserved.
 //
 
+#import "TFHpple.h"
 
 
-@interface NewsParseController : GTMTestCase
+@interface NewsParseController : NSObject {
+      TFHpple * doc;
+}
 
 @end

@@ -7,7 +7,28 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MWFeedParser.h"
+#import "MKHorizMenu.h"
+#import "NewsViewCellController.h"
 
-@interface NewsViewController : UITableViewController
+@interface NewsViewController : UIViewController <MWFeedParserDelegate, MKHorizMenuDataSource, MKHorizMenuDelegate, UITableViewDelegate, UITableViewDataSource> {
+    NSMutableDictionary *newsFeeds;
+    MWFeedParser *feedParser;
+    UIImage *launcherImage;
+    IBOutlet UITableView *newsTable;
+    
+    MKHorizMenu *_horizMenu;
+    NSMutableArray *_items;
+    
+    NSArray *newsItems;
+    NSMutableArray *parsedItems;
+    NSDateFormatter *formatter;
+}
+
+@property (nonatomic, retain) IBOutlet MKHorizMenu *horizMenu;
+@property (nonatomic, retain) IBOutlet UITableView *newsTable;
+@property (nonatomic, retain) NSMutableArray *items;
+@property (nonatomic, retain) NSArray *newsItems;
+@property (nonatomic, assign) UIImage *launcherImage;
 
 @end

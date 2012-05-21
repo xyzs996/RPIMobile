@@ -21,89 +21,100 @@
 #import "RootViewController.h"
 #import "MyLauncherItem.h"
 #import "CustomBadge.h"
-#import "ItemViewController.h"
-
+#import "NewsViewController.h"
+#import "DirectoryViewController.h"
 
 @implementation RootViewController
 
 -(void)loadView
 {    
 	[super loadView];
-    self.title = @"myLauncher";
+    self.title = @"RPI Mobile";
     
-    [[self appControllers] setObject:[ItemViewController class] forKey:@"ItemViewController"];
-    
+    [[self appControllers] setObject:[NewsViewController class] forKey:@"NewsViewController"];
+    [[self appControllers] setObject:[DirectoryViewController class] forKey:@"DirectoryViewController"];
     //Add your view controllers here to be picked up by the launcher; remember to import them above
 	//[[self appControllers] setObject:[MyCustomViewController class] forKey:@"MyCustomViewController"];
 	//[[self appControllers] setObject:[MyOtherCustomViewController class] forKey:@"MyOtherCustomViewController"];
-	
+    
 	if(![self hasSavedLauncherItems])
 	{
 		[self.launcherView setPages:[NSMutableArray arrayWithObjects: 
                                      [NSMutableArray arrayWithObjects: 
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 1"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 1 View"
-                                                                   deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 2"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 2 View" 
-                                                                   deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 3"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 3 View"
-                                                                   deletable:YES],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 4"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 4 View"
-                                                                   deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 5"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 5 View"
-                                                                   deletable:YES],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 6"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 6 View"
-                                                                   deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 7"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 7 View"
-                                                                   deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"News"
+                                                                iPhoneImage:@"news_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 1 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Athletics"
+                                                                iPhoneImage:@"score_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 2 View" 
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Twitter"
+                                                                iPhoneImage:@"twitter_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 3 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Map"
+                                                                iPhoneImage:@"maps_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 4 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Events"
+                                                                iPhoneImage:@"calendar_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 5 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Tour"
+                                                                iPhoneImage:@"compass_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 6 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Directory"
+                                                                iPhoneImage:@"phonebook_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"DirectoryViewController" 
+                                                                targetTitle:@"Item 7 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"QR Codes"
+                                                                iPhoneImage:@"qr_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 8 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Videos"
+                                                                iPhoneImage:@"youtube_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 9 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Weather"
+                                                                iPhoneImage:@"weather_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 10 View"
+                                                                  deletable:NO],
+
+                                      [[MyLauncherItem alloc] initWithTitle:@"WRPI"
+                                                                iPhoneImage:@"radio_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item11 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Settings"
+                                                                iPhoneImage:@"settings_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 12 View"
+                                                                  deletable:NO],
                                       nil], 
-                                     [NSMutableArray arrayWithObjects: 
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 8"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 8 View"
-                                                                   deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 9"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 9 View"
-                                                                   deletable:YES],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Item 10"
-                                                                 iPhoneImage:@"itemImage" 
-                                                                   iPadImage:@"itemImage-iPad"
-                                                                      target:@"ItemViewController" 
-                                                                 targetTitle:@"Item 10 View"
-                                                                   deletable:NO],
-                                      nil],
                                      nil]];
         
         // Set number of immovable items below; only set it when you are setting the pages as the 
@@ -122,7 +133,6 @@
     // This will allow you to change colors, set scale, and remove the shine and/or frame.
     [(MyLauncherItem *)[[[self.launcherView pages] objectAtIndex:0] objectAtIndex:1] setCustomBadge:[CustomBadge customBadgeWithString:@"2" withStringColor:[UIColor blackColor] withInsetColor:[UIColor whiteColor] withBadgeFrame:YES withBadgeFrameColor:[UIColor blackColor] withScale:0.8 withShining:NO]];
 }
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
 	//If you don't want to support multiple orientations uncomment the line below

@@ -8,21 +8,38 @@
 
 #import "AppDelegate.h"
 
-#import "ViewController.h"
-
 @implementation AppDelegate
 
-@synthesize window = _window;
-@synthesize viewController = _viewController;
 
+
+@synthesize window, navigationController;
+/*
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
+    self.viewController = [[RootViewController alloc] initWithNibName:@"ViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;
+}*/
+
+- (void)applicationDidFinishLaunching:(UIApplication*)application 
+{
+	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    if (!window) 
+    {
+        return;
+    }
+    window.backgroundColor = [UIColor blackColor];
+    
+	navigationController = [[PrettyNavigationController alloc] initWithRootViewController:
+							[[RootViewController alloc] init]];
+//	navigationController.navigationBar.tintColor = COLOR(2, 100, 162);
+	
+    [window addSubview:navigationController.view];
+    [window makeKeyAndVisible];
+    [window layoutSubviews];    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

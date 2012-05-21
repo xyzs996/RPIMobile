@@ -19,6 +19,8 @@
 //
 
 #import "MyLauncherViewController.h"
+#import "PrettyNavigationController.h"
+#import "PrettyKit.h"
 
 @interface MyLauncherViewController ()
 -(NSMutableArray *)savedLauncherItems;
@@ -107,7 +109,7 @@
     Class viewCtrClass = [[self appControllers] objectForKey:[item controllerStr]];
 	UIViewController *controller = [[viewCtrClass alloc] init];
 	
-	[self setLauncherNavigationController:[[UINavigationController alloc] initWithRootViewController:controller]];
+	[self setLauncherNavigationController:[[PrettyNavigationController alloc] initWithRootViewController:controller]];
 	[[self.launcherNavigationController topViewController] setTitle:item.controllerTitle];
     [self.launcherNavigationController setDelegate:self];
 	

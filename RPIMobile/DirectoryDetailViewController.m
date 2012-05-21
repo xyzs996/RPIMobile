@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 Brendon Justin. All rights reserved.
 //
 
-#import "DetailViewController.h"
+#import "DirectoryDetailViewController.h"
 #import "Person.h"
 
-@interface DetailViewController ()
+@interface DirectoryDetailViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
 @end
 
-@implementation DetailViewController
+@implementation DirectoryDetailViewController
 
 @synthesize person;
 @synthesize masterPopoverController = _masterPopoverController;

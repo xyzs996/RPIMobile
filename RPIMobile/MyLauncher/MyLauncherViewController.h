@@ -21,11 +21,12 @@
 #import <UIKit/UIKit.h>
 #import "MyLauncherView.h"
 #import "MyLauncherItem.h"
+#import "PrettyNavigationController.h"
 
 @interface MyLauncherViewController : UIViewController <MyLauncherViewDelegate, UINavigationControllerDelegate> {
 }
 
-@property (nonatomic, strong) UINavigationController *launcherNavigationController;
+@property (nonatomic, strong) PrettyNavigationController *launcherNavigationController;
 @property (nonatomic, strong) MyLauncherView *launcherView;
 @property (nonatomic, strong) NSMutableDictionary *appControllers;
 

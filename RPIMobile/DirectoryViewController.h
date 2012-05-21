@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class DetailViewController;
+@class DirectoryDetailViewController;
 
-@interface MasterViewController : UITableViewController <UISearchDisplayDelegate, UISearchBarDelegate>
+@interface DirectoryViewController : UIViewController <UISearchDisplayDelegate, UISearchBarDelegate> {
+    IBOutlet UITableView *directoryTable;
+}
 
-@property (strong, nonatomic) DetailViewController *detailViewController;
-
+@property (strong, nonatomic) DirectoryDetailViewController *detailViewController;
+@property (strong, nonatomic) IBOutlet UITableView *directoryTable;
 @end

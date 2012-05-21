@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  PrettyNavigationController.h
 //  RPIMobile
 //
 //  Created by Stephen Silber on 5/20/12.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface PrettyNavigationController : UINavigationController
 
 @end

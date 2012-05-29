@@ -13,7 +13,7 @@
 #import "Person.h"
 
 const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  Base search URL
-const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  3 seconds
+const NSTimeInterval SEARCH_INTERVAL = 1.0f;                                //  3 seconds
 
 @interface DirectoryViewController () {
     NSMutableArray      *m_people;
@@ -180,7 +180,8 @@ const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return m_people.count;
+//    return m_people.count;
+    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

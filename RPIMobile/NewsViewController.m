@@ -277,6 +277,13 @@
 
 #pragma mark - Table view delegate
 
+-(void) getReadableURL:(NSString *) url {
+    // Send a POST to a remote resource. The dictionary will be transparently
+    // converted into a URL encoded representation and sent along as the request body
+  //  NSDictionary* params = [NSDictionary dictionaryWithObject:@"RestKit" forKey:@"Sender"];
+  //  [ [RKClient sharedClient] post:@"/other.json" params:params delegate:self];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -291,13 +298,16 @@
         NSLog(@"%@",detailViewController.view);
         
 		// Process
-		NSString *itemTitle = item.title ? [item.title stringByConvertingHTMLToPlainText] : @"[No Title]";
-        NSString *stringFromDate = [formatter stringFromDate:item.date];
-        NSString *itemURL = item.link ? [item.link stringByConvertingHTMLToPlainText] : @"";
-//        NSString *itemSummary = item.summary ? [item.summary stringByConvertingHTMLToPlainText] : @"[No Summary]";
-        NSString *itemContent = item.content ? [item.content stringByConvertingHTMLToPlainText] : item.content;
+        NSString *itemURL = item.link ? item.link : @"";
+//        NSString *setupURL = @"http://news.rpi.edu/setup.do?browserTypeSticky=PDA";
 
-        [detailViewController setTitleText:itemTitle date:stringFromDate content:itemContent url:itemURL];
+        //Create a URL object.
+        NSURL *url = [NSURL URLWithString:itemURL];
+        //URL Requst Object
+        NSMutableURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+        //Load the request in the UIWebView.
+        [detailViewController.storyView loadRequest:requestObj];
+
         [self.navigationController pushViewController:detailViewController animated:YES];
         [NewsDetailViewController release];
     }

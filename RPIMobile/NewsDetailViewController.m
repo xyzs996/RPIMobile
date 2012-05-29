@@ -12,17 +12,20 @@
 
 @implementation NewsDetailViewController
 @synthesize articleText, titleLabel, dateLabel, storyURL, newsBar;
+@synthesize storyView;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        titleLabel = [[UILabel alloc] init];
-        dateLabel = [[UILabel alloc] init];
-        articleText = [[UITextView alloc] init];
     }
     return self;
+}
+
+-(IBAction)showCurrentURL:(id)sender {
+    NSLog(@"CURRENT WEBVIEW URL: %@", [self.storyView request]);
 }
 
 - (void)didReceiveMemoryWarning
@@ -37,7 +40,6 @@
     [self.titleLabel setText:titleText];
     [self.dateLabel setText:dateText];
     [self.articleText setText:contentText];
-    self.storyURL = urlText;
 
     NSLog(@"Set up view with %@", titleText);
     NSLog(@"UILabel text: %@", titleLabel.text);
@@ -53,6 +55,15 @@
     self.newsBar.gradientEndColor = [UIColor colorWithHex:0xAA0000];    
     self.newsBar.bottomLineColor = [UIColor colorWithHex:0x990000];   
     self.newsBar.tintColor = self.newsBar.gradientEndColor;
+    
+    //Create a URL object.
+    NSURL *url = [NSURL URLWithString:storyURL];
+    
+    //URL Requst Object
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    
+    //Load the request in the UIWebView.
+    [storyView loadRequest:requestObj];
 
 }
 

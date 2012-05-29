@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "RootViewController.h"
 #import "PrettyNavigationController.h"
+#import <RestKit/RestKit.h>
+
 @class MyLauncherViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {

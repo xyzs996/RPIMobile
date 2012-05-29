@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC2BF9F4156BF80E0014A51D /* DirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC2BF9F3156BF80E0014A51D /* DirectoryViewController.xib */; };
+		DC4280F1157338420000FC4B /* libRestKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4280E5157337740000FC4B /* libRestKit.a */; };
+		DC4280F3157338630000FC4B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4280F2157338630000FC4B /* CFNetwork.framework */; };
+		DC4280F51573386D0000FC4B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4280F41573386C0000FC4B /* CoreData.framework */; };
+		DC4280F7157338740000FC4B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4280F6157338740000FC4B /* MobileCoreServices.framework */; };
+		DC4280F91573387C0000FC4B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4280F81573387C0000FC4B /* Security.framework */; };
+		DC4280FB157338830000FC4B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4280FA157338830000FC4B /* SystemConfiguration.framework */; };
+		DC4280FD1573389C0000FC4B /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4280FC1573389C0000FC4B /* libxml2.dylib */; };
 		DC6A624215698E76005B1D7C /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6A61FE15698E39005B1D7C /* libxml2.2.dylib */; };
 		DC6A624C15698EDE005B1D7C /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6A624915698EDD005B1D7C /* TFHpple.m */; };
 		DC6A624D15698EDE005B1D7C /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6A624B15698EDD005B1D7C /* TFHppleElement.m */; };
@@ -83,7 +91,60 @@
 		DCF194D9156A03C90073B8F0 /* DirectoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF194D8156A03C90073B8F0 /* DirectoryDetailViewController.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		DC4280E4157337740000FC4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC4280D9157337730000FC4B /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160D1614564E810060A5C5;
+			remoteInfo = RestKit;
+		};
+		DC4280E6157337740000FC4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC4280D9157337730000FC4B /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160D2614564E820060A5C5;
+			remoteInfo = RestKitTests;
+		};
+		DC4280E8157337740000FC4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC4280D9157337730000FC4B /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160E62145651060060A5C5;
+			remoteInfo = RestKitFramework;
+		};
+		DC4280EA157337740000FC4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC4280D9157337730000FC4B /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160E78145651060060A5C5;
+			remoteInfo = RestKitFrameworkTests;
+		};
+		DC4280EC157337740000FC4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC4280D9157337730000FC4B /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 259C301615128079003066A2;
+			remoteInfo = RestKitResources;
+		};
+		DC4280EF1573380C0000FC4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC4280D9157337730000FC4B /* RestKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 25160D1514564E810060A5C5;
+			remoteInfo = RestKit;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		DC2BF9F3156BF80E0014A51D /* DirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryViewController.xib; sourceTree = "<group>"; };
+		DC4280D9157337730000FC4B /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = ../../RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
+		DC4280F2157338630000FC4B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		DC4280F41573386C0000FC4B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DC4280F6157338740000FC4B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		DC4280F81573387C0000FC4B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		DC4280FA157338830000FC4B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		DC4280FC1573389C0000FC4B /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		DC6A61FE15698E39005B1D7C /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		DC6A624815698EDD005B1D7C /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
 		DC6A624915698EDD005B1D7C /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
@@ -208,6 +269,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC4280FD1573389C0000FC4B /* libxml2.dylib in Frameworks */,
+				DC4280FB157338830000FC4B /* SystemConfiguration.framework in Frameworks */,
+				DC4280F91573387C0000FC4B /* Security.framework in Frameworks */,
+				DC4280F7157338740000FC4B /* MobileCoreServices.framework in Frameworks */,
+				DC4280F51573386D0000FC4B /* CoreData.framework in Frameworks */,
+				DC4280F3157338630000FC4B /* CFNetwork.framework in Frameworks */,
+				DC4280F1157338420000FC4B /* libRestKit.a in Frameworks */,
 				DC6A624215698E76005B1D7C /* libxml2.2.dylib in Frameworks */,
 				DCB1FD9A1568B4F70097AEE3 /* QuartzCore.framework in Frameworks */,
 				DCB1FD301568AE570097AEE3 /* UIKit.framework in Frameworks */,
@@ -219,9 +287,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC4280DA157337730000FC4B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DC4280E5157337740000FC4B /* libRestKit.a */,
+				DC4280E7157337740000FC4B /* RestKitTests.octest */,
+				DC4280E9157337740000FC4B /* RestKit.framework */,
+				DC4280EB157337740000FC4B /* RestKitFrameworkTests.octest */,
+				DC4280ED157337740000FC4B /* RestKitResources.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		DCB1FD201568AE560097AEE3 = {
 			isa = PBXGroup;
 			children = (
+				DC4280FC1573389C0000FC4B /* libxml2.dylib */,
+				DC4280FA157338830000FC4B /* SystemConfiguration.framework */,
+				DC4280F81573387C0000FC4B /* Security.framework */,
+				DC4280F6157338740000FC4B /* MobileCoreServices.framework */,
+				DC4280F41573386C0000FC4B /* CoreData.framework */,
+				DC4280F2157338630000FC4B /* CFNetwork.framework */,
 				DCB1FD351568AE570097AEE3 /* RPIMobile */,
 				DCB1FD2E1568AE570097AEE3 /* Frameworks */,
 				DCB1FD2C1568AE570097AEE3 /* Products */,
@@ -251,6 +337,7 @@
 		DCB1FD351568AE570097AEE3 /* RPIMobile */ = {
 			isa = PBXGroup;
 			children = (
+				DC4280D9157337730000FC4B /* RestKit.xcodeproj */,
 				DCF194D0156A03810073B8F0 /* Directory */,
 				DCF194C215698F230073B8F0 /* hppl */,
 				DCCA2B5F15695D0200FAFE17 /* MKHorizMenu */,
@@ -440,6 +527,7 @@
 				DCF194D2156A038F0073B8F0 /* Person.m */,
 				DCF194DA156A04C40073B8F0 /* DirectoryViewController.h */,
 				DCF194D5156A03AC0073B8F0 /* DirectoryViewController.m */,
+				DC2BF9F3156BF80E0014A51D /* DirectoryViewController.xib */,
 				DCF194D7156A03C90073B8F0 /* DirectoryDetailViewController.h */,
 				DCF194D8156A03C90073B8F0 /* DirectoryDetailViewController.m */,
 			);
@@ -460,6 +548,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DC4280F01573380C0000FC4B /* PBXTargetDependency */,
 			);
 			name = RPIMobile;
 			productName = RPIMobile;
@@ -485,12 +574,56 @@
 			mainGroup = DCB1FD201568AE560097AEE3;
 			productRefGroup = DCB1FD2C1568AE570097AEE3 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DC4280DA157337730000FC4B /* Products */;
+					ProjectRef = DC4280D9157337730000FC4B /* RestKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				DCB1FD2A1568AE570097AEE3 /* RPIMobile */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		DC4280E5157337740000FC4B /* libRestKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRestKit.a;
+			remoteRef = DC4280E4157337740000FC4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DC4280E7157337740000FC4B /* RestKitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestKitTests.octest;
+			remoteRef = DC4280E6157337740000FC4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DC4280E9157337740000FC4B /* RestKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = RestKit.framework;
+			remoteRef = DC4280E8157337740000FC4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DC4280EB157337740000FC4B /* RestKitFrameworkTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestKitFrameworkTests.octest;
+			remoteRef = DC4280EA157337740000FC4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DC4280ED157337740000FC4B /* RestKitResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestKitResources.bundle;
+			remoteRef = DC4280EC157337740000FC4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		DCB1FD291568AE570097AEE3 /* Resources */ = {
@@ -527,6 +660,7 @@
 				DCCA2B6615695D0300FAFE17 /* MenuBar.png in Resources */,
 				DCCA2B6715695D0300FAFE17 /* MenuBar@2x.png in Resources */,
 				DC7B623815696F6D006D0CCA /* NewsViewCellController.xib in Resources */,
+				DC2BF9F4156BF80E0014A51D /* DirectoryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,6 +714,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DC4280F01573380C0000FC4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RestKit;
+			targetProxy = DC4280EF1573380C0000FC4B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		DCB1FD381568AE580097AEE3 /* InfoPlist.strings */ = {
@@ -652,9 +794,16 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RPIMobile/RPIMobile-Prefix.pch";
-				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
+				HEADER_SEARCH_PATHS = (
+					"\"$(BUILT_PRODUCTS_DIR)/../../Headers\"",
+					"${SDKROOT}/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = "RPIMobile/RPIMobile-Info.plist";
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+					"-lxml2",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -666,9 +815,16 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RPIMobile/RPIMobile-Prefix.pch";
-				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
+				HEADER_SEARCH_PATHS = (
+					"\"$(BUILT_PRODUCTS_DIR)/../../Headers\"",
+					"${SDKROOT}/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = "RPIMobile/RPIMobile-Info.plist";
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+					"-lxml2",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

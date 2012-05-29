@@ -56,6 +56,7 @@
     self.newsBar.bottomLineColor = [UIColor colorWithHex:0x990000];   
     self.newsBar.tintColor = self.newsBar.gradientEndColor;
     
+    /* need to add formatting for webpage to fit mobile design */
     //Create a URL object.
     NSURL *url = [NSURL URLWithString:storyURL];
     

@@ -299,15 +299,17 @@
         
 		// Process
         NSString *itemURL = item.link ? item.link : @"";
-//        NSString *setupURL = @"http://news.rpi.edu/setup.do?browserTypeSticky=PDA";
+        
 
         //Create a URL object.
-        NSURL *url = [NSURL URLWithString:itemURL];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.readability.com/m?url=%@", itemURL]];
         //URL Requst Object
         NSMutableURLRequest *requestObj = [NSURLRequest requestWithURL:url];
         //Load the request in the UIWebView.
         [detailViewController.storyView loadRequest:requestObj];
+        detailViewController.title = self.title;
 
+        
         [self.navigationController pushViewController:detailViewController animated:YES];
         [NewsDetailViewController release];
     }

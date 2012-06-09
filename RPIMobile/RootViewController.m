@@ -22,8 +22,8 @@
 #import "MyLauncherItem.h"
 #import "CustomBadge.h"
 #import "NewsViewController.h"
-#import "DirectoryViewController.h"
-
+#import "MasterViewController.h"
+#import "QRViewController.h"
 @implementation RootViewController
 
 -(void)loadView
@@ -32,7 +32,8 @@
     self.title = @"RPI Mobile";
     
     [[self appControllers] setObject:[NewsViewController class] forKey:@"NewsViewController"];
-    [[self appControllers] setObject:[DirectoryViewController class] forKey:@"DirectoryViewController"];
+    [[self appControllers] setObject:[MasterViewController class] forKey:@"MasterViewController"];
+    [[self appControllers] setObject:[QRViewController class] forKey:@"QRViewController"];
     //Add your view controllers here to be picked up by the launcher; remember to import them above
 	//[[self appControllers] setObject:[MyCustomViewController class] forKey:@"MyCustomViewController"];
 	//[[self appControllers] setObject:[MyOtherCustomViewController class] forKey:@"MyOtherCustomViewController"];
@@ -80,13 +81,13 @@
                                       [[MyLauncherItem alloc] initWithTitle:@"Directory"
                                                                 iPhoneImage:@"phonebook_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"DirectoryViewController" 
+                                                                     target:@"MasterViewController" 
                                                                 targetTitle:@"Item 7 View"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"QR Codes"
                                                                 iPhoneImage:@"qr_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
+                                                                     target:@"QRViewController" 
                                                                 targetTitle:@"Item 8 View"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Videos"

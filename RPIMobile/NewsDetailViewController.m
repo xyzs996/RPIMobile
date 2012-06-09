@@ -24,8 +24,19 @@
     return self;
 }
 
+-(void) webViewDidFinishLoad:(UIWebView *)webView {
+    NSLog(@"CURRENT WEBVIEW URL: %@", [self.storyView request]);
+// NSString *readScript = @"javascript:function(){window.resizeTo(320,480)};);";
+    
+    
+//    [storyView stringByEvaluatingJavaScriptFromString:readScript];
+}
 -(IBAction)showCurrentURL:(id)sender {
     NSLog(@"CURRENT WEBVIEW URL: %@", [self.storyView request]);
+    NSString *readScript = @"javascript:(function(){var script = document.createElement(\"script\");script.src = \"http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\";script.onload = script.onreadystatechange = function(){$('.contentinfo').remove();};document.body.appendChild( script );})();";
+    
+    
+    [storyView stringByEvaluatingJavaScriptFromString:readScript];
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,16 +66,7 @@
     self.newsBar.gradientEndColor = [UIColor colorWithHex:0xAA0000];    
     self.newsBar.bottomLineColor = [UIColor colorWithHex:0x990000];   
     self.newsBar.tintColor = self.newsBar.gradientEndColor;
-    
-    /* need to add formatting for webpage to fit mobile design */
-    //Create a URL object.
-    NSURL *url = [NSURL URLWithString:storyURL];
-    
-    //URL Requst Object
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    
-    //Load the request in the UIWebView.
-    [storyView loadRequest:requestObj];
+
 
 }
 

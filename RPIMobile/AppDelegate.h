@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "RootViewController.h"
 #import "PrettyNavigationController.h"
-#import <RestKit/RestKit.h>
 
 @class MyLauncherViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
+    
+    NSManagedObjectModel *managedObjectModel;
+    NSManagedObjectContext *managedObjectContext;
+    NSPersistentStoreCoordinator *persistentStoreCoordinator;
+    
     UIWindow *window;
     PrettyNavigationController *navigationController;
 }
@@ -21,4 +25,11 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) PrettyNavigationController *navigationController;
 
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+- (NSString *)applicationDocumentsDirectory;
+
 @end
+    

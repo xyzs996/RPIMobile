@@ -10,7 +10,7 @@
 
 @class Person;
 
-@interface DetailViewController : UITableViewController <UISplitViewControllerDelegate>
+@interface DetailViewController : UITableViewController
 
 @property (strong, nonatomic) Person *person;
 

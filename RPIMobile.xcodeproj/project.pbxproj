@@ -27,6 +27,9 @@
 		DC6B897A1580607900EAC753 /* QRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC6B89781580607900EAC753 /* QRViewController.xib */; };
 		DC7B623715696F6D006D0CCA /* NewsViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7B623515696F6D006D0CCA /* NewsViewCellController.m */; };
 		DC7B623815696F6D006D0CCA /* NewsViewCellController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC7B623615696F6D006D0CCA /* NewsViewCellController.xib */; };
+		DC81C4181587A37C00D6229D /* VideoFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC81C4161587A37C00D6229D /* VideoFeedViewController.m */; };
+		DC81C4191587A37C00D6229D /* VideoFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC81C4171587A37C00D6229D /* VideoFeedViewController.xib */; };
+		DC81C41D158A558C00D6229D /* FeedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DC81C41C158A558B00D6229D /* FeedParser.m */; };
 		DCB1FD301568AE570097AEE3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB1FD2F1568AE570097AEE3 /* UIKit.framework */; };
 		DCB1FD321568AE570097AEE3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB1FD311568AE570097AEE3 /* Foundation.framework */; };
 		DCB1FD341568AE570097AEE3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB1FD331568AE570097AEE3 /* CoreGraphics.framework */; };
@@ -145,6 +148,11 @@
 		DC7B623415696F6D006D0CCA /* NewsViewCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsViewCellController.h; sourceTree = "<group>"; };
 		DC7B623515696F6D006D0CCA /* NewsViewCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsViewCellController.m; sourceTree = "<group>"; };
 		DC7B623615696F6D006D0CCA /* NewsViewCellController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsViewCellController.xib; sourceTree = "<group>"; };
+		DC81C4151587A37C00D6229D /* VideoFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFeedViewController.h; sourceTree = "<group>"; };
+		DC81C4161587A37C00D6229D /* VideoFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoFeedViewController.m; sourceTree = "<group>"; };
+		DC81C4171587A37C00D6229D /* VideoFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoFeedViewController.xib; sourceTree = "<group>"; };
+		DC81C41B158A558B00D6229D /* FeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedParser.h; sourceTree = "<group>"; };
+		DC81C41C158A558B00D6229D /* FeedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedParser.m; sourceTree = "<group>"; };
 		DCB1FD2B1568AE570097AEE3 /* RPIMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RPIMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB1FD2F1568AE570097AEE3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DCB1FD311568AE570097AEE3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -392,6 +400,11 @@
 				DCB1FD5F1568AF410097AEE3 /* RootViewController.h */,
 				DCB1FD601568AF410097AEE3 /* RootViewController.m */,
 				DCB1FD441568AE580097AEE3 /* RootViewController.xib */,
+				DC81C4151587A37C00D6229D /* VideoFeedViewController.h */,
+				DC81C4161587A37C00D6229D /* VideoFeedViewController.m */,
+				DC81C4171587A37C00D6229D /* VideoFeedViewController.xib */,
+				DC81C41B158A558B00D6229D /* FeedParser.h */,
+				DC81C41C158A558B00D6229D /* FeedParser.m */,
 				DCB1FDC31568BE0F0097AEE3 /* NewsDetailViewController.h */,
 				DCB1FDC41568BE0F0097AEE3 /* NewsDetailViewController.m */,
 				DCB1FDC51568BE0F0097AEE3 /* NewsDetailViewController.xib */,
@@ -663,6 +676,7 @@
 				DC6B89681580600100EAC753 /* zbar-helpicons.png in Resources */,
 				DC6B89691580600100EAC753 /* zbar-samples.png in Resources */,
 				DC6B897A1580607900EAC753 /* QRViewController.xib in Resources */,
+				DC81C4191587A37C00D6229D /* VideoFeedViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +726,8 @@
 				DC6B894115805D6800EAC753 /* DetailViewController.m in Sources */,
 				DC6B894215805D6800EAC753 /* MasterViewController.m in Sources */,
 				DC6B89791580607900EAC753 /* QRViewController.m in Sources */,
+				DC81C4181587A37C00D6229D /* VideoFeedViewController.m in Sources */,
+				DC81C41D158A558C00D6229D /* FeedParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

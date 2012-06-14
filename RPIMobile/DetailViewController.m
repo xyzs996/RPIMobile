@@ -8,16 +8,17 @@
 
 #import "DetailViewController.h"
 #import "Person.h"
+#import "PrettyKit.h"
 
 @interface DetailViewController ()
-@property (strong, nonatomic) UIPopoverController *masterPopoverController;
+//@property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
 @end
 
 @implementation DetailViewController
 
 @synthesize person;
-@synthesize masterPopoverController = _masterPopoverController;
+//@synthesize masterPopoverController = _masterPopoverController;
 
 #pragma mark - Managing the detail item
 
@@ -28,11 +29,7 @@
         
         // Update the view.
         [self configureView];
-    }
-
-    if (self.masterPopoverController != nil) {
-        [self.masterPopoverController dismissPopoverAnimated:YES];
-    }        
+    }   
 }
 
 - (void)configureView
@@ -56,15 +53,6 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     self.person = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-    } else {
-        return YES;
-    }
 }
 
 #pragma mark - Table View
@@ -149,10 +137,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailCell"];
-    
+    static NSString *CellIdentifier = @"DetailCell";
+
+    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 
+        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 
                                       reuseIdentifier:@"DetailCell"];
         cell.textLabel.numberOfLines = 0;
         cell.detailTextLabel.numberOfLines = 0;
@@ -167,6 +157,10 @@
         }
     }
     
+    if(indexPath.row != 3)
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+
+    [cell prepareForTableView:tableView indexPath:indexPath];
     return cell;
 }
 
@@ -176,20 +170,11 @@
     return NO;
 }
 
-#pragma mark - Split view
-
-- (void)splitViewController:(UISplitViewController *)splitController willHideViewController:(UIViewController *)viewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)popoverController
-{
-    barButtonItem.title = NSLocalizedString(@"Search RPI", @"Search RPI");
-    [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-    self.masterPopoverController = popoverController;
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if(indexPath.row == 3) {
+        //Email cell clicked, call mailto: link behavior
+        NSLog(@"OPEN EMAIL TO THIS PERSON");
+    }
 }
-
-- (void)splitViewController:(UISplitViewController *)splitController willShowViewController:(UIViewController *)viewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
-{
-    // Called when the view is shown again in the split view, invalidating the button and popover controller.
-    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
-    self.masterPopoverController = nil;
-}
-
 @end

@@ -13,7 +13,7 @@
 #import "Person.h"
 
 const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  Base search URL
-const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  3 seconds
+//const NSTimeInterval SEARCH_INTERVAL = 1.0f;                                //  3 seconds
 
 @interface MasterViewController () {
     NSMutableArray      *m_people;
@@ -22,65 +22,38 @@ const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  
     NSString            *m_lastString;
     UITableView         *m_currentTableView;
     
-    dispatch_queue_t    m_queue;
+//    dispatch_queue_t    m_queue;
     
-    Boolean             m_textChanged;
+//    Boolean             m_textChanged;
 }
-
-- (void)search;
-- (void)searchTimerFunc;
 
 @end
 
 @implementation MasterViewController
 
 @synthesize detailViewController = _detailViewController;
-@synthesize PersonSearchBar;
+@synthesize PersonSearchBar, resultsTableView;
 
-- (void)awakeFromNib
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.clearsSelectionOnViewWillAppear = NO;
-        self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
-    }
-    [super awakeFromNib];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    /*
-    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
-    */
-    m_searchTimer = nil;
-    m_queue = nil;
-    self.tableView.frame = CGRectMake(0.0, 44.0, 320, 324);
+    self.title = @"RPI Directory";
+
+//    self.PersonSearchBar = [[UISearchBar alloc] init];
+//    self.PersonSearchBar.delegate = self;
+    self.PersonSearchBar.showsCancelButton = YES;
+//    [self.PersonSearchBar sizeToFit];
+    self.PersonSearchBar.tintColor = [UIColor lightGrayColor];
+    self.PersonSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 
     
-    self.PersonSearchBar = [[[UISearchBar alloc] 
-                         initWithFrame:CGRectMake(0.0, 64.0, self.view.bounds.size.width,
-                                                  44.0)] autorelease];
-    self.PersonSearchBar.delegate = self;
-    self.PersonSearchBar.showsCancelButton = YES;
-    self.PersonSearchBar.hidden = YES;
-    self.PersonSearchBar.tintColor = [UIColor lightGrayColor];
-
-    self.tableView.tableHeaderView = PersonSearchBar;
-    [self.view addSubview:PersonSearchBar];
-    [PersonSearchBar release];
+//    self.resultsTableView.tableHeaderView = PersonSearchBar;
 
     
     //  Update the array of people on the main thread, when a new array is available.
     //  Also make both table views reflect the new data.
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"QueryResult" 
-                                                      object:nil 
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification *notification) {
-                                                      m_people = [notification object];
-                                                      [self.searchDisplayController.searchResultsTableView reloadData];
-                                                      [self.tableView reloadData];
-                                                  }];
+ 
 }
 
 - (void)viewDidUnload
@@ -89,11 +62,7 @@ const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  
     // Release any retained subviews of the main view.
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [m_searchTimer invalidate];
-    m_searchTimer = nil;
-    
-    dispatch_release(m_queue);
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -104,86 +73,54 @@ const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  
         return YES;
     }
 }
-
-//  Asynchronously search for people with the current query.
-- (void)search
-{
-    if (m_queue == nil) {
-        m_queue = dispatch_queue_create("com.brendonjustin.searchqueue", NULL);
-    }
-    
-    dispatch_async(m_queue, ^{
-        NSError *err = nil;
-        NSString *query = [m_searchString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-        NSString *searchUrl = [SEARCH_URL stringByAppendingString:query];
-        NSString *resultString = [NSString stringWithContentsOfURL:[NSURL URLWithString:searchUrl]
-                                                    encoding:NSUTF8StringEncoding
-                                                       error:&err];
-        
-        if (err != nil) {
-            NSLog(@"Error retrieving search results for string: %@", m_searchString);
-        } else {
-            NSData *resultData = [resultString dataUsingEncoding:NSUTF8StringEncoding];
-            id results = [NSJSONSerialization JSONObjectWithData:resultData
-                                                         options:NSJSONReadingMutableLeaves
-                                                           error:&err];
-            
-            if (results && [results isKindOfClass:[NSDictionary class]]) {
-                NSMutableArray *people = [NSMutableArray array];
-                
-                for (NSDictionary *personDict in [results objectForKey:@"data"]) {
-                    NSMutableDictionary *editDict;
-                    Person *person = [[Person alloc] init];
-                    person.name = [personDict objectForKey:@"name"];
-                    
-                    //  Remove the 'name' field from the details dictionary
-                    //  as it is redundant.
-                    editDict = [personDict mutableCopy];
-                    if ([editDict objectForKey:@"name"] != nil) {
-                        [editDict removeObjectForKey:@"name"];
-                    }
-                    person.details = editDict;
-                    
-                    [people addObject:person];
-                }
-                
-                NSNotification *notification = [NSNotification notificationWithName:@"QueryResult"
-                                                                             object:people];
-                
-                [[NSNotificationCenter defaultCenter] postNotification:notification];
-            }
-        }
-    });
-}
-
-- (void)searchTimerFunc
-{
-    m_searchTimer = nil;
-    
-    if (![m_lastString isEqualToString:m_searchString]) {
-        m_searchString = m_lastString;
-        
-        [self search];
-    }
+-(void) updateTable:(NSMutableArray *)p {
+    m_people = [[NSMutableArray alloc] initWithArray:p];
+    [self.searchDisplayController.searchResultsTableView reloadData];
+    [self.resultsTableView reloadData];
 }
 
 #pragma mark - Search Delegate
 
-//  Search if the search text has changed since last call of this function,
-//  then set the timer between searches.
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    m_lastString = searchText;
-    if (m_searchTimer == nil) {
-        //  Search
-        m_searchString = searchText;
-        [self search];
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self.PersonSearchBar resignFirstResponder];
+}
+-(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+
+    NSError *err = nil;
+    NSString *query = [PersonSearchBar.text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    NSString *searchUrl = [SEARCH_URL stringByAppendingString:query];
+    NSString *resultString = [NSString stringWithContentsOfURL:[NSURL URLWithString:searchUrl]
+                                                      encoding:NSUTF8StringEncoding
+                                                         error:&err];
+    
+    if (err != nil) {
+        NSLog(@"Error retrieving search results for string: %@", PersonSearchBar.text);
+    } else {
+        NSData *resultData = [resultString dataUsingEncoding:NSUTF8StringEncoding];
+        id results = [NSJSONSerialization JSONObjectWithData:resultData
+                                                     options:NSJSONReadingMutableLeaves
+                                                       error:&err];
         
-        m_searchTimer = [NSTimer scheduledTimerWithTimeInterval:SEARCH_INTERVAL 
-                                                         target:self 
-                                                       selector:@selector(searchTimerFunc) 
-                                                       userInfo:nil 
-                                                        repeats:NO];
+        if (results && [results isKindOfClass:[NSDictionary class]]) {
+            NSMutableArray *people = [NSMutableArray array];
+            
+            for (NSDictionary *personDict in [results objectForKey:@"data"]) {
+                NSMutableDictionary *editDict;
+                Person *person = [[Person alloc] init];
+                person.name = [personDict objectForKey:@"name"];
+                
+                //  Remove the 'name' field from the details dictionary
+                //  as it is redundant.
+                editDict = [personDict mutableCopy];
+                if ([editDict objectForKey:@"name"] != nil) {
+                    [editDict removeObjectForKey:@"name"];
+                }
+                person.details = editDict;
+                
+                [people addObject:person];
+            }
+            [self updateTable:people];
+        }
     }
 }
 
@@ -228,15 +165,20 @@ const NSTimeInterval SEARCH_INTERVAL = 3.0f;                                //  
     return NO;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    DetailViewController *personView = [[DetailViewController alloc] init];
+    personView.person = [m_people objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:personView animated:YES];
+    /*
     m_currentTableView = tableView;
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         Person *person = [m_people objectAtIndex:indexPath.row];
         self.detailViewController.person = person;
     } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         [self performSegueWithIdentifier:@"showDetail" sender:self];
-    }
+    }*/
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

@@ -24,6 +24,8 @@
 #import "NewsViewController.h"
 #import "MasterViewController.h"
 #import "QRViewController.h"
+#import "VideoFeedViewController.h"
+
 @implementation RootViewController
 
 -(void)loadView
@@ -34,6 +36,9 @@
     [[self appControllers] setObject:[NewsViewController class] forKey:@"NewsViewController"];
     [[self appControllers] setObject:[MasterViewController class] forKey:@"MasterViewController"];
     [[self appControllers] setObject:[QRViewController class] forKey:@"QRViewController"];
+    [[self appControllers] setObject:[VideoFeedViewController class] forKey:@"VideoFeedViewController"];
+    
+    
     //Add your view controllers here to be picked up by the launcher; remember to import them above
 	//[[self appControllers] setObject:[MyCustomViewController class] forKey:@"MyCustomViewController"];
 	//[[self appControllers] setObject:[MyOtherCustomViewController class] forKey:@"MyOtherCustomViewController"];
@@ -93,7 +98,7 @@
                                       [[MyLauncherItem alloc] initWithTitle:@"Videos"
                                                                 iPhoneImage:@"youtube_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
+                                                                     target:@"VideoFeedViewController" 
                                                                 targetTitle:@"Item 9 View"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Weather"

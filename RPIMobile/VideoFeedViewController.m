@@ -1,25 +1,24 @@
 //
-//  NewsViewController.m
+//  VideoFeedViewController.m
 //  RPIMobile
 //
-//  Created by Stephen Silber on 5/20/12.
+//  Created by Stephen Silber on 6/12/12.
 //  Copyright (c) 2012 Rensselaer Polytechnic Institute. All rights reserved.
 //
 
-#import "NewsViewController.h"
-#import "NewsDetailViewController.h"
+#import "VideoFeedViewController.h"
 #import "PrettyKit.h"
 #import "NSString+HTML.h"
+
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
 #define numToDisplay 50
 
 
-@implementation NewsViewController
-@synthesize newsItems, launcherImage, newsTable;
-@synthesize horizMenu = _horizMenu;
-@synthesize items = _items;
 
+@implementation VideoFeedViewController
+
+@synthesize newsItems, newsTable, items, launcherImage;
 - (void)quitView: (id) sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"closeView" object:self.navigationController.view];
 }
@@ -113,14 +112,7 @@
     self.newsTable.rowHeight = 90;
     self.newsTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.newsTable.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-    
-    self.items = [NSArray arrayWithObjects:@"All News", @"Academics", @"Faculty", @"Research", @"Arts", @"Community", @"Calendar", @"Research Review", @"Athletics", nil];    
-    [self.horizMenu reloadData];
-    
-    newsFeeds = [[NSMutableDictionary dictionaryWithObjectsAndKeys:@"http://www.rpi.edu/news/rss/allnews.xml", @"All News", @"http://www.rpi.edu/news/rss/academics.xml", @"Academics", @"http://www.rpi.edu/news/rss/faculty.xml", @"Faculty", @"http://www.rpi.edu/news/rss/research.xml", @"Research", @"http://www.rpi.edu/news/rss/arts.xml", @"Arts", @"http://www.rpi.edu/news/rss/community.xml", @"Community", @"http://www.rpi.edu/dept/cct/apps/oth/data/rpiTodaysEvents.rss", @"Calendar", @"http://www.rpi.edu/research/magazine/rpi_research_review.xml", @"Research Review", @"http://www.rpiathletics.com/rss.aspx", @"Athletics",nil] retain];
 
-
-    [self.horizMenu setSelectedIndex:0 animated:YES];
 	self.title = @"Loading...";
 	formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"dd MMM yyyy HH:mm:ss zzz"];
@@ -132,6 +124,17 @@
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh 
 																							target:self 
 																							action:@selector(refresh)] autorelease];
+    
+    // Create feed parser and pass the URL of the feed
+    NSURL *feedURL = [NSURL URLWithString:@"http://gdata.youtube.com/feeds/api/users/rpirensselaer/uploads"];
+    
+    // Parse
+	feedParser = [[MWFeedParser alloc] initWithFeedURL:feedURL];
+	feedParser.delegate = self;
+	feedParser.feedParseType = ParseTypeFull; // Parse feed info and all items
+	feedParser.connectionType = ConnectionTypeAsynchronously;
+    [self refresh];
+
     
     [self setUpShadows]; 
 }
@@ -177,6 +180,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"TABLE VIEW COUNT = %@", newsItems.count);
     return newsItems.count;
 }
 
@@ -197,13 +201,13 @@
         cell.gradientStartColor = start_color;
         cell.gradientEndColor = end_color;
     }
-
+    
     
     // Configure the cell.
 	MWFeedItem *item = [newsItems objectAtIndex:indexPath.row];
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.detailTextLabel.backgroundColor = [UIColor clearColor];
-
+    
 	if (item) {
 		
 		// Process
@@ -222,74 +226,35 @@
         [cell.detailTextLabel setNumberOfLines:3];
         
 		/*NSMutableString *subtitle = [NSMutableString string];
-		//if (item.date) [subtitle appendFormat:@"%@: ", [formatter stringFromDate:item.date]];
-		[subtitle appendString:itemSummary];
-//		cell.summary.text = subtitle;
-        */
+         //if (item.date) [subtitle appendFormat:@"%@: ", [formatter stringFromDate:item.date]];
+         [subtitle appendString:itemSummary];
+         //		cell.summary.text = subtitle;
+         */
 		
 	} else {
         cell.textLabel.text = @"Error";
     }
     [cell prepareForTableView:tableView indexPath:indexPath];
-
+    
     
     return cell;
-
+    
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
 -(void) getReadableURL:(NSString *) url {
     // Send a POST to a remote resource. The dictionary will be transparently
     // converted into a URL encoded representation and sent along as the request body
-  //  NSDictionary* params = [NSDictionary dictionaryWithObject:@"RestKit" forKey:@"Sender"];
-  //  [ [RKClient sharedClient] post:@"/other.json" params:params delegate:self];
+    //  NSDictionary* params = [NSDictionary dictionaryWithObject:@"RestKit" forKey:@"Sender"];
+    //  [ [RKClient sharedClient] post:@"/other.json" params:params delegate:self];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // Navigation logic may go here. Create and push another view controller.
-
+   /* 
     MWFeedItem *item = [newsItems objectAtIndex:indexPath.row];
     if (item) {
         
@@ -301,7 +266,7 @@
 		// Process
         NSString *itemURL = item.link ? item.link : @"";
         
-
+        
         //Create a URL object.
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.readability.com/m?url=%@", itemURL]];
         //URL Requst Object
@@ -309,42 +274,17 @@
         //Load the request in the UIWebView.
         [detailViewController.storyView loadRequest:requestObj];
         detailViewController.title = self.title;
-
+        
         
         [self.navigationController pushViewController:detailViewController animated:YES];
         [NewsDetailViewController release];
     }
-
-     
+    */
+    
 }
-
-#pragma mark -
-#pragma mark HorizMenu Data Source
-- (UIImage*) selectedItemImageForMenu:(MKHorizMenu*) tabMenu
-{
-    return [[UIImage imageNamed:@"ButtonSelected"] stretchableImageWithLeftCapWidth:16 topCapHeight:0];
-}
-
-- (UIColor*) backgroundColorForMenu:(MKHorizMenu *)tabView
-{
-    return [UIColor colorWithPatternImage:[UIImage imageNamed:@"MenuBar"]];
-}
-
-- (int) numberOfItemsForMenu:(MKHorizMenu *)tabView
-{
-    return [self.items count];
-}
-
-- (NSString*) horizMenu:(MKHorizMenu *)horizMenu titleForItemAtIndex:(NSUInteger)index
-{
-    return [self.items objectAtIndex:index];
-}
-
-#pragma mark -
-#pragma mark HorizMenu Delegate
-
+/*
 -(void) parseNewFeed:(NSString *) key {
-
+    
     // Create feed parser and pass the URL of the feed
     NSURL *feedURL = [NSURL URLWithString:[newsFeeds objectForKey:key]];
     
@@ -357,10 +297,9 @@
 }
 -(void) horizMenu:(MKHorizMenu *)horizMenu itemSelectedAtIndex:(NSUInteger)index
 {  
-     NSLog(@"Item at index: %@", [self.items objectAtIndex:index]);
-
+    NSLog(@"Item at index: %@", [self.items objectAtIndex:index]);
+    
     [self parseNewFeed:[self.items objectAtIndex:index]];
     
-}
-
+} */
 @end

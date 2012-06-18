@@ -84,6 +84,8 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [self.PersonSearchBar resignFirstResponder];
 }
+
+//Need to implement separate thread searching to keep UI from locking user out
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 
     NSError *err = nil;

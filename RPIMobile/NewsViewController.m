@@ -10,6 +10,7 @@
 #import "NewsDetailViewController.h"
 #import "PrettyKit.h"
 #import "NSString+HTML.h"
+
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
 #define numToDisplay 50
@@ -312,7 +313,7 @@
 
         
         [self.navigationController pushViewController:detailViewController animated:YES];
-        [NewsDetailViewController release];
+        [detailViewController release];
     }
 
      

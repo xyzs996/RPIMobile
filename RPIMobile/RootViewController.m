@@ -21,10 +21,13 @@
 #import "RootViewController.h"
 #import "MyLauncherItem.h"
 #import "CustomBadge.h"
+
+//Import Views for Launcher
 #import "NewsViewController.h"
 #import "MasterViewController.h"
 #import "QRViewController.h"
 #import "VideoFeedViewController.h"
+#import "AthleticsViewController.h"
 
 @implementation RootViewController
 
@@ -37,7 +40,7 @@
     [[self appControllers] setObject:[MasterViewController class] forKey:@"MasterViewController"];
     [[self appControllers] setObject:[QRViewController class] forKey:@"QRViewController"];
     [[self appControllers] setObject:[VideoFeedViewController class] forKey:@"VideoFeedViewController"];
-    
+    [[self appControllers] setObject:[AthleticsViewController class] forKey:@"AthleticsViewController"];    
     
     //Add your view controllers here to be picked up by the launcher; remember to import them above
 	//[[self appControllers] setObject:[MyCustomViewController class] forKey:@"MyCustomViewController"];
@@ -56,7 +59,7 @@
                                       [[MyLauncherItem alloc] initWithTitle:@"Athletics"
                                                                 iPhoneImage:@"score_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
+                                                                     target:@"AthleticsViewController" 
                                                                 targetTitle:@"Item 2 View" 
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Twitter"

@@ -19,6 +19,8 @@
 @implementation VideoFeedViewController
 
 @synthesize newsItems, newsTable, items, launcherImage;
+
+
 - (void)quitView: (id) sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"closeView" object:self.navigationController.view];
 }
@@ -42,16 +44,6 @@
 	[self.newsTable reloadData];
 }
 
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-
 - (void) setUpShadows {
     [PrettyShadowPlainTableview setUpTableView:self.newsTable];
 }
@@ -65,7 +57,7 @@
 
 - (void)feedParser:(MWFeedParser *)parser didParseFeedInfo:(MWFeedInfo *)info {
 	NSLog(@"Parsed Feed Info: “%@”", info.title);
-	self.title = info.title;
+	self.title = @"RPI Videos";
 }
 
 - (void)feedParser:(MWFeedParser *)parser didParseFeedItem:(MWFeedItem *)item {
@@ -98,15 +90,13 @@
 }
 
 
-
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"RPI News";
+    self.navigationItem.title = @"RPI YouTube";
     [self.newsTable setScrollsToTop:YES];
     
     self.newsTable.rowHeight = 90;
@@ -135,7 +125,6 @@
 	feedParser.connectionType = ConnectionTypeAsynchronously;
     [self refresh];
 
-    
     [self setUpShadows]; 
 }
 
@@ -180,7 +169,6 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"TABLE VIEW COUNT = %@", newsItems.count);
     return newsItems.count;
 }
 
@@ -243,46 +231,62 @@
 
 #pragma mark - Table view delegate
 
--(void) getReadableURL:(NSString *) url {
-    // Send a POST to a remote resource. The dictionary will be transparently
-    // converted into a URL encoded representation and sent along as the request body
-    //  NSDictionary* params = [NSDictionary dictionaryWithObject:@"RestKit" forKey:@"Sender"];
-    //  [ [RKClient sharedClient] post:@"/other.json" params:params delegate:self];
+-(NSString *) getVideoID:(NSString *) url {
+  //Break URL to get video id
+    NSArray *subString = [url componentsSeparatedByString:@"&"];
+    if([subString count] > 0) {
+        NSString *vidID = [[subString objectAtIndex:0] substringFromIndex:[[subString objectAtIndex:0] length] - 11];
+        NSLog(@"Video ID: %@", vidID);
+        return vidID;
+    }
+    
+    return @"";
 }
 
+//Implement autoplay trick, must create separate uiviewcontroller file
+//for simplicity: http://stackoverflow.com/questions/3010708/youtube-video-autoplay-on-iphones-safari-or-uiwebview
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // Navigation logic may go here. Create and push another view controller.
-   /* 
+    
     MWFeedItem *item = [newsItems objectAtIndex:indexPath.row];
     if (item) {
         
-        NewsDetailViewController *detailViewController = [[NewsDetailViewController alloc] initWithNibName:@"NewsDetailViewController" bundle:nil];
-        
-        //Hack - View not being initialized, referenced here: http://stackoverflow.com/questions/2720662/uilabel-not-updating
-        NSLog(@"%@",detailViewController.view);
-        
-		// Process
         NSString *itemURL = item.link ? item.link : @"";
+        NSLog(@"%@",itemURL); //&autoplay=1
+        itemURL = [itemURL stringByAppendingString:@"&autoplay=1"];
+        UIWebView *videoWebview = [[UIWebView alloc] initWithFrame:CGRectZero];
         
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:itemURL]];
         
-        //Create a URL object.
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.readability.com/m?url=%@", itemURL]];
         //URL Requst Object
         NSMutableURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+        
         //Load the request in the UIWebView.
-        [detailViewController.storyView loadRequest:requestObj];
-        detailViewController.title = self.title;
+        [videoWebview loadRequest:requestObj];
         
+
         
-        [self.navigationController pushViewController:detailViewController animated:YES];
-        [NewsDetailViewController release];
+        UIViewController *videoView = [[UIViewController alloc] init];
+        [videoView setView:videoWebview];
+        [videoWebview release];
+        /*
+        
+        - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+        {
+            // Return YES for supported orientations
+            return (interfaceOrientation == UIInterfaceOrientationPortrait);
+        }
+        */
+        
+        [self.navigationController pushViewController:videoView animated:YES];
     }
-    */
+    
     
 }
-/*
+
+
 -(void) parseNewFeed:(NSString *) key {
     
     // Create feed parser and pass the URL of the feed
@@ -295,11 +299,5 @@
 	feedParser.connectionType = ConnectionTypeAsynchronously;
     [self refresh];
 }
--(void) horizMenu:(MKHorizMenu *)horizMenu itemSelectedAtIndex:(NSUInteger)index
-{  
-    NSLog(@"Item at index: %@", [self.items objectAtIndex:index]);
-    
-    [self parseNewFeed:[self.items objectAtIndex:index]];
-    
-} */
+
 @end

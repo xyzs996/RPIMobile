@@ -14,7 +14,10 @@
     MWFeedParser *feedParser;
     UIImage *launcherImage;
     IBOutlet UITableView *newsTable;
+    
+//    MKHorizMenu *_horizMenu;
     NSMutableArray *_items;
+    
     NSArray *newsItems;
     NSMutableArray *parsedItems;
     NSDateFormatter *formatter;

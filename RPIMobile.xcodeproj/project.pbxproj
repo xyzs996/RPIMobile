@@ -29,7 +29,14 @@
 		DC7B623815696F6D006D0CCA /* NewsViewCellController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC7B623615696F6D006D0CCA /* NewsViewCellController.xib */; };
 		DC81C4181587A37C00D6229D /* VideoFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC81C4161587A37C00D6229D /* VideoFeedViewController.m */; };
 		DC81C4191587A37C00D6229D /* VideoFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC81C4171587A37C00D6229D /* VideoFeedViewController.xib */; };
-		DC81C41D158A558C00D6229D /* FeedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DC81C41C158A558B00D6229D /* FeedParser.m */; };
+		DC81C421158EE3F300D6229D /* AthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC81C41F158EE3F200D6229D /* AthleticsViewController.m */; };
+		DC81C422158EE3F300D6229D /* AthleticsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC81C420158EE3F300D6229D /* AthleticsViewController.xib */; };
+		DC81C42A158EED7200D6229D /* SportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC81C428158EED7200D6229D /* SportViewController.m */; };
+		DC81C42B158EED7200D6229D /* SportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC81C429158EED7200D6229D /* SportViewController.xib */; };
+		DC81C431158EF8C600D6229D /* AthleticLinks.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC81C430158EF8C600D6229D /* AthleticLinks.plist */; };
+		DC81C434158EFA7D00D6229D /* Sports.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC81C433158EFA7D00D6229D /* Sports.plist */; };
+		DC81C438158F024A00D6229D /* RosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC81C436158F024900D6229D /* RosterViewController.m */; };
+		DC81C439158F024A00D6229D /* RosterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC81C437158F024900D6229D /* RosterViewController.xib */; };
 		DCB1FD301568AE570097AEE3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB1FD2F1568AE570097AEE3 /* UIKit.framework */; };
 		DCB1FD321568AE570097AEE3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB1FD311568AE570097AEE3 /* Foundation.framework */; };
 		DCB1FD341568AE570097AEE3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB1FD331568AE570097AEE3 /* CoreGraphics.framework */; };
@@ -151,8 +158,17 @@
 		DC81C4151587A37C00D6229D /* VideoFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFeedViewController.h; sourceTree = "<group>"; };
 		DC81C4161587A37C00D6229D /* VideoFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoFeedViewController.m; sourceTree = "<group>"; };
 		DC81C4171587A37C00D6229D /* VideoFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoFeedViewController.xib; sourceTree = "<group>"; };
-		DC81C41B158A558B00D6229D /* FeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedParser.h; sourceTree = "<group>"; };
-		DC81C41C158A558B00D6229D /* FeedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedParser.m; sourceTree = "<group>"; };
+		DC81C41E158EE3F100D6229D /* AthleticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AthleticsViewController.h; sourceTree = "<group>"; };
+		DC81C41F158EE3F200D6229D /* AthleticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AthleticsViewController.m; sourceTree = "<group>"; };
+		DC81C420158EE3F300D6229D /* AthleticsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AthleticsViewController.xib; sourceTree = "<group>"; };
+		DC81C427158EED7200D6229D /* SportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportViewController.h; sourceTree = "<group>"; };
+		DC81C428158EED7200D6229D /* SportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportViewController.m; sourceTree = "<group>"; };
+		DC81C429158EED7200D6229D /* SportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SportViewController.xib; sourceTree = "<group>"; };
+		DC81C430158EF8C600D6229D /* AthleticLinks.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AthleticLinks.plist; sourceTree = "<group>"; };
+		DC81C433158EFA7D00D6229D /* Sports.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Sports.plist; sourceTree = "<group>"; };
+		DC81C435158F024900D6229D /* RosterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RosterViewController.h; sourceTree = "<group>"; };
+		DC81C436158F024900D6229D /* RosterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RosterViewController.m; sourceTree = "<group>"; };
+		DC81C437158F024900D6229D /* RosterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RosterViewController.xib; sourceTree = "<group>"; };
 		DCB1FD2B1568AE570097AEE3 /* RPIMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RPIMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB1FD2F1568AE570097AEE3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DCB1FD311568AE570097AEE3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -345,16 +361,61 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		DC81C423158EE8D500D6229D /* Athletics */ = {
+			isa = PBXGroup;
+			children = (
+				DC81C41E158EE3F100D6229D /* AthleticsViewController.h */,
+				DC81C41F158EE3F200D6229D /* AthleticsViewController.m */,
+				DC81C420158EE3F300D6229D /* AthleticsViewController.xib */,
+				DC81C427158EED7200D6229D /* SportViewController.h */,
+				DC81C428158EED7200D6229D /* SportViewController.m */,
+				DC81C429158EED7200D6229D /* SportViewController.xib */,
+				DC81C435158F024900D6229D /* RosterViewController.h */,
+				DC81C436158F024900D6229D /* RosterViewController.m */,
+				DC81C437158F024900D6229D /* RosterViewController.xib */,
+			);
+			name = Athletics;
+			sourceTree = "<group>";
+		};
+		DC81C424158EE8E900D6229D /* QR Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				DC6B89761580607800EAC753 /* QRViewController.h */,
+				DC6B89771580607800EAC753 /* QRViewController.m */,
+				DC6B89781580607900EAC753 /* QRViewController.xib */,
+			);
+			name = "QR Scanner";
+			sourceTree = "<group>";
+		};
+		DC81C425158EE93900D6229D /* Video Feed */ = {
+			isa = PBXGroup;
+			children = (
+				DC81C4151587A37C00D6229D /* VideoFeedViewController.h */,
+				DC81C4161587A37C00D6229D /* VideoFeedViewController.m */,
+				DC81C4171587A37C00D6229D /* VideoFeedViewController.xib */,
+			);
+			name = "Video Feed";
+			sourceTree = "<group>";
+		};
+		DC81C426158EE95400D6229D /* News Feed */ = {
+			isa = PBXGroup;
+			children = (
+				DCB1FDC31568BE0F0097AEE3 /* NewsDetailViewController.h */,
+				DCB1FDC41568BE0F0097AEE3 /* NewsDetailViewController.m */,
+				DCB1FDC51568BE0F0097AEE3 /* NewsDetailViewController.xib */,
+				DCB1FDBE1568BC590097AEE3 /* NewsViewController.h */,
+				DCB1FDBF1568BC5A0097AEE3 /* NewsViewController.m */,
+				DCB1FDC01568BC5A0097AEE3 /* NewsViewController.xib */,
+				DC7B623415696F6D006D0CCA /* NewsViewCellController.h */,
+				DC7B623515696F6D006D0CCA /* NewsViewCellController.m */,
+				DC7B623615696F6D006D0CCA /* NewsViewCellController.xib */,
+			);
+			name = "News Feed";
+			sourceTree = "<group>";
+		};
 		DCB1FD201568AE560097AEE3 = {
 			isa = PBXGroup;
 			children = (
-				DC6B89741580604D00EAC753 /* libiconv.dylib */,
-				DC6B89721580604400EAC753 /* AudioToolbox.framework */,
-				DC6B89701580603500EAC753 /* CoreMedia.framework */,
-				DC6B896E1580602900EAC753 /* CoreVideo.framework */,
-				DC6B896C1580602400EAC753 /* CoreAudio.framework */,
-				DC6B896A1580601F00EAC753 /* AVFoundation.framework */,
-				DCB428E315773EF300A64651 /* CoreData.framework */,
 				DCB1FD351568AE570097AEE3 /* RPIMobile */,
 				DCB1FD2E1568AE570097AEE3 /* Frameworks */,
 				DCB1FD2C1568AE570097AEE3 /* Products */,
@@ -372,6 +433,13 @@
 		DCB1FD2E1568AE570097AEE3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DC6B89741580604D00EAC753 /* libiconv.dylib */,
+				DC6B89721580604400EAC753 /* AudioToolbox.framework */,
+				DC6B89701580603500EAC753 /* CoreMedia.framework */,
+				DC6B896E1580602900EAC753 /* CoreVideo.framework */,
+				DC6B896C1580602400EAC753 /* CoreAudio.framework */,
+				DC6B896A1580601F00EAC753 /* AVFoundation.framework */,
+				DCB428E315773EF300A64651 /* CoreData.framework */,
 				DC6A61FE15698E39005B1D7C /* libxml2.2.dylib */,
 				DCB1FD991568B4F60097AEE3 /* QuartzCore.framework */,
 				DCB1FD2F1568AE570097AEE3 /* UIKit.framework */,
@@ -385,35 +453,22 @@
 			isa = PBXGroup;
 			children = (
 				DC6B89471580600100EAC753 /* ZBarSDK */,
-				DCF194D0156A03810073B8F0 /* Directory */,
 				DCF194C215698F230073B8F0 /* hppl */,
 				DCCA2B5F15695D0200FAFE17 /* MKHorizMenu */,
 				DCCA2B441568C17A00FAFE17 /* MWFeedParser */,
 				DCB1FD9B1568B64D0097AEE3 /* PrettyKit */,
-				DCB1FD621568B0BB0097AEE3 /* imgs */,
+				DCB1FD621568B0BB0097AEE3 /* Images */,
 				DCB1FD4C1568AED40097AEE3 /* MyLauncher */,
-				DC6B89761580607800EAC753 /* QRViewController.h */,
-				DC6B89771580607800EAC753 /* QRViewController.m */,
-				DC6B89781580607900EAC753 /* QRViewController.xib */,
+				DCF194D0156A03810073B8F0 /* Directory */,
+				DC81C423158EE8D500D6229D /* Athletics */,
+				DC81C424158EE8E900D6229D /* QR Scanner */,
+				DC81C425158EE93900D6229D /* Video Feed */,
+				DC81C426158EE95400D6229D /* News Feed */,
 				DCB1FD3E1568AE580097AEE3 /* AppDelegate.h */,
 				DCB1FD3F1568AE580097AEE3 /* AppDelegate.m */,
 				DCB1FD5F1568AF410097AEE3 /* RootViewController.h */,
 				DCB1FD601568AF410097AEE3 /* RootViewController.m */,
 				DCB1FD441568AE580097AEE3 /* RootViewController.xib */,
-				DC81C4151587A37C00D6229D /* VideoFeedViewController.h */,
-				DC81C4161587A37C00D6229D /* VideoFeedViewController.m */,
-				DC81C4171587A37C00D6229D /* VideoFeedViewController.xib */,
-				DC81C41B158A558B00D6229D /* FeedParser.h */,
-				DC81C41C158A558B00D6229D /* FeedParser.m */,
-				DCB1FDC31568BE0F0097AEE3 /* NewsDetailViewController.h */,
-				DCB1FDC41568BE0F0097AEE3 /* NewsDetailViewController.m */,
-				DCB1FDC51568BE0F0097AEE3 /* NewsDetailViewController.xib */,
-				DCB1FDBE1568BC590097AEE3 /* NewsViewController.h */,
-				DCB1FDBF1568BC5A0097AEE3 /* NewsViewController.m */,
-				DC7B623415696F6D006D0CCA /* NewsViewCellController.h */,
-				DC7B623515696F6D006D0CCA /* NewsViewCellController.m */,
-				DC7B623615696F6D006D0CCA /* NewsViewCellController.xib */,
-				DCB1FDC01568BC5A0097AEE3 /* NewsViewController.xib */,
 				DCB1FD361568AE580097AEE3 /* Supporting Files */,
 			);
 			path = RPIMobile;
@@ -426,6 +481,8 @@
 				DCB1FD381568AE580097AEE3 /* InfoPlist.strings */,
 				DCB1FD3B1568AE580097AEE3 /* main.m */,
 				DCB1FD3D1568AE580097AEE3 /* RPIMobile-Prefix.pch */,
+				DC81C430158EF8C600D6229D /* AthleticLinks.plist */,
+				DC81C433158EFA7D00D6229D /* Sports.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -449,7 +506,7 @@
 			path = MyLauncher;
 			sourceTree = "<group>";
 		};
-		DCB1FD621568B0BB0097AEE3 /* imgs */ = {
+		DCB1FD621568B0BB0097AEE3 /* Images */ = {
 			isa = PBXGroup;
 			children = (
 				DCCA2B451568CC5F00FAFE17 /* calendar_hdpi.png */,
@@ -474,6 +531,7 @@
 				DCB1FD691568B0BB0097AEE3 /* itemImage@2x.png */,
 				DCB1FD6A1568B0BB0097AEE3 /* launcher.png */,
 			);
+			name = Images;
 			path = imgs;
 			sourceTree = "<group>";
 		};
@@ -677,6 +735,11 @@
 				DC6B89691580600100EAC753 /* zbar-samples.png in Resources */,
 				DC6B897A1580607900EAC753 /* QRViewController.xib in Resources */,
 				DC81C4191587A37C00D6229D /* VideoFeedViewController.xib in Resources */,
+				DC81C422158EE3F300D6229D /* AthleticsViewController.xib in Resources */,
+				DC81C42B158EED7200D6229D /* SportViewController.xib in Resources */,
+				DC81C431158EF8C600D6229D /* AthleticLinks.plist in Resources */,
+				DC81C434158EFA7D00D6229D /* Sports.plist in Resources */,
+				DC81C439158F024A00D6229D /* RosterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,7 +790,9 @@
 				DC6B894215805D6800EAC753 /* MasterViewController.m in Sources */,
 				DC6B89791580607900EAC753 /* QRViewController.m in Sources */,
 				DC81C4181587A37C00D6229D /* VideoFeedViewController.m in Sources */,
-				DC81C41D158A558C00D6229D /* FeedParser.m in Sources */,
+				DC81C421158EE3F300D6229D /* AthleticsViewController.m in Sources */,
+				DC81C42A158EED7200D6229D /* SportViewController.m in Sources */,
+				DC81C438158F024A00D6229D /* RosterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -143,6 +143,7 @@ static const CGFloat iPadLandscapeYPadding = 30;
 
 - (void)dealloc
 {
+    [super dealloc];
     [self removeObserver:self forKeyPath:@"frame"];
 }
 

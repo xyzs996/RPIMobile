@@ -23,6 +23,8 @@
     NSArray *newsItems;
     NSMutableArray *parsedItems;
     NSDateFormatter *formatter;
+    
+    NSArray *entries;
 }
 
 @property (nonatomic, retain) IBOutlet MKHorizMenu *horizMenu;

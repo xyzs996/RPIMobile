@@ -5,116 +5,116 @@
 	<key>Baseball</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=baseball&amp;path=baseball</string>
+		<string>http://rpiathletics.com/roster.aspx?path=baseball</string>
 		<key>mode</key>
 		<integer>1</integer>
 	</dict>
 	<key>Basketball</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=basketball2&amp;path=mbball</string>
+		<string>http://rpiathletics.com/roster.aspx?path=mbball</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=basketball2&amp;path=wbball</string>
+		<string>http://rpiathletics.com/roster.aspx?path=wbball</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Cross Country</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=crosscountry2&amp;path=mcross</string>
+		<string>http://rpiathletics.com/roster.aspx?path=mcross</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=crosscountry2&amp;path=wcross</string>
+		<string>http://rpiathletics.com/roster.aspx?path=wcross</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Football</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=football&amp;path=football</string>
+		<string>http://rpiathletics.com/roster.aspx?path=football</string>
 		<key>mode</key>
 		<integer>1</integer>
 	</dict>
 	<key>Golf</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=golf&amp;path=golf</string>
+		<string>http://rpiathletics.com/roster.aspx?path=golf</string>
 		<key>mode</key>
 		<integer>1</integer>
 	</dict>
 	<key>Hockey</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=hockey&amp;path=hockey</string>
+		<string>http://rpiathletics.com/roster.aspx?path=hockey</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=icehockey&amp;path=whock</string>
+		<string>http://rpiathletics.com/roster.aspx?path=whock</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Indoor Track</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=indoortrack&amp;path=indoortrack</string>
+		<string>http://rpiathletics.com/roster.aspx?path=indoortrack</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=indoortrack2&amp;path=windoortrack</string>
+		<string>http://rpiathletics.com/roster.aspx?path=windoortrack</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Lacrosse</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=lacrosse&amp;path=mlax</string>
+		<string>http://rpiathletics.com/roster.aspx?path=mlax</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=lacrosse2&amp;path=wlax</string>
+		<string>http://rpiathletics.com/roster.aspx?path=wlax</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Soccer</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=soccer2&amp;path=msoc</string>
+		<string>http://rpiathletics.com/roster.aspx?path=msoc</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=soccer2&amp;path=wsoc</string>
+		<string>http://rpiathletics.com/roster.aspx?path=wsoc</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Swimming &amp; Diving</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=swimmingdiving&amp;path=mswim</string>
+		<string>http://rpiathletics.com/roster.aspx?path=mswim</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=swimmingdiving2&amp;path=wswim</string>
+		<string>http://rpiathletics.com/roster.aspx?path=wswim</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Tennis</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=tennis&amp;path=mten</string>
+		<string>http://rpiathletics.com/roster.aspx?path=mten</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=tennis&amp;path=wten</string>
+		<string>http://rpiathletics.com/roster.aspx?path=wten</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Outdoor Track</key>
 	<dict>
 		<key>Men</key>
-		<string>http://rpiathletics.com/index.aspx?tab=trackandfield&amp;path=mtrack</string>
+		<string>http://rpiathletics.com/roster.aspx?path=mtrack</string>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=trackandfield&amp;path=wtrack</string>
+		<string>http://rpiathletics.com/roster.aspx?path=wtrack</string>
 		<key>mode</key>
 		<integer>2</integer>
 	</dict>
 	<key>Field Hockey</key>
 	<dict>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=fieldhockey&amp;path=fhockey</string>
+		<string>http://rpiathletics.com/roster.aspx?path=fhockey</string>
 		<key>mode</key>
 		<integer>3</integer>
 	</dict>
 	<key>Softball</key>
 	<dict>
 		<key>Women</key>
-		<string>http://rpiathletics.com/index.aspx?tab=softball&amp;path=softball</string>
+		<string>http://rpiathletics.com/roster.aspx?path=softball</string>
 		<key>mode</key>
 		<integer>3</integer>
 	</dict>

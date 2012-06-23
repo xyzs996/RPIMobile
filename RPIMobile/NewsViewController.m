@@ -11,6 +11,7 @@
 #import "PrettyKit.h"
 #import "NSString+HTML.h"
 
+
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
 #define numToDisplay 50
@@ -82,7 +83,7 @@
 	NSLog(@"Finished Parsing%@", (parser.stopped ? @" (Stopped)" : @""));
     [self updateTableWithParsedItems];
 }
-
+    
 - (void)feedParser:(MWFeedParser *)parser didFailWithError:(NSError *)error {
 	NSLog(@"Finished Parsing With Error: %@", error);
     if (parsedItems.count == 0) {

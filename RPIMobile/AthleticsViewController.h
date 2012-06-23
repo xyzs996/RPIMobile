@@ -11,9 +11,10 @@
 @interface AthleticsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     UITableView *sportsList;
     NSMutableDictionary *sports;
-    NSArray *sportsArr;
+    NSMutableArray *sportsArr;
+    NSString *currentGender;
 }
 
+@property (nonatomic, retain) NSString *currentGender;
 @property (nonatomic, retain) IBOutlet UITableView *sportsList;
-
 @end

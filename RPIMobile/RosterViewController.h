@@ -7,14 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASIHTTPRequest.h"
+#import "ASIDownloadCache.h"
+#import "MHLazyTableImages.h"
 
-@interface RosterViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
-    UIImageView *teamPicture;
-    UITableView *rosterTable;
+@class MHLazyTableImages;
+
+
+@interface RosterViewController : UITableViewController <ASIHTTPRequestDelegate, MHLazyTableImagesDelegate> {
+
+    ASIHTTPRequest *httprequest;
+    MHLazyTableImages *lazyImages;
+    NSString *rosterURL;
+    NSMutableArray *athleteData;
 }
 
-@property (nonatomic, retain) IBOutlet UIImageView *teamPicture;
-@property (nonatomic, retain) IBOutlet UITableView *rosterTable;
+@property (nonatomic, retain) NSMutableArray *athleteData;
+@property (nonatomic, retain) NSString *rosterURL;
+@property (nonatomic, retain) NSArray* entries;
+
 
 
 @end

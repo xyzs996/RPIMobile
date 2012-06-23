@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 #import <CoreData/CoreData.h>
+#import "ASIHTTPRequest.h"
+#import "ASIDownloadCache.h"
+
 @implementation AppDelegate
 
 
@@ -70,6 +73,7 @@
 
 
 - (void)dealloc {
+    [super dealloc];
     [managedObjectContext release];
     [managedObjectModel release];
     [persistentStoreCoordinator release];
@@ -85,6 +89,8 @@
     }
     window.backgroundColor = [UIColor blackColor];
     
+    [ASIHTTPRequest setDefaultCache:[ASIDownloadCache sharedCache]];
+
 	navigationController = [[PrettyNavigationController alloc] initWithRootViewController:
 							[[RootViewController alloc] init]];
 //	navigationController.navigationBar.tintColor = COLOR(2, 100, 162);

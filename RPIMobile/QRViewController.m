@@ -74,8 +74,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"QR Scanner";
 
-    // Do any additional setup after loading the view from its nib.
+    
+    /*THIS WILL NOT WORK FOR SOME REASON
+    // ADD: present a barcode reader that scans from the camera feed
+    ZBarReaderViewController *reader = [ZBarReaderViewController new];
+    reader.readerDelegate = self;
+    reader.supportedOrientationsMask = ZBarOrientationMaskAll;
+    
+    ZBarImageScanner *scanner = reader.scanner;
+    // TODO: (optional) additional reader configuration here
+    
+    // EXAMPLE: disable rarely used I2/5 to improve performance
+    [scanner setSymbology: ZBAR_I25
+                   config: ZBAR_CFG_ENABLE
+                       to: 0];
+    
+    // present and release the controller
+    [self presentModalViewController:reader
+                            animated: YES];
+    [reader release];*/
 }
 
 -(void) viewDidAppear:(BOOL)animated {

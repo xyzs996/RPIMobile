@@ -7,16 +7,28 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASIHTTPRequest.h"
+#import "ASIDownloadCache.h"
 
-@interface SportViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
+@interface SportViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ASIHTTPRequestDelegate> {
     NSArray *listItems;
+    
     UITableView *menuList;
+    UIImageView *teamPicture;
+    UIProgressView *progressBar;
+    
+    NSString *teamPicURL;
+    
     NSString *sportName;
     NSString *currentGender;
     NSString *currentLink;
+    
+    NSMutableArray *links;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *menuList;
-@property (nonatomic, retain) NSString *sportName;
+@property (nonatomic, retain) IBOutlet UIImageView *teamPicture;
+@property (nonatomic, retain) IBOutlet UIProgressView *progressBar;
+@property (nonatomic, retain) NSString *sportName, *currentGender, *currentLink;
 
 @end

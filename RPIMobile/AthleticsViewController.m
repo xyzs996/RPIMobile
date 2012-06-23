@@ -11,10 +11,37 @@
 #import "PrettyKit.h"
 
 @implementation AthleticsViewController
-@synthesize sportsList;
+@synthesize sportsList, currentGender;
 
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
+
+
+-(void) segmentedControlUpdated:(id)sender{
+    UISegmentedControl *s = (UISegmentedControl *)sender;
+    if(s.selectedSegmentIndex == 0) {
+        self.currentGender = @"Men";
+    } else {
+        self.currentGender = @"Women";
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:currentGender forKey:@"sportGender"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self filterSports];
+}
+
+-(void) filterSports {
+    
+    //Filter sports based on currentGender
+    sports = [[NSMutableDictionary alloc]initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@Sports",currentGender] ofType:@"plist"]];
+    sportsArr = [[NSMutableArray alloc] initWithArray:[sports allKeys]];
+    [sportsArr sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+
+    [self.sportsList reloadData];
+    NSLog(@"SportsArr: %@", sportsArr);
+    
+}
 
 #pragma mark -
 #pragma mark Table View Data Source Methods
@@ -31,9 +58,11 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.title = @"Athletics";
     
     SportViewController *nextView = [[SportViewController alloc] initWithNibName:@"SportViewController" bundle:nil];
     nextView.sportName = [sportsArr objectAtIndex:[indexPath row]];
+    nextView.title = nextView.sportName;
     [self.navigationController pushViewController:nextView animated:YES];
     [nextView release];
 
@@ -82,22 +111,43 @@
 - (void) setUpShadows {
     [PrettyShadowPlainTableview setUpTableView:self.sportsList];
 }
+
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.title = @"RPI Athletics";
+    
+    //Quick gender check/save
+    if([[NSUserDefaults standardUserDefaults] stringForKey:@"sportGender"]) {
+        self.currentGender = [[NSUserDefaults standardUserDefaults] stringForKey:@"sportGender"];
+    } else {
+        self.currentGender = @"Men";
+    }
+    
+    self.title = @"Athletics"; //Figure out how to reposition this in the middle of <-- and [men][women] control
+
     self.sportsList.rowHeight = 60;
     self.sportsList.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.sportsList.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
-    sports = [[NSMutableDictionary alloc]initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Sports" ofType:@"plist"]];
-    NSLog(@"%@", sports);
+    [self filterSports];
+
+    UISegmentedControl *genderControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Men", @"Women", nil]];
+    [genderControl addTarget:self
+                      action:@selector(segmentedControlUpdated:)
+            forControlEvents:UIControlEventValueChanged]; 
     
-    sportsArr = [[NSArray alloc] initWithArray:[sports allKeys]];
-    NSLog(@"%@", sportsArr);
+    genderControl.segmentedControlStyle = UISegmentedControlStyleBar;
+    genderControl.selectedSegmentIndex = 0;
+    [self segmentedControlUpdated:genderControl];
+    genderControl.tintColor = COLOR(190, 0, 0);
+
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView: genderControl] autorelease];
+    [genderControl release];
+    
     [self setUpShadows];
 
 }

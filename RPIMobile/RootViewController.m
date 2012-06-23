@@ -28,24 +28,22 @@
 #import "QRViewController.h"
 #import "VideoFeedViewController.h"
 #import "AthleticsViewController.h"
-
+#import "WeatherViewController.h"
 @implementation RootViewController
 
 -(void)loadView
 {    
 	[super loadView];
     self.title = @"RPI Mobile";
-    
+
+        //Add your view controllers here to be picked up by the launcher; remember to import them above
     [[self appControllers] setObject:[NewsViewController class] forKey:@"NewsViewController"];
     [[self appControllers] setObject:[MasterViewController class] forKey:@"MasterViewController"];
     [[self appControllers] setObject:[QRViewController class] forKey:@"QRViewController"];
     [[self appControllers] setObject:[VideoFeedViewController class] forKey:@"VideoFeedViewController"];
     [[self appControllers] setObject:[AthleticsViewController class] forKey:@"AthleticsViewController"];    
-    
-    //Add your view controllers here to be picked up by the launcher; remember to import them above
-	//[[self appControllers] setObject:[MyCustomViewController class] forKey:@"MyCustomViewController"];
-	//[[self appControllers] setObject:[MyOtherCustomViewController class] forKey:@"MyOtherCustomViewController"];
-    
+    [[self appControllers] setObject:[WeatherViewController class] forKey:@"WeatherViewController"];
+
 	if(![self hasSavedLauncherItems])
 	{
 		[self.launcherView setPages:[NSMutableArray arrayWithObjects: 
@@ -96,19 +94,19 @@
                                                                 iPhoneImage:@"qr_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"QRViewController" 
-                                                                targetTitle:@"Item 8 View"
+                                                                targetTitle:@"QR Scanner"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Videos"
                                                                 iPhoneImage:@"youtube_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"VideoFeedViewController" 
-                                                                targetTitle:@"Item 9 View"
+                                                                targetTitle:@"RPI Videos"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Weather"
                                                                 iPhoneImage:@"weather_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
-                                                                targetTitle:@"Item 10 View"
+                                                                     target:@"WeatherViewController" 
+                                                                targetTitle:@"RPI Weather"
                                                                   deletable:NO],
 
                                       [[MyLauncherItem alloc] initWithTitle:@"WRPI"

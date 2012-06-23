@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASIHTTPRequest.h"
+#import "MBProgressHUD.h"
 
 @class DetailViewController;
 
-@interface MasterViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,UISearchDisplayDelegate, UISearchBarDelegate> {
+@interface MasterViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,UISearchDisplayDelegate, UISearchBarDelegate, ASIHTTPRequestDelegate, MBProgressHUDDelegate> {
     IBOutlet UISearchBar *PersonSearchBar;
     IBOutlet UITableView *resultsTableView;
+    MBProgressHUD *HUD;
 }
 @property (nonatomic, retain) IBOutlet UISearchBar *PersonSearchBar;
 @property (strong, nonatomic) DetailViewController *detailViewController;

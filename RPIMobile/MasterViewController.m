@@ -9,7 +9,7 @@
 #import "MasterViewController.h"
 
 #import "DetailViewController.h"
-
+#import "ASIDownloadCache.h"
 #import "Person.h"
 
 const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  Base search URL
@@ -85,23 +85,12 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
     [self.PersonSearchBar resignFirstResponder];
 }
 
-//Need to implement separate thread searching to keep UI from locking user out
--(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+-(void) requestFinished:(ASIHTTPRequest *)request {
 
-    NSError *err = nil;
-    NSString *query = [PersonSearchBar.text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    NSString *searchUrl = [SEARCH_URL stringByAppendingString:query];
-    NSString *resultString = [NSString stringWithContentsOfURL:[NSURL URLWithString:searchUrl]
-                                                      encoding:NSUTF8StringEncoding
-                                                         error:&err];
-    
-    if (err != nil) {
-        NSLog(@"Error retrieving search results for string: %@", PersonSearchBar.text);
-    } else {
-        NSData *resultData = [resultString dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *resultData = [request responseData];
         id results = [NSJSONSerialization JSONObjectWithData:resultData
                                                      options:NSJSONReadingMutableLeaves
-                                                       error:&err];
+                                                       error:nil];
         
         if (results && [results isKindOfClass:[NSDictionary class]]) {
             NSMutableArray *people = [NSMutableArray array];
@@ -123,7 +112,19 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
             }
             [self updateTable:people];
         }
-    }
+}
+-(void) requestFailed:(ASIHTTPRequest *)request {
+
+    NSLog(@"Error: %@", [request error]);
+}
+//Need to implement separate thread searching to keep UI from locking user out
+-(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    NSString *query = [PersonSearchBar.text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    NSString *searchUrl = [SEARCH_URL stringByAppendingString:query];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:searchUrl]];
+    [request setDelegate:self];
+    [request startAsynchronous];
+    
 }
 
 #pragma mark - Table View

@@ -7,7 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASIHTTPRequest.h"
+#import "ASIDownloadCache.h"
 
-@interface ScheduleViewController : UITableViewController
+
+@interface ScheduleViewController : UITableViewController <ASIHTTPRequestDelegate> {
+    
+    ASIHTTPRequest *httprequest;
+    NSString *scheduleURL;
+    NSMutableArray *scheduleData;
+}
+
+@property (nonatomic, retain) NSMutableArray *scheduleData;
+@property (nonatomic, retain) NSString *scheduleURL;
+@property (nonatomic, retain) NSArray* entries;
+
+
 
 @end

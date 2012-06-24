@@ -10,19 +10,20 @@
 #import "ASIHTTPRequest.h"
 #import "ASIDownloadCache.h"
 #import "PrettyKit.h"
+#import "MWFeedParser.h"
 
-#import "GDataXMLNode.h"
-#import "GDataXMLElement-Extras.h"
-
-@interface SportNewsViewController : UITableViewController <ASIHTTPRequestDelegate> {
+@interface SportNewsViewController : UITableViewController <ASIHTTPRequestDelegate, MWFeedParserDelegate> {
+    MWFeedParser *feedParser;
     NSString *feedURL;
-    NSOperationQueue *_queue;
-    NSMutableArray *newsItems;
-
+    
+    NSArray *newsItems;
+    NSMutableArray *parsedItems;
+    NSDateFormatter *formatter;
+    
+    NSArray *entries;
 }
-
 @property (nonatomic, retain) NSString *feedURL;
-@property (retain) NSOperationQueue *queue;
-@property (nonatomic, retain) NSMutableArray *newsItems;
+@property (nonatomic, retain) NSArray *newsItems;
+
 
 @end

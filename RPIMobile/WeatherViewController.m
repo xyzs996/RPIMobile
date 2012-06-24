@@ -204,6 +204,25 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+-(NSString *)getWeekName:(NSString *)abbr {
+    if([abbr isEqualToString:@"Sat"])
+        return @"Saturday";
+    else if([abbr isEqualToString:@"Sun"])
+        return @"Sunday";
+    else if([abbr isEqualToString:@"Mon"])
+        return @"Monday";
+    else if([abbr isEqualToString:@"Tue"])
+        return @"Tuesday";
+    else if([abbr isEqualToString:@"Sun"])
+        return @"Wednesday";
+    else if([abbr isEqualToString:@"Sun"])
+        return @"Thursday";
+    else if([abbr isEqualToString:@"Sun"])
+        return @"Friday";
+    else 
+        return @"Uknown day";
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -246,11 +265,15 @@
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Current Conditions";
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"Temp: %@º Condition: %@",cellCondition.tempF,cellCondition.condition];
+                cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
+                cell.detailTextLabel.numberOfLines = 2;
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"Temp: %@º\nCondition: %@",cellCondition.tempF,cellCondition.condition];
                 break;
             default:
-                cell.textLabel.text = cellCondition.dayOfWeek;
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"High: %@º Low: %@º Condition: %@",cellCondition.high, cellCondition.low,cellCondition.condition];
+                cell.textLabel.text = [self getWeekName:cellCondition.dayOfWeek];
+                cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
+                cell.detailTextLabel.numberOfLines = 3;
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"High: %@º\n Low: %@º \nCondition: %@",cellCondition.high, cellCondition.low,cellCondition.condition];
                 break; 
         }
     }

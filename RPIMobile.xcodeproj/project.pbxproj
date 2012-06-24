@@ -24,7 +24,7 @@
 		DC0688FF158FDF120026FDC3 /* Athlete.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0688FE158FDF120026FDC3 /* Athlete.m */; };
 		DC0B83EF159018D4009E2485 /* MHLazyTableImages.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0B83EC159018C8009E2485 /* MHLazyTableImages.m */; };
 		DC0B83F0159018D8009E2485 /* MHImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0B83EA159018C8009E2485 /* MHImageCache.m */; };
-		DC333C22159384B200A92B54 /* NewsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DC333C21159384B200A92B54 /* NewsItem.m */; };
+		DC333C22159384B200A92B54 /* RSSEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DC333C21159384B200A92B54 /* RSSEntry.m */; };
 		DC333C29159385AC00A92B54 /* SportNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC333C27159385AC00A92B54 /* SportNewsViewController.m */; };
 		DC333C2A159385AC00A92B54 /* SportNewsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC333C28159385AC00A92B54 /* SportNewsViewController.xib */; };
 		DC333C2D159386A600A92B54 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = DC333C2C159386A600A92B54 /* Post.m */; };
@@ -129,6 +129,11 @@
 		DCD971171590C88500EAD65F /* WomenSports.plist in Resources */ = {isa = PBXBuildFile; fileRef = DCD971151590C88500EAD65F /* WomenSports.plist */; };
 		DCD9711B1590CB1800EAD65F /* UIImageExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD9711A1590CB1800EAD65F /* UIImageExtras.m */; };
 		DCF194D3156A038F0073B8F0 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF194D2156A038F0073B8F0 /* Person.m */; };
+		DCF4EABA159679F300EDA750 /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF4EAB8159679F300EDA750 /* ScheduleViewController.m */; };
+		DCF4EABB159679F300EDA750 /* ScheduleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCF4EAB9159679F300EDA750 /* ScheduleViewController.xib */; };
+		DCF4EABF15967A8200EDA750 /* ScheduleEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF4EABE15967A8200EDA750 /* ScheduleEntry.m */; };
+		DCF4EAC11596D7F600EDA750 /* shuttle_hdpi.png in Resources */ = {isa = PBXBuildFile; fileRef = DCF4EAC01596D7F600EDA750 /* shuttle_hdpi.png */; };
+		DCF4EAC31596D82100EDA750 /* rpiTV_hdpi.png in Resources */ = {isa = PBXBuildFile; fileRef = DCF4EAC21596D82000EDA750 /* rpiTV_hdpi.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -170,8 +175,8 @@
 		DC0B83ED159018C8009E2485 /* Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		DC0B83EE159018C9009E2485 /* Parser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Parser.m; sourceTree = "<group>"; };
 		DC30A16515954CE900CAC52F /* ZBarCaptureReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarCaptureReader.h; sourceTree = "<group>"; };
-		DC333C20159384B200A92B54 /* NewsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItem.h; sourceTree = "<group>"; };
-		DC333C21159384B200A92B54 /* NewsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsItem.m; sourceTree = "<group>"; };
+		DC333C20159384B200A92B54 /* RSSEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSEntry.h; sourceTree = "<group>"; };
+		DC333C21159384B200A92B54 /* RSSEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSEntry.m; sourceTree = "<group>"; };
 		DC333C26159385AC00A92B54 /* SportNewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportNewsViewController.h; sourceTree = "<group>"; };
 		DC333C27159385AC00A92B54 /* SportNewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportNewsViewController.m; sourceTree = "<group>"; };
 		DC333C28159385AC00A92B54 /* SportNewsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SportNewsViewController.xib; sourceTree = "<group>"; };
@@ -349,6 +354,13 @@
 		DCD9711A1590CB1800EAD65F /* UIImageExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageExtras.m; sourceTree = "<group>"; };
 		DCF194D1156A038F0073B8F0 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		DCF194D2156A038F0073B8F0 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		DCF4EAB7159679F300EDA750 /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
+		DCF4EAB8159679F300EDA750 /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
+		DCF4EAB9159679F300EDA750 /* ScheduleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduleViewController.xib; sourceTree = "<group>"; };
+		DCF4EABD15967A8200EDA750 /* ScheduleEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleEntry.h; sourceTree = "<group>"; };
+		DCF4EABE15967A8200EDA750 /* ScheduleEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleEntry.m; sourceTree = "<group>"; };
+		DCF4EAC01596D7F600EDA750 /* shuttle_hdpi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shuttle_hdpi.png; sourceTree = "<group>"; };
+		DCF4EAC21596D82000EDA750 /* rpiTV_hdpi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rpiTV_hdpi.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -515,10 +527,15 @@
 				DC333C26159385AC00A92B54 /* SportNewsViewController.h */,
 				DC333C27159385AC00A92B54 /* SportNewsViewController.m */,
 				DC333C28159385AC00A92B54 /* SportNewsViewController.xib */,
+				DCF4EAB7159679F300EDA750 /* ScheduleViewController.h */,
+				DCF4EAB8159679F300EDA750 /* ScheduleViewController.m */,
+				DCF4EAB9159679F300EDA750 /* ScheduleViewController.xib */,
+				DCF4EABD15967A8200EDA750 /* ScheduleEntry.h */,
+				DCF4EABE15967A8200EDA750 /* ScheduleEntry.m */,
 				DC333C2B159386A600A92B54 /* Post.h */,
 				DC333C2C159386A600A92B54 /* Post.m */,
-				DC333C20159384B200A92B54 /* NewsItem.h */,
-				DC333C21159384B200A92B54 /* NewsItem.m */,
+				DC333C20159384B200A92B54 /* RSSEntry.h */,
+				DC333C21159384B200A92B54 /* RSSEntry.m */,
 			);
 			name = Athletics;
 			sourceTree = "<group>";
@@ -675,6 +692,8 @@
 			isa = PBXGroup;
 			children = (
 				DC0688CD158FD9620026FDC3 /* Placeholder.png */,
+				DCF4EAC01596D7F600EDA750 /* shuttle_hdpi.png */,
+				DCF4EAC21596D82000EDA750 /* rpiTV_hdpi.png */,
 				DCCA2B451568CC5F00FAFE17 /* calendar_hdpi.png */,
 				DCCA2B461568CC5F00FAFE17 /* compass_hdpi.png */,
 				DCCA2B471568CC5F00FAFE17 /* maps_hdpi.png */,
@@ -891,6 +910,9 @@
 				DCD971171590C88500EAD65F /* WomenSports.plist in Resources */,
 				DC333C2A159385AC00A92B54 /* SportNewsViewController.xib in Resources */,
 				DC333C321593908200A92B54 /* WeatherViewController.xib in Resources */,
+				DCF4EABB159679F300EDA750 /* ScheduleViewController.xib in Resources */,
+				DCF4EAC11596D7F600EDA750 /* shuttle_hdpi.png in Resources */,
+				DCF4EAC31596D82100EDA750 /* rpiTV_hdpi.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -956,11 +978,13 @@
 				DC0688FA158FDD7D0026FDC3 /* ASINetworkQueue.m in Sources */,
 				DC0688FF158FDF120026FDC3 /* Athlete.m in Sources */,
 				DCD9711B1590CB1800EAD65F /* UIImageExtras.m in Sources */,
-				DC333C22159384B200A92B54 /* NewsItem.m in Sources */,
+				DC333C22159384B200A92B54 /* RSSEntry.m in Sources */,
 				DC333C29159385AC00A92B54 /* SportNewsViewController.m in Sources */,
 				DC333C2D159386A600A92B54 /* Post.m in Sources */,
 				DC333C311593908200A92B54 /* WeatherViewController.m in Sources */,
 				DC333C38159412FF00A92B54 /* GDataXMLElement-Extras.m in Sources */,
+				DCF4EABA159679F300EDA750 /* ScheduleViewController.m in Sources */,
+				DCF4EABF15967A8200EDA750 /* ScheduleEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1037,6 +1061,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen Silber (3AD83A87JJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen Silber (3AD83A87JJ)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RPIMobile/RPIMobile-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
@@ -1048,6 +1074,8 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1056,6 +1084,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen Silber (3AD83A87JJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen Silber (3AD83A87JJ)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RPIMobile/RPIMobile-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
@@ -1067,6 +1097,8 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

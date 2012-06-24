@@ -156,7 +156,7 @@
 	
 	// Request
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url
-												  cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData 
+												  cachePolicy:NSURLRequestReloadRevalidatingCacheData 
 											  timeoutInterval:60];
 	[request setValue:@"MWFeedParser" forHTTPHeaderField:@"User-Agent"];
 	

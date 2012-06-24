@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ScheduleEntry : NSObject
+@interface ScheduleEntry : NSObject {
+    NSString *date;
+    NSString *location;
+    NSString *result;
+}
 
+@property (nonatomic, retain) NSString *result, *location, *date;
+
+-(id) initWithDate:(NSString *)d location:(NSString *)l result:(NSString *)r;
+-(id) initWithArray:(NSArray *)data;
 @end

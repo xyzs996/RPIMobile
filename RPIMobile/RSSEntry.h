@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NewsItem : NSObject {
+@interface RSSEntry : NSObject {
     NSString *_blogTitle;
     NSString *_articleTitle;
     NSString *_articleUrl;

@@ -9,6 +9,7 @@
 #import "SportViewController.h"
 #import "RosterViewController.h"
 #import "SportNewsViewController.h"
+#import "ScheduleViewController.h"
 #import "PrettyKit.h"
 #import "UIImageExtras.h"
 
@@ -38,15 +39,22 @@
     if(indexPath.row == 0) {
         SportNewsViewController *nextView = [[SportNewsViewController alloc] initWithNibName:@"SportNewsViewController" bundle:nil];
         nextView.title = @"News";
+        nextView.feedURL = [self getLink:1];
         [self.navigationController pushViewController:nextView animated:YES];
         [nextView release];
     } else if(indexPath.row == 1) {
         RosterViewController *nextView = [[RosterViewController alloc] initWithNibName:@"RosterViewController" bundle:nil];
-        nextView.rosterURL = [self getLink];
+        nextView.rosterURL = [self getLink:0];
         nextView.title = sportName;
         [self.navigationController pushViewController:nextView animated:YES];
         [nextView release];
-    }    
+    }  else if(indexPath.row == 2) {
+        ScheduleViewController *nextView = [[ScheduleViewController alloc] initWithNibName:@"ScheduleViewController" bundle:nil];
+        nextView.scheduleURL = [self getLink:2];
+        nextView.title = @"Schedule";
+        [self.navigationController pushViewController:nextView animated:YES];
+        [nextView release];
+    } 
 }
 
 
@@ -100,8 +108,10 @@
     NSLog(@"Could not download: %@", error);
 }
 -(void) findPictureLink {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://silb.es/rpi/teampic.php?url=%@",currentLink]]];
+
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://silb.es/rpi/teampic.php?url=%@",currentLink]] usingCache:[ASIHTTPRequest defaultCache]];
     NSLog(@"Finding picture with current link: %@", currentLink);
+    [request setSecondsToCache:60*60*24*7]; //Cache for a week
     [request setDelegate:self];
     [request startAsynchronous];
 }
@@ -120,12 +130,12 @@
     [request startAsynchronous];
 }
 
--(NSString *)getLink {
+-(NSString *)getLink:(int) mode {
     NSMutableDictionary *sports = [[NSMutableDictionary alloc]initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AthleticLinks" ofType:@"plist"]];
 
     if([sports valueForKey:sportName]) {
-        NSLog(@"Gender: %@ Sport: %@ return value: %@", currentGender, sportName, [[sports valueForKey:sportName] valueForKey:currentGender]);
-        return [[sports valueForKey:sportName] valueForKey:currentGender];
+        NSLog(@"Gender: %@ Sport: %@ return value: %@", currentGender, sportName, [[[sports valueForKey:sportName] valueForKey:currentGender] objectAtIndex:mode]);
+        return [[[sports valueForKey:sportName] valueForKey:currentGender] objectAtIndex:mode];
     }
     return NULL;
 }
@@ -158,7 +168,7 @@
     listItems = [[NSArray alloc]initWithObjects:@"News", @"Roster", @"Schedule & Results", @"Videos", @"Archives", nil];
     
     self.currentGender = [[NSUserDefaults standardUserDefaults] stringForKey:@"sportGender"];
-    self.currentLink = [self getLink];
+    self.currentLink = [self getLink:0];
     [self findPictureLink];
 
     //Table customization
@@ -166,6 +176,7 @@
     self.menuList.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.menuList.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     
+
     [self setUpShadows];
 }
 

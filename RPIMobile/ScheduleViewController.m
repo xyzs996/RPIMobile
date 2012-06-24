@@ -7,122 +7,149 @@
 //
 
 #import "ScheduleViewController.h"
+#import "ScheduleEntry.h"
+#import "JSONKit.h"
 
-@interface ScheduleViewController ()
-
-@end
+#define kCustomRowHeight  80.0
 
 @implementation ScheduleViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
+@synthesize scheduleData, scheduleURL, entries;
+-(void) refresh {
+    [self.tableView reloadData];
+}
+- (void)downloadData
 {
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://silb.es/rpi/schedule.php?url=%@", scheduleURL]];
+    httprequest = [ASIHTTPRequest requestWithURL:url usingCache:[ASIDownloadCache sharedCache]];
+    [httprequest setSecondsToCache:60*60*24*7]; //Cache roster for 1 week to save resources
+    
+    
+    self.title = @"Downloading...";
+    [httprequest setDelegate:self];
+    [httprequest startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    //Reset back to normal look and feel
+    self.title = @"Schedule";
+    //    self.tableView.alpha = 1;
+    self.tableView.userInteractionEnabled = YES;
+    
+    // Use when fetching text data
+    NSString *responseString = [request responseString];
+    NSArray *sched = [responseString objectFromJSONString];
+    NSLog(@"Response string: %@", sched);
+    scheduleData = [[NSMutableArray alloc] init];
+    
+    for(int i = 1; i < [sched count]; ++i) {
+        if([[sched objectAtIndex:i] count] > 0) {
+            ScheduleEntry *tempEntry = [[ScheduleEntry alloc] initWithArray:[sched objectAtIndex:i]];
+            if(tempEntry) {
+                [scheduleData addObject:tempEntry]; 
+            }
+        }
     }
-    return self;
+    //    NSLog(@"Used cache? %@", [request didUseCachedResponse]);
+    [self.tableView reloadData];
 }
 
-- (void)viewDidLoad
+- (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSError *error = [request error];
+    self.title = @"Error";
+    NSLog(@"Could not download: %@", error);
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"Schedule data: %@", scheduleData); 
+    return [scheduleData count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
     
-    // Configure the cell...
+    //Temporary class allocation for simple syntax in cell creation
+    ScheduleEntry *cellEntry = [scheduleData objectAtIndex:indexPath.row];
+
+    //Check for home or away game
+    if([cellEntry.location characterAtIndex:0] == '@')
+        cell.textLabel.textColor = [UIColor grayColor];
     
+    cell.textLabel.text = cellEntry.location;
+    cell.textLabel.numberOfLines = 2;
+    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
+    
+    cell.detailTextLabel.numberOfLines = 2;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Date: %@\nInfo: %@",cellEntry.date,cellEntry.result];
+
+
     return cell;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)didReceiveMemoryWarning
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
+	self.tableView.rowHeight = kCustomRowHeight;
+    
+    scheduleData = [[NSMutableArray alloc] initWithObjects: nil];
+    NSLog(@"Current URL: %@", scheduleURL);
+    [self downloadData];
+    
+    //Disable until data downloaded
+    //    self.tableView.alpha = 0.5;
+    self.tableView.userInteractionEnabled = NO;
+    
+    
+    [httprequest setDownloadCache:[ASIDownloadCache sharedCache]];
+    [httprequest setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];
+    // Refresh button for feed
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh 
+																							target:self 
+																							action:@selector(refresh)] autorelease];
+    
+    
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)viewDidUnload
 {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+    [super viewDidUnload];
+    
 }
-*/
 
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)dealloc
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+	[scheduleData release];
+	[super dealloc];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

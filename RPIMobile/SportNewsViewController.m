@@ -9,175 +9,120 @@
 #import "SportNewsViewController.h"
 #import "GDataXMLNode.h"
 #import "GDataXMLElement-Extras.h"
-#import "NewsItem.h"
+#import "RSSEntry.h"
 #import "NSDate+InternetDateTime.h"
+#import "NSString+HTML.h"
 
+#define start_color [UIColor colorWithHex:0xEEEEEE]
+#define end_color [UIColor colorWithHex:0xDEDEDE]
+#define numToDisplay 50
 @implementation SportNewsViewController
 
-@synthesize feedURL, queue, newsItems;
+@synthesize feedURL, newsItems;
+// Add under @implementation
 
+- (void)updateTableWithParsedItems {
+	self.newsItems = [parsedItems sortedArrayUsingDescriptors:
+                      [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"date" 
+                                                                            ascending:NO] autorelease]]];
+	self.tableView.userInteractionEnabled = YES;
+	self.tableView.alpha = 1;
+	[self.tableView reloadData];
+}
+-(void) parseNewFeed {
+    
+    // Create feed parser and pass the URL of the feed
+    NSURL *fURL = [NSURL URLWithString:feedURL];
+    
+    // Parse
+	feedParser = [[MWFeedParser alloc] initWithFeedURL:fURL];
+	feedParser.delegate = self;
+	feedParser.feedParseType = ParseTypeFull; // Parse feed info and all items
+	feedParser.connectionType = ConnectionTypeAsynchronously;
+    [self refresh];
+}
+
+// Reset and reparse
 - (void)refresh {
-    
-        NSURL *url = [NSURL URLWithString:feedURL];
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-        [request setDelegate:self];
-        [_queue addOperation:request];
-    
+	self.title = @"Refreshing...";
+	[parsedItems removeAllObjects];
+	[feedParser stopParsing];
+	[feedParser parse];
+    self.tableView.userInteractionEnabled = NO;
+//    self.tableView.alpha = 0.3;
 }
 
-- (void)parseRss:(GDataXMLElement *)rootElement entries:(NSMutableArray *)entries {
-    
-    NSArray *channels = [rootElement elementsForName:@"channel"];
-    for (GDataXMLElement *channel in channels) {            
-        
-        NSString *blogTitle = [channel valueForChild:@"title"];                    
-        
-        NSArray *items = [channel elementsForName:@"item"];
-        for (GDataXMLElement *item in items) {
-            
-            NSString *articleTitle = [item valueForChild:@"title"];
-            NSString *articleUrl = [item valueForChild:@"link"];            
-            NSString *articleDateString = [item valueForChild:@"pubDate"];        
-            NSDate *articleDate = [NSDate dateFromInternetDateTimeString:articleDateString formatHint:DateFormatHintRFC822];
-            
-            NewsItem *entry = [[[NewsItem alloc] initWithBlogTitle:blogTitle 
-                                                      articleTitle:articleTitle 
-                                                        articleUrl:articleUrl 
-                                                       articleDate:articleDate] autorelease];
-            [entries addObject:entry];
-            
-        }      
+#pragma mark MWFeedParserDelegate
+
+- (void)feedParserDidStart:(MWFeedParser *)parser {
+	NSLog(@"Started Parsing: %@", parser.url);
+}
+
+- (void)feedParser:(MWFeedParser *)parser didParseFeedInfo:(MWFeedInfo *)info {
+	NSLog(@"Parsed Feed Info: “%@”", info.title);
+	self.title = info.title;
+}
+
+- (void)feedParser:(MWFeedParser *)parser didParseFeedItem:(MWFeedItem *)item {
+	NSLog(@"Parsed Feed Item: “%@”", item.title);
+	if (item) [parsedItems addObject:item];	
+    if([parsedItems count] > numToDisplay) {
+        [feedParser stopParsing];
     }
-    
 }
 
-- (void)parseAtom:(GDataXMLElement *)rootElement entries:(NSMutableArray *)entries {
-    
-    NSString *blogTitle = [rootElement valueForChild:@"title"];                    
-    
-    NSArray *items = [rootElement elementsForName:@"entry"];
-    for (GDataXMLElement *item in items) {
-        
-        NSString *articleTitle = [item valueForChild:@"title"];
-        NSString *articleUrl = nil;
-        NSArray *links = [item elementsForName:@"link"];        
-        for(GDataXMLElement *link in links) {
-            NSString *rel = [[link attributeForName:@"rel"] stringValue];
-            NSString *type = [[link attributeForName:@"type"] stringValue]; 
-            if ([rel compare:@"alternate"] == NSOrderedSame && 
-                [type compare:@"text/html"] == NSOrderedSame) {
-                articleUrl = [[link attributeForName:@"href"] stringValue];
-            }
-        }
-        
-        NSString *articleDateString = [item valueForChild:@"updated"];        
-        NSDate *articleDate = [NSDate dateFromInternetDateTimeString:articleDateString formatHint:DateFormatHintRFC3339];
-        
-        NewsItem *entry = [[[NewsItem alloc] initWithBlogTitle:blogTitle 
-                                                  articleTitle:articleTitle 
-                                                    articleUrl:articleUrl 
-                                                   articleDate:articleDate] autorelease];
-        [entries addObject:entry];
-        
-    }      
-    
+- (void)feedParserDidFinish:(MWFeedParser *)parser {
+	NSLog(@"Finished Parsing%@", (parser.stopped ? @" (Stopped)" : @""));
+    self.title = @"News";
+    [self updateTableWithParsedItems];
 }
 
-- (void)parseFeed:(GDataXMLElement *)rootElement entries:(NSMutableArray *)entries {    
-    if ([rootElement.name compare:@"rss"] == NSOrderedSame) {
-        [self parseRss:rootElement entries:entries];
-    } else if ([rootElement.name compare:@"feed"] == NSOrderedSame) {                       
-        [self parseAtom:rootElement entries:entries];
+- (void)feedParser:(MWFeedParser *)parser didFailWithError:(NSError *)error {
+	NSLog(@"Finished Parsing With Error: %@", error);
+    if (parsedItems.count == 0) {
+        self.title = @"Failed"; // Show failed message in title
     } else {
-        NSLog(@"Unsupported root element: %@", rootElement.name);
-    }    
-}
-
-- (void)requestFinished:(ASIHTTPRequest *)request {
-    NSLog(@"Request Finished: %@", [request responseString]);
-    [_queue addOperationWithBlock:^{
-        
-        NSError *error;
-        GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:[request responseData] 
-                                                               options:0 error:&error];
-        if (doc == nil) { 
-            NSLog(@"Failed to parse %@", request.url);
-        } else {
-            
-            NSMutableArray *entries = [NSMutableArray array];
-            [self parseFeed:doc.rootElement entries:entries];                
-            
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                
-                for (NewsItem *entry in entries) {
-                    
-                    int insertIdx = [newsItems indexForInsertingObject:entry sortedUsingBlock:^(id a, id b) {
-                        NewsItem *entry1 = (NewsItem *) a;
-                        NewsItem *entry2 = (NewsItem *) b;
-                        return [entry1.articleDate compare:entry2.articleDate];
-                    }];
-                    
-                    [newsItems insertObject:entry atIndex:insertIdx];
-                    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:insertIdx inSection:0]]
-                                          withRowAnimation:UITableViewRowAnimationRight];
-                    
-                }                            
-                
-            }];
-            
-        }        
-    }];
-    
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request {
-    NSError *error = [request error];
-    NSLog(@"Error: %@", error);
+        // Failed but some items parsed, so show and inform of error
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Parsing Incomplete"
+                                                         message:@"There was an error during the parsing of this feed. Not all of the feed items could parsed."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"Dismiss"
+                                               otherButtonTitles:nil] autorelease];
+        [alert show];
+    }
+    [self updateTableWithParsedItems];
 }
 
 
--(void) requestNews {
-    NSURL *url = [NSURL URLWithString:feedURL];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url usingCache:[ASIHTTPRequest defaultCache] andCachePolicy:ASIAskServerIfModifiedCachePolicy];
-    [request setDelegate:self];
-    [request startAsynchronous];
-    NSLog(@"NewsItems: %@", newsItems);
+- (void) setUpShadows {
+    [PrettyShadowPlainTableview setUpTableView:self.tableView];
 }
 
-- (void)addRows {
-    
-    NewsItem *entry1 = [[[NewsItem alloc] initWithBlogTitle:@"1" 
-                                               articleTitle:@"1" 
-                                                 articleUrl:@"1" 
-                                                articleDate:[NSDate date]] autorelease];
-    NewsItem *entry2 = [[[NewsItem alloc] initWithBlogTitle:@"2" 
-                                               articleTitle:@"2" 
-                                                 articleUrl:@"2" 
-                                                articleDate:[NSDate date]] autorelease];
-    NewsItem *entry3 = [[[NewsItem alloc] initWithBlogTitle:@"3" 
-                                               articleTitle:@"3" 
-                                                 articleUrl:@"3" 
-                                                articleDate:[NSDate date]] autorelease];
-    
-    
-    [newsItems insertObject:entry1 atIndex:0];
-    [newsItems insertObject:entry2 atIndex:0];
-    [newsItems insertObject:entry3 atIndex:0];
-    
-}
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.feedURL = @"http://rpiathletics.com/rss.aspx?path=mtrack";
+- (void)viewDidLoad {
+    [super viewDidLoad];    
     self.newsItems = [NSMutableArray array];
-    self.queue = [[[NSOperationQueue alloc] init] autorelease];
     
+    self.tableView.rowHeight = 90;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    
+
+	self.title = @"Loading...";
+	formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"dd MMM yyyy HH:mm:ss zzz"];
+	[formatter setTimeStyle:NSDateFormatterShortStyle];
+	parsedItems = [[NSMutableArray alloc] init];
+	self.newsItems = [NSArray array];
+	
+	// Refresh button for feed
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh 
 																							target:self 
-																							action:@selector(requestNews)] autorelease];
-    [self requestNews];
+																							action:@selector(refresh)] autorelease];
+    [self parseNewFeed];
+    [self setUpShadows]; 
 
+    
 }
 
 - (void)viewDidUnload
@@ -213,68 +158,58 @@
 }
 
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell.tableViewBackgroundColor = tableView.backgroundColor;        
+        cell.gradientStartColor = start_color;
+        cell.gradientEndColor = end_color;
     }
     
-    NewsItem *entry = [newsItems objectAtIndex:indexPath.row];
     
-    NSDateFormatter * dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    NSString *articleDateString = [dateFormatter stringFromDate:entry.articleDate];
+    // Configure the cell.
+	MWFeedItem *item = [newsItems objectAtIndex:indexPath.row];
+    cell.textLabel.backgroundColor = [UIColor clearColor];
+    cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     
-    cell.textLabel.text = entry.articleTitle;        
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", articleDateString, entry.blogTitle];
+	if (item) {
+		
+		// Process
+		NSString *itemTitle = item.title ? [item.title stringByConvertingHTMLToPlainText] : @"[No Title]";
+		NSString *itemSummary = item.summary ? [item.summary stringByConvertingHTMLToPlainText] : @"[No Summary]";
+        
+        cell.textLabel.text = itemTitle;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
+        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        [cell.textLabel setNumberOfLines:2];
+        
+        
+        cell.detailTextLabel.text = itemSummary;
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
+        cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
+        [cell.detailTextLabel setNumberOfLines:3];
+        
+		/*NSMutableString *subtitle = [NSMutableString string];
+         //if (item.date) [subtitle appendFormat:@"%@: ", [formatter stringFromDate:item.date]];
+         [subtitle appendString:itemSummary];
+         //		cell.summary.text = subtitle;
+         */
+		
+	} else {
+        cell.textLabel.text = @"Error";
+    }
+    [cell prepareForTableView:tableView indexPath:indexPath];
+    
     
     return cell;
+    
 }
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 

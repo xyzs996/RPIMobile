@@ -78,37 +78,6 @@
                                                                      target:@"NewsViewController" 
                                                                 targetTitle:@"Item 5 View"
                                                                   deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Tour"
-                                                                iPhoneImage:@"compass_hdpi" 
-                                                                  iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
-                                                                targetTitle:@"Item 6 View"
-                                                                  deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Directory"
-                                                                iPhoneImage:@"phonebook_hdpi" 
-                                                                  iPadImage:@"itemImage-iPad"
-                                                                     target:@"MasterViewController" 
-                                                                targetTitle:@"Item 7 View"
-                                                                  deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"QR Codes"
-                                                                iPhoneImage:@"qr_hdpi" 
-                                                                  iPadImage:@"itemImage-iPad"
-                                                                     target:@"QRViewController" 
-                                                                targetTitle:@"QR Scanner"
-                                                                  deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Videos"
-                                                                iPhoneImage:@"youtube_hdpi" 
-                                                                  iPadImage:@"itemImage-iPad"
-                                                                     target:@"VideoFeedViewController" 
-                                                                targetTitle:@"RPI Videos"
-                                                                  deletable:NO],
-                                      [[MyLauncherItem alloc] initWithTitle:@"Weather"
-                                                                iPhoneImage:@"weather_hdpi" 
-                                                                  iPadImage:@"itemImage-iPad"
-                                                                     target:@"WeatherViewController" 
-                                                                targetTitle:@"RPI Weather"
-                                                                  deletable:NO],
-
                                       [[MyLauncherItem alloc] initWithTitle:@"WRPI"
                                                                 iPhoneImage:@"radio_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
@@ -121,16 +90,60 @@
                                                                      target:@"NewsViewController" 
                                                                 targetTitle:@"Item 12 View"
                                                                   deletable:NO],
-                                      nil], 
+                                      [[MyLauncherItem alloc] initWithTitle:@"TV Listings"
+                                                                iPhoneImage:@"rpiTV_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 12 View"
+                                                                  deletable:NO],
+                                      [[MyLauncherItem alloc] initWithTitle:@"Shuttle Tracker"
+                                                                iPhoneImage:@"shuttle_hdpi" 
+                                                                  iPadImage:@"itemImage-iPad"
+                                                                     target:@"NewsViewController" 
+                                                                targetTitle:@"Item 12 View"
+                                                                  deletable:NO],
+                                      nil], [NSMutableArray arrayWithObjects:
+                                             [[MyLauncherItem alloc] initWithTitle:@"Tour"
+                                                                       iPhoneImage:@"compass_hdpi" 
+                                                                         iPadImage:@"itemImage-iPad"
+                                                                            target:@"NewsViewController" 
+                                                                       targetTitle:@"Item 6 View"
+                                                                         deletable:NO],
+                                             [[MyLauncherItem alloc] initWithTitle:@"Directory"
+                                                                       iPhoneImage:@"phonebook_hdpi" 
+                                                                         iPadImage:@"itemImage-iPad"
+                                                                            target:@"MasterViewController" 
+                                                                       targetTitle:@"Item 7 View"
+                                                                         deletable:NO],
+                                             [[MyLauncherItem alloc] initWithTitle:@"QR Codes"
+                                                                       iPhoneImage:@"qr_hdpi" 
+                                                                         iPadImage:@"itemImage-iPad"
+                                                                            target:@"QRViewController" 
+                                                                       targetTitle:@"QR Scanner"
+                                                                         deletable:NO],
+                                             [[MyLauncherItem alloc] initWithTitle:@"Videos"
+                                                                       iPhoneImage:@"youtube_hdpi" 
+                                                                         iPadImage:@"itemImage-iPad"
+                                                                            target:@"VideoFeedViewController" 
+                                                                       targetTitle:@"RPI Videos"
+                                                                         deletable:NO],
+                                             [[MyLauncherItem alloc] initWithTitle:@"Weather"
+                                                                       iPhoneImage:@"weather_hdpi" 
+                                                                         iPadImage:@"itemImage-iPad"
+                                                                            target:@"WeatherViewController" 
+                                                                       targetTitle:@"RPI Weather"
+                                                                         deletable:NO], nil],
                                      nil]];
         
+
         // Set number of immovable items below; only set it when you are setting the pages as the 
         // user may still be able to delete these items and setting this then will cause movable 
         // items to become immovable.
         // [self.launcherView setNumberOfImmovableItems:1];
         
         // Or uncomment the line below to disable editing (moving/deleting) completely!
-        // [self.launcherView setEditingAllowed:NO];
+//         [self.launcherView setEditingAllowed:NO];
+
 	}
     
 }

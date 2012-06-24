@@ -6,10 +6,9 @@
 //  Copyright (c) 2012 Rensselaer Polytechnic Institute. All rights reserved.
 //
 
-#import "NewsItem.h"
+#import "RSSEntry.h"
 
-@implementation NewsItem
-
+@implementation RSSEntry
 @synthesize blogTitle = _blogTitle;
 @synthesize articleTitle = _articleTitle;
 @synthesize articleUrl = _articleUrl;
@@ -24,6 +23,10 @@
         _articleDate = [articleDate copy];
     }
     return self;
+}
+
+- (NSComparisonResult)compare:(RSSEntry *)otherObject {
+    return [self.articleDate compare:otherObject.articleDate];
 }
 
 - (void)dealloc {

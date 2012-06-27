@@ -14,6 +14,7 @@
     MWFeedParser *feedParser;
     UIImage *launcherImage;
     IBOutlet UITableView *newsTable;
+    NSString *feedURLString;
     
 //    MKHorizMenu *_horizMenu;
     NSMutableArray *_items;
@@ -27,5 +28,5 @@
 @property (nonatomic, retain) NSMutableArray *items;
 @property (nonatomic, retain) NSArray *newsItems;
 @property (nonatomic, assign) UIImage *launcherImage;
-
+@property (nonatomic, retain) NSString *feedURLString;
 @end

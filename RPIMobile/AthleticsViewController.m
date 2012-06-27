@@ -62,8 +62,9 @@
     
     SportViewController *nextView = [[SportViewController alloc] initWithNibName:@"SportViewController" bundle:nil];
     nextView.sportName = [sportsArr objectAtIndex:[indexPath row]];
-    nextView.title = nextView.sportName;
+//    nextView.title = nextView.sportName;
     [self.navigationController pushViewController:nextView animated:YES];
+    self.title = @"Athletics"; //Figure out how to reposition this in the middle of <-- and [men][women] control
     [nextView release];
 
 }
@@ -127,7 +128,16 @@
         self.currentGender = @"Men";
     }
     
-    self.title = @"Athletics"; //Figure out how to reposition this in the middle of <-- and [men][women] control
+    
+    UILabel * nav_title = [[UILabel alloc] initWithFrame:CGRectMake(800, 2, 220, 25)];
+    nav_title.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
+    nav_title.textColor = [UIColor whiteColor];
+    nav_title.adjustsFontSizeToFitWidth = YES;
+    nav_title.text = @"     Athletics";
+    self.title = @"";
+    nav_title.backgroundColor = [UIColor clearColor];
+    self.navigationItem.titleView = nav_title;
+    [nav_title release];
 
     self.sportsList.rowHeight = 60;
     self.sportsList.separatorStyle = UITableViewCellSeparatorStyleNone;

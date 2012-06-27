@@ -14,10 +14,14 @@
 #import "UIImageExtras.h"
 
 @implementation SportViewController
-@synthesize menuList, sportName, currentGender, progressBar, teamPicture, currentLink;
+@synthesize menuList, sportName, currentGender, progressBar, teamPicture, currentLink, noImage;
 
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
+
+#define red_start_color [UIColor colorWithHex:0x595959]
+#define red_end_color [UIColor colorWithHex:0x303030]
+
 
 #pragma mark -
 #pragma mark Table View Data Source Methods
@@ -36,19 +40,19 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(indexPath.row == 0) {
+    if(indexPath.row == 1) {
         SportNewsViewController *nextView = [[SportNewsViewController alloc] initWithNibName:@"SportNewsViewController" bundle:nil];
         nextView.title = @"News";
         nextView.feedURL = [self getLink:1];
         [self.navigationController pushViewController:nextView animated:YES];
         [nextView release];
-    } else if(indexPath.row == 1) {
+    } else if(indexPath.row == 2) {
         RosterViewController *nextView = [[RosterViewController alloc] initWithNibName:@"RosterViewController" bundle:nil];
         nextView.rosterURL = [self getLink:0];
         nextView.title = sportName;
         [self.navigationController pushViewController:nextView animated:YES];
         [nextView release];
-    }  else if(indexPath.row == 2) {
+    }  else if(indexPath.row == 3) {
         ScheduleViewController *nextView = [[ScheduleViewController alloc] initWithNibName:@"ScheduleViewController" bundle:nil];
         nextView.scheduleURL = [self getLink:2];
         nextView.title = @"Schedule";
@@ -71,6 +75,16 @@
         cell.gradientStartColor = start_color;
         cell.gradientEndColor = end_color;  
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    if(indexPath.row == 0) {
+        cell.gradientStartColor = red_start_color;
+        cell.gradientEndColor = red_end_color;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.textAlignment = UITextAlignmentCenter;
+        cell.textLabel.textColor = [UIColor whiteColor];
+    } else {
+        cell.textLabel.font = [UIFont systemFontOfSize:16];
     }
     [cell prepareForTableView:tableView indexPath:indexPath];
     cell.textLabel.backgroundColor = [UIColor clearColor];
@@ -95,6 +109,8 @@
 
 -(void)imageDownloadFailed:(ASIHTTPRequest *) request {
     NSLog(@"Download Failed! %@", [request error]);
+    [self.noImage setHidden:NO];
+    [self.progressBar setHidden:YES];
 }
 - (void)requestFinished:(ASIHTTPRequest *)request {
     NSLog(@"Link found: %@", [request responseString]);
@@ -109,25 +125,25 @@
 }
 -(void) findPictureLink {
 
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://silb.es/rpi/teampic.php?url=%@",currentLink]] usingCache:[ASIHTTPRequest defaultCache]];
+    asiRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://silb.es/rpi/teampic.php?url=%@",currentLink]] usingCache:[ASIHTTPRequest defaultCache]];
     NSLog(@"Finding picture with current link: %@", currentLink);
-    [request setSecondsToCache:60*60*24*7]; //Cache for a week
-    [request setDelegate:self];
-    [request startAsynchronous];
+    [asiRequest setSecondsToCache:60*60*24*7]; //Cache for a week
+    [asiRequest setDelegate:self];
+    [asiRequest startAsynchronous];
 }
 
 -(void) downloadPicture:(NSString *)url {
 
     [self.progressBar setHidden:NO];
     
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setDelegate:self];
-    [request setSecondsToCache:60*60*24*7]; //Cache image for 1 week
-    [request setCacheStoragePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];
-    [request setDownloadProgressDelegate:progressBar];
-    [request setDidFinishSelector:@selector(imageDownloadFinished:)];
-    [request setDidFailSelector:@selector(imageDownloadFailed:)];
-    [request startAsynchronous];
+    asiRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+    [asiRequest setDelegate:self];
+    [asiRequest setSecondsToCache:60*60*24*7]; //Cache image for 1 week
+    [asiRequest setCacheStoragePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];
+    [asiRequest setDownloadProgressDelegate:progressBar];
+    [asiRequest setDidFinishSelector:@selector(imageDownloadFinished:)];
+    [asiRequest setDidFailSelector:@selector(imageDownloadFailed:)];
+    [asiRequest startAsynchronous];
 }
 
 -(NSString *)getLink:(int) mode {
@@ -164,13 +180,13 @@
     [super viewDidLoad];
 //    self.teamPicture.contentMode = UIViewContentModeScaleAspectFit;
     self.progressBar.progress = 0.0;
-
-    listItems = [[NSArray alloc]initWithObjects:@"News", @"Roster", @"Schedule & Results", @"Videos", @"Archives", nil];
     
     self.currentGender = [[NSUserDefaults standardUserDefaults] stringForKey:@"sportGender"];
     self.currentLink = [self getLink:0];
     [self findPictureLink];
-
+    
+    listItems = [[NSArray alloc]initWithObjects:[NSString stringWithFormat:@"%@'s %@", currentGender, sportName], @"News", @"Roster", @"Schedule & Results", @"Archives", nil];
+    
     //Table customization
     self.menuList.rowHeight = 47;
     self.menuList.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -186,6 +202,8 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     listItems = nil;
+    [asiRequest cancel];
+    [asiRequest release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

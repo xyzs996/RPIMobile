@@ -8,6 +8,7 @@
 
 #import "WeatherViewController.h"
 #import "PrettyKit.h"
+#import "UIImageView+WebCache.h"
 
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
@@ -213,11 +214,11 @@
         return @"Monday";
     else if([abbr isEqualToString:@"Tue"])
         return @"Tuesday";
-    else if([abbr isEqualToString:@"Sun"])
+    else if([abbr isEqualToString:@"Wed"])
         return @"Wednesday";
-    else if([abbr isEqualToString:@"Sun"])
+    else if([abbr isEqualToString:@"Thu"])
         return @"Thursday";
-    else if([abbr isEqualToString:@"Sun"])
+    else if([abbr isEqualToString:@"Fri"])
         return @"Friday";
     else 
         return @"Uknown day";
@@ -261,7 +262,15 @@
     cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     
     if([weatherArr count] > 0) {
-        WeatherCondition *cellCondition = [weatherArr objectAtIndex:indexPath.row];        
+        WeatherCondition *cellCondition = [weatherArr objectAtIndex:indexPath.row];   
+        [cell.imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.google.com%@",cellCondition.iconURL]] placeholderImage:[UIImage imageNamed:@"Placeholder.png"]];
+        
+/*        // Here we use the new provided setImageWithURL: method to load the web image
+        [cell.imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.google.com%@",cellCondition.iconURL]]
+                       placeholderImage:[UIImage imageNamed:@"Placeholder.png"]
+                                success:^(UIImage *image) {[self.tableView reloadData];}
+                                failure:^(NSError *error) {NSLog(@"Error downloading picture: %@", error);}];
+        */
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Current Conditions";
@@ -277,6 +286,7 @@
                 break; 
         }
     }
+    
     [cell prepareForTableView:tableView indexPath:indexPath];
 
 

@@ -29,6 +29,7 @@
 #import "VideoFeedViewController.h"
 #import "AthleticsViewController.h"
 #import "WeatherViewController.h"
+#import "ShuttleMapViewController.h"
 @implementation RootViewController
 
 -(void)loadView
@@ -43,6 +44,7 @@
     [[self appControllers] setObject:[VideoFeedViewController class] forKey:@"VideoFeedViewController"];
     [[self appControllers] setObject:[AthleticsViewController class] forKey:@"AthleticsViewController"];    
     [[self appControllers] setObject:[WeatherViewController class] forKey:@"WeatherViewController"];
+    [[self appControllers] setObject:[ShuttleMapViewController class] forKey:@"ShuttleMapViewController"];
 
 	if(![self hasSavedLauncherItems])
 	{
@@ -99,7 +101,7 @@
                                       [[MyLauncherItem alloc] initWithTitle:@"Shuttle Tracker"
                                                                 iPhoneImage:@"shuttle_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
+                                                                     target:@"ShuttleMapViewController" 
                                                                 targetTitle:@"Item 12 View"
                                                                   deletable:NO],
                                       nil], [NSMutableArray arrayWithObjects:

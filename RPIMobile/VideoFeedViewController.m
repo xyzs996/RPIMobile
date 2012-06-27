@@ -9,6 +9,7 @@
 #import "VideoFeedViewController.h"
 #import "PrettyKit.h"
 #import "NSString+HTML.h"
+#import "UIImageView+WebCache.h"
 
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
@@ -18,8 +19,7 @@
 
 @implementation VideoFeedViewController
 
-@synthesize newsItems, newsTable, items, launcherImage;
-
+@synthesize newsItems, newsTable, items, launcherImage, feedURLString;
 
 - (void)quitView: (id) sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"closeView" object:self.navigationController.view];
@@ -115,11 +115,16 @@
 																							target:self 
 																							action:@selector(refresh)] autorelease];
     
+    NSURL *url;
     // Create feed parser and pass the URL of the feed
-    NSURL *feedURL = [NSURL URLWithString:@"http://gdata.youtube.com/feeds/api/users/rpirensselaer/uploads"];
+    if(!feedURLString)
+        url = [NSURL URLWithString:@"http://gdata.youtube.com/feeds/api/users/rpirensselaer/uploads"];
+    else //temporary for sport video feeds
+        url = [NSURL URLWithString:feedURLString];
+    
     
     // Parse
-	feedParser = [[MWFeedParser alloc] initWithFeedURL:feedURL];
+	feedParser = [[MWFeedParser alloc] initWithFeedURL:url];
 	feedParser.delegate = self;
 	feedParser.feedParseType = ParseTypeFull; // Parse feed info and all items
 	feedParser.connectionType = ConnectionTypeAsynchronously;
@@ -160,6 +165,22 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+-(NSString *) getThumbnailURL:(NSString *)url {
+    
+    //Work on more efficient parsing later on, works for now, just sloppy
+    NSArray *firstStepArr = [url componentsSeparatedByString:@"http://www.youtube.com/watch?v="];
+    NSArray *secondStepArr = [[firstStepArr lastObject] componentsSeparatedByString:@"&feature"];
+    if([secondStepArr count] > 0) {
+        return [NSString stringWithFormat:@"http://img.youtube.com/vi/%@/1.jpg",[secondStepArr objectAtIndex:0]];
+//        NSLog(@"%@",thumnbail);
+//        return thumnbail;
+        
+    } else {
+        NSLog(@"parsing error, %@", [firstStepArr lastObject]);
+    }
+    return @"";
+}
+
 #pragma mark - Table view data source
 
 // Customize the number of sections in the table view.
@@ -197,7 +218,9 @@
     cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     
 	if (item) {
-		
+        
+        [cell.imageView setImageWithURL:[NSURL URLWithString:[self getThumbnailURL:item.link]] placeholderImage:nil];
+
 		// Process
 		NSString *itemTitle = item.title ? [item.title stringByConvertingHTMLToPlainText] : @"[No Title]";
 		NSString *itemSummary = item.summary ? [item.summary stringByConvertingHTMLToPlainText] : @"[No Summary]";

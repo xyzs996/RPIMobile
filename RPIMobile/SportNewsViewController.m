@@ -7,8 +7,6 @@
 //
 
 #import "SportNewsViewController.h"
-#import "GDataXMLNode.h"
-#import "GDataXMLElement-Extras.h"
 #import "RSSEntry.h"
 #import "NSDate+InternetDateTime.h"
 #import "NSString+HTML.h"

@@ -10,10 +10,11 @@
 #import "JSONKit.h"
 #import "ASIHTTPRequest.h"
 #import "ASIDownloadCache.h"
-
+#import "UIImageView+WebCache.h"
 #import "Athlete.h"
+#import "AthleteViewController.h"
 
-#define kCustomRowHeight  45.0
+#define kCustomRowHeight  60.0
 #define kAppIconHeight    48
 
 @implementation RosterViewController
@@ -77,25 +78,28 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    cell.textLabel.text = [[athleteData objectAtIndex:indexPath.row] name];
-    cell.detailTextLabel.text = [[athleteData objectAtIndex:indexPath.row] hometown];
-//    cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
-//    [lazyImages addLazyImageForCell:cell withIndexPath:indexPath];
+    // Here we use the new provided setImageWithURL: method to load the web image asynchronously
+    Athlete *cellAthlete = [athleteData objectAtIndex:indexPath.row];
+
+    if([cellAthlete.imageURL isEqualToString:@""])
+        [cell.imageView setImage:[UIImage imageNamed:@"Placeholder.png"]];
+    else 
+        [cell.imageView setImageWithURL:[NSURL URLWithString:[[athleteData objectAtIndex:indexPath.row] imageURL]] placeholderImage:[UIImage imageNamed:@"Placeholder.png"]];
+    
+    cell.textLabel.text = cellAthlete.name;
+    cell.detailTextLabel.text = cellAthlete.hometown;
+
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    AthleteViewController *nextView = [[AthleteViewController alloc] initWithNibName:@"AthleteViewController" bundle:nil];
+    NSLog(@"Athlete data url: %@", [[athleteData objectAtIndex:indexPath.row] profileURL]);
+    nextView.athleteURL = [[athleteData objectAtIndex:indexPath.row] profileURL];
+    [self.navigationController pushViewController:nextView animated:YES];
+    [nextView release];
 }
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-	if ((self = [super initWithCoder:aDecoder]))
-	{
-		lazyImages = [[MHLazyTableImages alloc] init];
-		lazyImages.placeholderImage = [UIImage imageNamed:@"Placeholder"];
-		lazyImages.delegate = self;
-	}
-	return  self;
-}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -105,41 +109,13 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark -
-#pragma mark MHLazyTableImagesDelegate
-
-- (NSURL*)lazyImageURLForIndexPath:(NSIndexPath*)indexPath
-{
-	Athlete* rosterEntry = [self.athleteData objectAtIndex:indexPath.row];
-	return [NSURL URLWithString:rosterEntry.imageURL];
-}
-
-- (UIImage*)postProcessLazyImage:(UIImage*)image forIndexPath:(NSIndexPath*)indexPath
-{
-    if (image.size.width != kAppIconHeight && image.size.height != kAppIconHeight)
-	{
-        CGSize itemSize = CGSizeMake(kAppIconHeight, kAppIconHeight);
-		UIGraphicsBeginImageContextWithOptions(itemSize, YES, 0);
-		CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-		[image drawInRect:imageRect];
-		UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-		return newImage;
-    }
-    else
-    {
-        return image;
-    }
-}
-
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    lazyImages.tableView = self.tableView;
+
 	self.tableView.rowHeight = kCustomRowHeight;
     
     athleteData = [[NSMutableArray alloc] initWithObjects: nil];
@@ -163,16 +139,12 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    lazyImages.tableView = nil;
 
 }
 
 - (void)dealloc
 {
 	[entries release];
-    
-	lazyImages.delegate = nil;
-	[lazyImages release];
     
 	[super dealloc];
 }

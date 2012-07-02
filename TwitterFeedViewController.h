@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MWFeedParser.h"
+@interface TwitterFeedViewController : UITableViewController <MWFeedParserDelegate> {
+    MWFeedParser *feedParser;
+    NSMutableArray *feedItems;
+    NSArray *newsItems;
+    NSDateFormatter *formatter;
+}
 
-@interface TwitterFeedViewController : UITableViewController
+@property (nonatomic, retain) NSArray *newsItems;
 
 @end

@@ -12,7 +12,7 @@
 #import "ASIDownloadCache.h"
 #import "UIImageView+WebCache.h"
 #import "Athlete.h"
-#import "AthleteViewController.h"
+#import "WebViewController.h"
 
 #define kCustomRowHeight  60.0
 #define kAppIconHeight    48
@@ -93,7 +93,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    AthleteViewController *nextView = [[AthleteViewController alloc] initWithNibName:@"AthleteViewController" bundle:nil];
+    WebViewController *nextView = [[WebViewController alloc] initWithNibName:@"AthleteViewController" bundle:nil];
     NSLog(@"Athlete data url: %@", [[athleteData objectAtIndex:indexPath.row] profileURL]);
     nextView.athleteURL = [[athleteData objectAtIndex:indexPath.row] profileURL];
     [self.navigationController pushViewController:nextView animated:YES];

@@ -35,6 +35,7 @@
     [self.tableView reloadData];
 }
 
+
 #pragma mark -
 #pragma mark NSXMLParser
 
@@ -175,6 +176,7 @@
     [super viewDidLoad];
     self.title = @"RPI Weather";
     
+    self.tableView.scrollEnabled = NO;
     weatherArr = [[NSMutableArray alloc] init];
     
     weatherRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com/ig/api?weather=12180"] usingCache:[ASIHTTPRequest defaultCache]];
@@ -263,14 +265,12 @@
     
     if([weatherArr count] > 0) {
         WeatherCondition *cellCondition = [weatherArr objectAtIndex:indexPath.row];   
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.google.com%@",cellCondition.iconURL]] placeholderImage:[UIImage imageNamed:@"Placeholder.png"]];
+
+        //Replaced google image api weather icons with local icons. Higher quality, fits user design guidelines much better
+        NSString *imageName = [[cellCondition.iconURL componentsSeparatedByString:@"/ig/images/weather/"] lastObject];
+        NSString *fileName = [[imageName componentsSeparatedByString:@".gif"] objectAtIndex:0];
+        cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileName]];
         
-/*        // Here we use the new provided setImageWithURL: method to load the web image
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.google.com%@",cellCondition.iconURL]]
-                       placeholderImage:[UIImage imageNamed:@"Placeholder.png"]
-                                success:^(UIImage *image) {[self.tableView reloadData];}
-                                failure:^(NSError *error) {NSLog(@"Error downloading picture: %@", error);}];
-        */
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Current Conditions";

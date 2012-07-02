@@ -6,21 +6,33 @@
 //  Copyright (c) 2012 Brendon Justin. All rights reserved.
 //
 
-#import "DetailViewController.h"
+#import "DirectoryDetailViewController.h"
 #import "Person.h"
-#import "PrettyKit.h"
+//#import "PrettyKit.h"
 
-@interface DetailViewController ()
+//#define start_color [UIColor colorWithHex:0xEEEEEE]
+//#define end_color [UIColor colorWithHex:0xDEDEDE]
+
+@interface DirectoryDetailViewController ()
 //@property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
 @end
 
-@implementation DetailViewController
+@implementation DirectoryDetailViewController
 
 @synthesize person;
 //@synthesize masterPopoverController = _masterPopoverController;
 
 #pragma mark - Managing the detail item
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
 
 - (void)setPerson:(Person *)newPerson
 {
@@ -40,11 +52,21 @@
         [self.tableView reloadData];
     }
 }
+//
+//- (void) setUpShadows {
+//    [PrettyShadowPlainTableview setUpTableView:self.tableView];
+//}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+//    self.tableView.rowHeight = 100;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.tableView.backgroundColor = [UIColor lightGrayColor];
+
+    
+    
+//    [self setUpShadows];
     [self configureView];
 }
 
@@ -135,19 +157,26 @@
     }
 }
 
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"DetailCell";
+    static NSString *CellIdentifier = @"Cell";
 
-    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 
-                                      reuseIdentifier:@"DetailCell"];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 
+                                          reuseIdentifier:@"DetailCell"] autorelease];
+//        cell.tableViewBackgroundColor = tableView.backgroundColor;        
+//        cell.gradientStartColor = start_color;
+//        cell.gradientEndColor = end_color;  
         cell.textLabel.numberOfLines = 0;
         cell.detailTextLabel.numberOfLines = 0;
+
     }
-    
+
+    cell.textLabel.backgroundColor = [UIColor clearColor];
+    cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     int count = 0;
     for (NSString *string in self.person.details) {
         if (count++ == indexPath.row) {
@@ -157,10 +186,10 @@
         }
     }
     
-    if(indexPath.row != 3)
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    if([cell.textLabel.text isEqualToString:@"email"] == NO)
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
-    [cell prepareForTableView:tableView indexPath:indexPath];
+//    [cell prepareForTableView:tableView indexPath:indexPath];
     return cell;
 }
 
@@ -172,7 +201,8 @@
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(indexPath.row == 3) {
+    
+    if([[[[tableView cellForRowAtIndexPath:indexPath] textLabel ] text] isEqualToString:@"email"]) {
         //Email cell clicked, call mailto: link behavior
         NSLog(@"OPEN EMAIL TO THIS PERSON");
     }

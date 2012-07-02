@@ -10,6 +10,8 @@
 #import "PrettyKit.h"
 #import "NSString+HTML.h"
 #import "UIImageView+WebCache.h"
+#import "WebViewController.h"
+
 
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
@@ -219,7 +221,7 @@
     
 	if (item) {
         
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[self getThumbnailURL:item.link]] placeholderImage:nil];
+        [cell.imageView setImageWithURL:[NSURL URLWithString:[self getThumbnailURL:item.link]] placeholderImage:[UIImage imageNamed:@"PlaceholderVideo.png"]];
 
 		// Process
 		NSString *itemTitle = item.title ? [item.title stringByConvertingHTMLToPlainText] : @"[No Title]";
@@ -236,11 +238,6 @@
         cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
         [cell.detailTextLabel setNumberOfLines:3];
         
-		/*NSMutableString *subtitle = [NSMutableString string];
-         //if (item.date) [subtitle appendFormat:@"%@: ", [formatter stringFromDate:item.date]];
-         [subtitle appendString:itemSummary];
-         //		cell.summary.text = subtitle;
-         */
 		
 	} else {
         cell.textLabel.text = @"Error";
@@ -277,33 +274,11 @@
     if (item) {
         
         NSString *itemURL = item.link ? item.link : @"";
-        NSLog(@"%@",itemURL); //&autoplay=1
-        itemURL = [itemURL stringByAppendingString:@"&autoplay=1"];
-        UIWebView *videoWebview = [[UIWebView alloc] initWithFrame:CGRectZero];
-        
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:itemURL]];
-        
-        //URL Requst Object
-        NSMutableURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-        
-        //Load the request in the UIWebView.
-        [videoWebview loadRequest:requestObj];
-        
-
-        
-        UIViewController *videoView = [[UIViewController alloc] init];
-        [videoView setView:videoWebview];
-        [videoWebview release];
-        /*
-        
-        - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-        {
-            // Return YES for supported orientations
-            return (interfaceOrientation == UIInterfaceOrientationPortrait);
-        }
-        */
-        
-        [self.navigationController pushViewController:videoView animated:YES];
+        WebViewController *nextView = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
+        nextView.athleteURL = itemURL;
+        nextView.isVideo = YES;
+        [self.navigationController pushViewController:nextView animated:YES];
+        [nextView release];
     }
     
     

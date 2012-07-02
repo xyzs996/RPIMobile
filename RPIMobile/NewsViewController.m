@@ -14,7 +14,7 @@
 
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
-#define numToDisplay 50
+#define numToDisplay 20
 
 
 @implementation NewsViewController
@@ -179,7 +179,9 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"News Items: %@", newsItems);
     return newsItems.count;
+    
 }
 
 

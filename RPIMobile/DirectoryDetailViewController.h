@@ -10,7 +10,7 @@
 
 @class Person;
 
-@interface DetailViewController : UITableViewController
+@interface DirectoryDetailViewController : UITableViewController
 
 @property (strong, nonatomic) Person *person;
 

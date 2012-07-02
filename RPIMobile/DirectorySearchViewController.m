@@ -6,16 +6,16 @@
 //  Copyright (c) 2012 Brendon Justin. All rights reserved.
 //
 
-#import "MasterViewController.h"
+#import "DirectorySearchViewController.h"
 
-#import "DetailViewController.h"
+#import "DirectoryDetailViewController.h"
 #import "ASIDownloadCache.h"
 #import "Person.h"
 
 const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  Base search URL
 //const NSTimeInterval SEARCH_INTERVAL = 1.0f;                                //  3 seconds
 
-@interface MasterViewController () {
+@interface DirectorySearchViewController () {
     NSMutableArray      *m_people;
     NSTimer             *m_searchTimer;
     NSString            *m_searchString;
@@ -29,7 +29,7 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
 
 @end
 
-@implementation MasterViewController
+@implementation DirectorySearchViewController
 
 @synthesize detailViewController = _detailViewController;
 @synthesize PersonSearchBar, resultsTableView;
@@ -40,26 +40,16 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
     [super viewDidLoad];
     self.title = @"RPI Directory";
 
-//    self.PersonSearchBar = [[UISearchBar alloc] init];
-//    self.PersonSearchBar.delegate = self;
+    self.PersonSearchBar.delegate = self;
     self.PersonSearchBar.showsCancelButton = YES;
-//    [self.PersonSearchBar sizeToFit];
-    self.PersonSearchBar.tintColor = [UIColor lightGrayColor];
+    self.PersonSearchBar.tintColor = [UIColor darkGrayColor];
     self.PersonSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-
-    
-//    self.resultsTableView.tableHeaderView = PersonSearchBar;
-
-    
-    //  Update the array of people on the main thread, when a new array is available.
-    //  Also make both table views reflect the new data.
  
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -86,6 +76,8 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
 }
 
 -(void) requestFinished:(ASIHTTPRequest *)request {
+    
+    NSLog(@"Results from request: %@", [request responseString]);
 
         NSData *resultData = [request responseData];
         id results = [NSJSONSerialization JSONObjectWithData:resultData
@@ -94,23 +86,29 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
         
         if (results && [results isKindOfClass:[NSDictionary class]]) {
             NSMutableArray *people = [NSMutableArray array];
-            
-            for (NSDictionary *personDict in [results objectForKey:@"data"]) {
-                NSMutableDictionary *editDict;
-                Person *person = [[Person alloc] init];
-                person.name = [personDict objectForKey:@"name"];
-                
-                //  Remove the 'name' field from the details dictionary
-                //  as it is redundant.
-                editDict = [personDict mutableCopy];
-                if ([editDict objectForKey:@"name"] != nil) {
-                    [editDict removeObjectForKey:@"name"];
+            if([[results objectForKey:@"data"] count] > 0) { 
+                for (NSDictionary *personDict in [results objectForKey:@"data"]) {
+                    NSMutableDictionary *editDict;
+                    Person *person = [[Person alloc] init];
+                    person.name = [personDict objectForKey:@"name"];
+                    
+                    //  Remove the 'name' field from the details dictionary
+                    //  as it is redundant.
+                    editDict = [personDict mutableCopy];
+                    if ([editDict objectForKey:@"name"] != nil) {
+                        [editDict removeObjectForKey:@"name"];
+                    }
+                    person.details = editDict;
+                    
+                    [people addObject:person];
                 }
-                person.details = editDict;
-                
-                [people addObject:person];
+                [self updateTable:people];
+            } else {
+                //No people found
+                NSLog(@"No people found!");
+//                m_people = [NSMutableArray arrayWithCapacity:0];
+//                [self.resultsTableView reloadData];
             }
-            [self updateTable:people];
         }
 }
 -(void) requestFailed:(ASIHTTPRequest *)request {
@@ -171,7 +169,7 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DetailViewController *personView = [[DetailViewController alloc] init];
+    DirectoryDetailViewController *personView = [[DirectoryDetailViewController alloc] init];
     personView.person = [m_people objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:personView animated:YES];
     /*

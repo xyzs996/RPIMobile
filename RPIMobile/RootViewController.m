@@ -24,12 +24,15 @@
 
 //Import Views for Launcher
 #import "NewsViewController.h"
-#import "MasterViewController.h"
+#import "DirectorySearchViewController.h"
 #import "QRViewController.h"
 #import "VideoFeedViewController.h"
 #import "AthleticsViewController.h"
 #import "WeatherViewController.h"
 #import "ShuttleMapViewController.h"
+#import "TwitterFeedViewController.h"
+
+
 @implementation RootViewController
 
 -(void)loadView
@@ -39,12 +42,13 @@
 
         //Add your view controllers here to be picked up by the launcher; remember to import them above
     [[self appControllers] setObject:[NewsViewController class] forKey:@"NewsViewController"];
-    [[self appControllers] setObject:[MasterViewController class] forKey:@"MasterViewController"];
+    [[self appControllers] setObject:[DirectorySearchViewController class] forKey:@"MasterViewController"];
     [[self appControllers] setObject:[QRViewController class] forKey:@"QRViewController"];
     [[self appControllers] setObject:[VideoFeedViewController class] forKey:@"VideoFeedViewController"];
     [[self appControllers] setObject:[AthleticsViewController class] forKey:@"AthleticsViewController"];    
     [[self appControllers] setObject:[WeatherViewController class] forKey:@"WeatherViewController"];
     [[self appControllers] setObject:[ShuttleMapViewController class] forKey:@"ShuttleMapViewController"];
+    [[self appControllers] setObject:[TwitterFeedViewController class] forKey:@"TwitterFeedViewController"];
 
 	if(![self hasSavedLauncherItems])
 	{
@@ -65,7 +69,7 @@
                                       [[MyLauncherItem alloc] initWithTitle:@"Twitter"
                                                                 iPhoneImage:@"twitter_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
+                                                                     target:@"TwitterFeedViewController" 
                                                                 targetTitle:@"Item 3 View"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Map"

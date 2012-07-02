@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AthleteViewController : UIViewController <UIWebViewDelegate> {
+@interface WebViewController : UIViewController <UIWebViewDelegate> {
     UIWebView *athleteView;
     NSString *athleteURL;
+    BOOL isVideo;
 }
 
 @property (nonatomic, retain) IBOutlet UIWebView *athleteView;
 @property (nonatomic, retain) NSString *athleteURL;
+@property (readwrite) BOOL isVideo;
 @end

@@ -1,0 +1,32 @@
+iPhone application meant to provide easy access to many useful features to navigate and keep track of campus. Some of the features that I have been working on include:
+
+•RPI Athletics integration with support for rosters, sport news, and schedule/results. Soon I hope to include stats, live scores, radio broadcasts, and more for specific sports that support these features!
+
+•News Feeds from most of RPI's popular websites
+
+•Video Feeds from RPI's YouTube Channel
+
+•QR Code Scanner
+
+•Troy, NY weather information
+
+•RPI Directory (an RCOS project which I integrated!)
+
+And coming soon..
+•RPI Shuttle Tracker
+
+•RPI Events calendar (Union, EMPAC, ECAV, and more)
+
+•Dining hall menus/hours
+
+•Interactive Map
+
+•Twitter feeds from popular accounts
+
+•WRPI Radio stream
+
+•RPI TV Listings in a (hopefully) more mobile format
+
+•Self-guided tour using location or QR codes (haven't decided)
+
+All of these fit in an easily expandable home menu that mimics the default springboard layout of the iPhone. My hope is to build a stable, useful build of the iPhone version and release a fairly simple template/guide to building add ons for the app which could be implemented as a simple pull request through github. Some possible ideas could include SIS grades/schedule/account holds, further social integration, and more.

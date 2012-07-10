@@ -93,7 +93,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    WebViewController *nextView = [[WebViewController alloc] initWithNibName:@"AthleteViewController" bundle:nil];
+    WebViewController *nextView = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
     NSLog(@"Athlete data url: %@", [[athleteData objectAtIndex:indexPath.row] profileURL]);
     nextView.athleteURL = [[athleteData objectAtIndex:indexPath.row] profileURL];
     [self.navigationController pushViewController:nextView animated:YES];

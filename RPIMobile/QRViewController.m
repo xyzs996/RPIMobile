@@ -76,8 +76,8 @@
     [super viewDidLoad];
     self.title = @"QR Scanner";
 
-    
-    /*THIS WILL NOT WORK FOR SOME REASON
+
+    //THIS WILL NOT WORK FOR SOME REASON
     // ADD: present a barcode reader that scans from the camera feed
     ZBarReaderViewController *reader = [ZBarReaderViewController new];
     reader.readerDelegate = self;
@@ -92,12 +92,13 @@
                        to: 0];
     
     // present and release the controller
-    [self presentModalViewController:reader
-                            animated: YES];
-    [reader release];*/
+    [self presentModalViewController:reader animated: YES];
+//    [self.navigationController pushViewController:reader animated:YES];
+    [reader release];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
+    
 }
 
 - (void)viewDidUnload

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11E2068" minimumToolsVersion="Xcode 4.1" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CalendarEntryDetails" representedClassName="" syncable="YES">
+        <attribute name="allDay" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="categories" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="contactInfo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="cost" optional="YES" attributeType="String" defaultValueString="FREE" syncable="YES"/>
+        <attribute name="eventDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="info" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="CalendarEntryInfo" inverseName="details" inverseEntity="CalendarEntryInfo" syncable="YES"/>
+    </entity>
+    <entity name="CalendarEntryInfo" representedClassName="CalendarEntryInfo" syncable="YES">
+        <attribute name="dayOfMonth" optional="YES" attributeType="Integer 32" maxValueString="31" defaultValueString="0" syncable="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="details" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="CalendarEntryDetails" inverseName="info" inverseEntity="CalendarEntryDetails" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CalendarEntryDetails" positionX="88" positionY="-657" width="128" height="165"/>
+        <element name="CalendarEntryInfo" positionX="-162" positionY="-645" width="128" height="120"/>
+    </elements>
+</model>

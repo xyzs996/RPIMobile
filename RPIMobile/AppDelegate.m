@@ -16,16 +16,29 @@
 
 
 @synthesize window, navigationController, managedObjectModel, managedObjectContext, persistentStoreCoordinator;
-/*
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.viewController = [[RootViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
+
+    window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    if (!window)
+    {
+        return NO;
+    }
+    window.backgroundColor = [UIColor blackColor];
+    
+    [ASIHTTPRequest setDefaultCache:[ASIDownloadCache sharedCache]];
+    
+	navigationController = [[PrettyNavigationController alloc] initWithRootViewController:
+							[[RootViewController alloc] init]];
+    //	navigationController.navigationBar.tintColor = COLOR(2, 100, 162);
+	
+    [window addSubview:navigationController.view];
+    [window makeKeyAndVisible];
+    [window layoutSubviews];   
+    
     return YES;
-}*/
+}
 
 //Explicitly write Core Data accessors
 - (NSManagedObjectContext *) managedObjectContext {
@@ -49,24 +62,26 @@
     
     return managedObjectModel;
 }
-
+/**
+ Returns the persistent store coordinator for the application.
+ If the coordinator doesn't already exist, it is created and the application's store added to it.
+ */
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+	
     if (persistentStoreCoordinator != nil) {
         return persistentStoreCoordinator;
     }
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
-                                               stringByAppendingPathComponent: @"<Project Name>.sqlite"]];
+	
+    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"database.sqlite"]];
+	
     NSError *error = nil;
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
-                                  initWithManagedObjectModel:[self managedObjectModel]];
-    if(![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                                 configuration:nil URL:storeUrl options:nil error:&error]) {
-        /*Error for store creation should be handled in here*/
-    }
-    
+    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
+        // Handle error
+    }    
+	
     return persistentStoreCoordinator;
 }
-
 - (NSString *)applicationDocumentsDirectory {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }

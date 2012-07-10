@@ -196,7 +196,12 @@
         
         [post removeObjectAtIndex:0];
         
-        cell.detailTextLabel.text = [post objectAtIndex:0];
+        //Rest of twitter post is the tweet
+        NSString *detailText = @"";
+        for(id chunk in post)
+            detailText = [detailText stringByAppendingString:chunk];
+
+        cell.detailTextLabel.text = detailText;
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
         cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
         [cell.detailTextLabel setNumberOfLines:3];

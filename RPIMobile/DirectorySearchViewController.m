@@ -11,6 +11,8 @@
 #import "DirectoryDetailViewController.h"
 #import "ASIDownloadCache.h"
 #import "Person.h"
+#import "MBProgressHUD.h"
+
 
 const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  Base search URL
 //const NSTimeInterval SEARCH_INTERVAL = 1.0f;                                //  3 seconds
@@ -112,7 +114,15 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
         }
 }
 -(void) requestFailed:(ASIHTTPRequest *)request {
-
+    if([[request error] code] == 2) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            [self setTitle:@"Request Timed Out!"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        });
+    }
     NSLog(@"Error: %@", [request error]);
 }
 //Need to implement separate thread searching to keep UI from locking user out
@@ -121,6 +131,7 @@ const NSString *SEARCH_URL = @"http://rpidirectory.appspot.com/api?q=";     //  
     NSString *searchUrl = [SEARCH_URL stringByAppendingString:query];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:searchUrl]];
     [request setDelegate:self];
+    [request setTimeOutSeconds:5];
     [request startAsynchronous];
     
 }

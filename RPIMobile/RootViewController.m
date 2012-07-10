@@ -31,6 +31,7 @@
 #import "WeatherViewController.h"
 #import "ShuttleMapViewController.h"
 #import "TwitterFeedViewController.h"
+#import "CalendarViewController.h"
 
 
 @implementation RootViewController
@@ -49,6 +50,7 @@
     [[self appControllers] setObject:[WeatherViewController class] forKey:@"WeatherViewController"];
     [[self appControllers] setObject:[ShuttleMapViewController class] forKey:@"ShuttleMapViewController"];
     [[self appControllers] setObject:[TwitterFeedViewController class] forKey:@"TwitterFeedViewController"];
+    [[self appControllers] setObject:[CalendarViewController class] forKey:@"CalendarViewController"];
 
 	if(![self hasSavedLauncherItems])
 	{
@@ -58,19 +60,19 @@
                                                                 iPhoneImage:@"news_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"NewsViewController" 
-                                                                targetTitle:@"Item 1 View"
+                                                                targetTitle:@"RPI News"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Athletics"
                                                                 iPhoneImage:@"score_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"AthleticsViewController" 
-                                                                targetTitle:@"Item 2 View" 
+                                                                targetTitle:@"RPI Athletics" 
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Twitter"
                                                                 iPhoneImage:@"twitter_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"TwitterFeedViewController" 
-                                                                targetTitle:@"Item 3 View"
+                                                                targetTitle:@"RPI Twitter"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Map"
                                                                 iPhoneImage:@"maps_hdpi" 
@@ -81,8 +83,8 @@
                                       [[MyLauncherItem alloc] initWithTitle:@"Events"
                                                                 iPhoneImage:@"calendar_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
-                                                                targetTitle:@"Item 5 View"
+                                                                     target:@"CalendarViewController" 
+                                                                targetTitle:@"RPI Events"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"WRPI"
                                                                 iPhoneImage:@"radio_hdpi" 

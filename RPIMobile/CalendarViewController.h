@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <TapkuLibrary/TapkuLibrary.h>
 
-#import "CalendarEntry.h"
 
 @interface CalendarViewController : TKCalendarMonthTableViewController <NSFetchedResultsControllerDelegate> {
     NSMutableArray *eventArray; 

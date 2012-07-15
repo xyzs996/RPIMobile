@@ -7,6 +7,7 @@
 //
 
 #import "CalendarViewController.h"
+#import "EventViewController.h"
 #import "FilterCalendarViewController.h"
 #import "JSONKit.h"
 #import "CalendarEntryInfo.h"
@@ -14,7 +15,7 @@
 #import "AppDelegate.h"
 
 #define kPaddingHeight 10
-static int calendarShadowOffset = (int)-20;
+int calendarShadowOffset = (int)-20;
 
 
 @implementation CalendarViewController
@@ -41,6 +42,7 @@ static int calendarShadowOffset = (int)-20;
 	// If calendar is off the screen, show it, else hide it (both with animations)
 	if (calendar.frame.origin.y == -calendar.frame.size.height+calendarShadowOffset) {
 		// Show
+        calendarShadowOffset = (int)-20;
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:.25];
 		calendar.frame = CGRectMake(0, 0, calendar.frame.size.width, calendar.frame.size.height);
@@ -48,6 +50,7 @@ static int calendarShadowOffset = (int)-20;
 //        self.tableView.frame = CGRectMake(0, calendar.frame.size.height, 320, (super.view.frame.size.height-calendar.frame.size.height));
 	} else {
 		// Hide
+        calendarShadowOffset = (int)0;
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:.25];
 		calendar.frame = CGRectMake(0, -calendar.frame.size.height+calendarShadowOffset, calendar.frame.size.width, calendar.frame.size.height);		
@@ -72,8 +75,15 @@ static int calendarShadowOffset = (int)-20;
     NSError *error;
     
     self.eventArray = [NSMutableArray arrayWithArray:[managedObjectContext executeFetchRequest:fetchRequest error:&error]];
-    NSLog(@"Event Array: %@", eventArray);
     
+//    for(int i = 0; i < [eventArray count]; ++i) {
+//        if([self longEvent:[[eventArray objectAtIndex:i] startDate] end:[[eventArray objectAtIndex:i] endDate]]) {
+//            NSLog(@"REMOVED OBJECT: %@", [[eventArray objectAtIndex:i] summary]);
+//            [eventArray removeObjectAtIndex:i];
+//          }
+//
+//    }
+//    
     //Records fetched, array set, reload table data
     [self.tableView reloadData];
 }
@@ -89,7 +99,7 @@ static int calendarShadowOffset = (int)-20;
 {
     [super viewDidLoad];
     [self.monthView selectDate:[NSDate month]];
-    [self parseUrlForCalendar:@"http://events.rpi.edu/webcache/v1.0/jsonDays/31/list-json/no--filter/no--object.json"];
+    [self parseUrlForCalendar:@"http://events.rpi.edu/webcache/v1.0/jsonDays/31/list-json/%28catuid%3D%2700f18254-27fe1f37-0127-fe1f37da-00000001%27%7Ccatuid%3D%2700f18254-27fe1f37-0127-fe1f4be6-00000111%27%7Ccatuid%3D%2700f18254-27fe1f37-0127-fe1f3994-00000018%27%7Ccatuid%3D%2700f18254-27fe1f37-0127-fe1f5bab-000001e5%27%29/no--object.json"];
     self.calendarData = [NSMutableArray array];
 
     managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext]; 
@@ -103,9 +113,37 @@ static int calendarShadowOffset = (int)-20;
     
 }
 
-- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate{
+-(BOOL) longEvent:(NSDate *) dateStart end:(NSDate *) dateEnd {
+    if([dateStart daysBetweenDate:dateEnd] > 30) 
+        return YES;
 
-	return eventArray;
+    return NO;
+    
+}
+
+- (BOOL)isDate:(NSDate *)date inRangeFirstDate:(NSDate *)firstDate lastDate:(NSDate *)lastDate {
+    return [date compare:firstDate] == NSOrderedDescending &&
+    [date compare:lastDate]  == NSOrderedAscending;
+}
+
+- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate{
+    
+    int numDays = [lastDate daysBetweenDate:startDate];
+    NSMutableArray *marksArray = [NSMutableArray arrayWithCapacity:numDays];
+//    NSDate *d = startDate;
+//    for(int i = 0; i < numDays; ++i) {
+//        for(id ev in eventArray) {
+//            if([self isDate:d inRangeFirstDate:[ev startDate] lastDate:[ev endDate]]) {
+//                [marksArray insertObject:[NSNumber numberWithBool:YES] atIndex:i];
+//                break;
+//            }
+//        }
+//        d = [d dateByAddingDays:1];
+//        
+//    }
+//    
+    NSLog(@"MARKS ARRAY: %@", marksArray);
+	return marksArray;
 }
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)date{
 	
@@ -147,7 +185,11 @@ static int calendarShadowOffset = (int)-20;
 	cell.textLabel.text = [[eventArray objectAtIndex:indexPath.row] summary];
     cell.textLabel.numberOfLines = 3;
     
-    cell.detailTextLabel.text = [[[eventArray objectAtIndex:indexPath.row] details] eventDescription];
+    
+    if( [[[eventArray objectAtIndex:indexPath.row] details] eventDescription])
+        cell.detailTextLabel.text =  [[[eventArray objectAtIndex:indexPath.row] details] eventDescription];
+    
+//    cell.detailTextLabel.text = 
 	
     return cell;
 	
@@ -194,8 +236,8 @@ static int calendarShadowOffset = (int)-20;
 
     CalendarEntryDetails *eventDetails = [NSEntityDescription insertNewObjectForEntityForName:@"CalendarEntryDetails" inManagedObjectContext:context];
     
-    eventInfo.details = eventDetails;
-    eventDetails.info = eventInfo;
+
+
     
     eventDetails.eventDescription = [eventData objectForKey:@"description"];
     eventDetails.cost = [eventData objectForKey:@"cost"];
@@ -204,12 +246,31 @@ static int calendarShadowOffset = (int)-20;
 //    eventDetails.location = [eventData objectForKey:@"location"];
 //    eventDetails.categories = [eventData objectForKey:@"categories"];
     
+    eventInfo.details = eventDetails;
+    eventDetails.info = eventInfo;
+    
     NSError *error;
     if (![context save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
     }
     
     
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    EventViewController *nextView = [[EventViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    
+    nextView.entryInfo = [eventArray objectAtIndex:indexPath.row];
+    nextView.entryDetails = [[eventArray objectAtIndex:indexPath.row] details];
+    
+    [self.navigationController pushViewController:nextView animated:YES];
+    [nextView release];
+
 }
 
 -(NSArray *) processJSON:(NSDictionary *) events {

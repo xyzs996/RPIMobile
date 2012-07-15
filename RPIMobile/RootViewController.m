@@ -32,7 +32,7 @@
 #import "ShuttleMapViewController.h"
 #import "TwitterFeedViewController.h"
 #import "CalendarViewController.h"
-
+#import "RadioViewController.h"
 
 @implementation RootViewController
 
@@ -51,7 +51,7 @@
     [[self appControllers] setObject:[ShuttleMapViewController class] forKey:@"ShuttleMapViewController"];
     [[self appControllers] setObject:[TwitterFeedViewController class] forKey:@"TwitterFeedViewController"];
     [[self appControllers] setObject:[CalendarViewController class] forKey:@"CalendarViewController"];
-
+    [[self appControllers] setObject:[RadioViewController class] forKey:@"RadioViewController"];
 	if(![self hasSavedLauncherItems])
 	{
 		[self.launcherView setPages:[NSMutableArray arrayWithObjects: 
@@ -89,8 +89,8 @@
                                       [[MyLauncherItem alloc] initWithTitle:@"WRPI"
                                                                 iPhoneImage:@"radio_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"NewsViewController" 
-                                                                targetTitle:@"Item11 View"
+                                                                     target:@"RadioViewController" 
+                                                                targetTitle:@"RPI Radio"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Settings"
                                                                 iPhoneImage:@"settings_hdpi" 

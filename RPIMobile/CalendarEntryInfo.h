@@ -2,7 +2,7 @@
 //  CalendarEntryInfo.h
 //  RPIMobile
 //
-//  Created by Stephen Silber on 7/10/12.
+//  Created by Stephen Silber on 7/11/12.
 //  Copyright (c) 2012 Rensselaer Polytechnic Institute. All rights reserved.
 //
 
@@ -13,10 +13,10 @@
 
 @interface CalendarEntryInfo : NSManagedObject
 
-@property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSNumber * dayOfMonth;
-@property (nonatomic, retain) NSDate * startDate;
 @property (nonatomic, retain) NSDate * endDate;
+@property (nonatomic, retain) NSDate * startDate;
+@property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) CalendarEntryDetails *details;
 
 @end

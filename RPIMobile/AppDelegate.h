@@ -11,9 +11,10 @@
 #import "PrettyNavigationController.h"
 
 @class MyLauncherViewController;
+@class DataManager;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
-    
+
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -28,6 +29,12 @@
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+//Shuttle Tracker
+@property (strong, nonatomic) DataManager *dataManager;
+@property (strong, nonatomic) NSDateFormatter *timeDisplayFormatter;
+@property (strong, nonatomic) NSTimer *dataUpdateTimer;
+
 
 - (NSString *)applicationDocumentsDirectory;
 

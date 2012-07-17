@@ -29,7 +29,7 @@
 #import "VideoFeedViewController.h"
 #import "AthleticsViewController.h"
 #import "WeatherViewController.h"
-#import "ShuttleMapViewController.h"
+#import "ShuttleViewController.h"
 #import "TwitterFeedViewController.h"
 #import "CalendarViewController.h"
 #import "RadioViewController.h"
@@ -48,7 +48,7 @@
     [[self appControllers] setObject:[VideoFeedViewController class] forKey:@"VideoFeedViewController"];
     [[self appControllers] setObject:[AthleticsViewController class] forKey:@"AthleticsViewController"];    
     [[self appControllers] setObject:[WeatherViewController class] forKey:@"WeatherViewController"];
-    [[self appControllers] setObject:[ShuttleMapViewController class] forKey:@"ShuttleMapViewController"];
+    [[self appControllers] setObject:[ShuttleViewController class] forKey:@"ShuttleViewController"];
     [[self appControllers] setObject:[TwitterFeedViewController class] forKey:@"TwitterFeedViewController"];
     [[self appControllers] setObject:[CalendarViewController class] forKey:@"CalendarViewController"];
     [[self appControllers] setObject:[RadioViewController class] forKey:@"RadioViewController"];
@@ -107,7 +107,7 @@
                                       [[MyLauncherItem alloc] initWithTitle:@"Shuttle Tracker"
                                                                 iPhoneImage:@"shuttle_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
-                                                                     target:@"ShuttleMapViewController" 
+                                                                     target:@"ShuttleViewController" 
                                                                 targetTitle:@"Item 12 View"
                                                                   deletable:NO],
                                       nil], [NSMutableArray arrayWithObjects:

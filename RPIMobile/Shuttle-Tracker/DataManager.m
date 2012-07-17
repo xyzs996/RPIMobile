@@ -8,7 +8,6 @@
 
 #import "MapPlacemark.h"
 #import "DataManager.h"
-#import "IASKSettingsReader.h"
 #import "DataUrls.h"
 
 #define kRemoveShuttleThreshold		90.0f

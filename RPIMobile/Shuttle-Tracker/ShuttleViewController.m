@@ -6,7 +6,7 @@
 //  Copyright 2011 Brendon Justin. All rights reserved.
 //
 
-#import "MapViewController.h"
+#import "ShuttleViewController.h"
 
 #import "MapPlacemark.h"
 #import "Route.h"
@@ -14,7 +14,8 @@
 #import "Shuttle.h"
 #import "Stop.h"
 
-#import "IASKSettingsReader.h"
+#import "AppDelegate.h"
+
 
 const NSTimeInterval UPDATE_THRESHOLD = -180.0f;    //  3 minutes
 const NSTimeInterval CLEANUP_INTERVAL = 30.0f;      //  30 seconds
@@ -122,7 +123,7 @@ typedef enum {
 //	End from SO
 
 
-@interface MapViewController()
+@interface ShuttleViewController()
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 
@@ -141,7 +142,7 @@ typedef enum {
 
 @end
 
-@implementation MapViewController
+@implementation ShuttleViewController
 
 @synthesize dataManager = m_dataManager;
 @synthesize managedObjectContext = __managedObjectContext;
@@ -217,11 +218,7 @@ typedef enum {
                                                      name:kDMVehiclesUpdated
                                                    object:nil];
         
-        //	Take notice when a setting is changed.
-        //	Note that this is not the only object that takes notice.
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingChanged:)
-                                                     name:kIASKAppSettingChanged
-                                                   object:nil];
+
     }
     
     return self;
@@ -260,6 +257,10 @@ typedef enum {
     region.span.latitudeDelta = 0.0200;
     region.span.longitudeDelta = 0.0132;
     
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    self.dataManager = appDelegate.dataManager;
+    self.managedObjectContext = appDelegate.managedObjectContext;
     m_mapView.region = region;
     
 	[m_dataManager loadRoutesAndStops];

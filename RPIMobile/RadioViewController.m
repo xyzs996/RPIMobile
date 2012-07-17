@@ -143,6 +143,7 @@ static NSString *streamURL = @"http://icecast1.wrpi.org:8000/mp3-128.mp3";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self createStreamer];
     [streamer start];
     

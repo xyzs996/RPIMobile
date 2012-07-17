@@ -13,7 +13,7 @@
 
 @class JSONParser;
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, UISplitViewControllerDelegate> {
+@interface ShuttleViewController : UIViewController <MKMapViewDelegate, UISplitViewControllerDelegate> {
 	MKMapView               *m_mapView;
     
     NSMutableDictionary     *m_vehicles;

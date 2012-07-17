@@ -11,11 +11,19 @@
 #import "ASIHTTPRequest.h"
 #import "ASIDownloadCache.h"
 
+//Shuttle Tracker
+#import "DataManager.h"
+
 @implementation AppDelegate
 
 
 
 @synthesize window, navigationController, managedObjectModel, managedObjectContext, persistentStoreCoordinator;
+
+//Shuttle Tracker
+@synthesize dataManager = _dataManager;
+@synthesize timeDisplayFormatter = _timeDisplayFormatter;
+@synthesize dataUpdateTimer = _dataUpdateTimer;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -36,6 +44,59 @@
     [window addSubview:navigationController.view];
     [window makeKeyAndVisible];
     [window layoutSubviews];   
+    
+    //Added support for RPI Shuttle Tracker below
+    // Override point for customization after application launch.
+        DataManager *dataManager = [[DataManager alloc] init];
+    self.dataManager = dataManager;
+    [dataManager release];
+    [self.dataManager setParserManagedObjectContext:self.managedObjectContext];
+    
+    //	dataManager creates a timeDisplayFormatter in its init method, so get
+    //	a reference to it.
+    self.timeDisplayFormatter = self.dataManager.timeDisplayFormatter;
+    
+    // Check if 12 or 24 hour mode
+    BOOL use24Time = NO;
+//    self.window.rootViewController = mapViewController; -- Not necessary as rootViewController controls the views for the app
+    
+    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    [timeFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    
+    NSMutableArray *dateArray = [[NSMutableArray alloc] init];
+    [dateArray setArray:[[timeFormatter stringFromDate:[NSDate date]] componentsSeparatedByString:@" "]];
+    
+    if ([dateArray count] == 1) // if no am/pm extension exists
+        use24Time = YES;
+    
+    [timeFormatter release];
+    [dateArray release];
+    
+    // Set the application defaults
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *appDefaults;
+    appDefaults = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:use24Time ? @"YES" : @"NO", 
+                                                       @"NO", @"YES", [NSNumber numberWithInt:5], @"NO", nil]
+                                              forKeys:[NSArray arrayWithObjects:@"use24Time", 
+                                                       @"useLocation", @"findClosestStop", 
+                                                       @"dataUpdateInterval", @"useRelativeTimes", nil]];
+    [defaults registerDefaults:appDefaults];
+    [defaults synchronize];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(changeDataUpdateRate:)
+                                                 name:@"dataUpdateInterval"
+                                               object:nil];
+    
+	float updateInterval = [[defaults objectForKey:@"dataUpdateInterval"] floatValue];
+	
+	//	Schedule a timer to make the DataManager pull new data every 5 seconds
+    self.dataUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:updateInterval 
+                                                            target:self.dataManager 
+                                                          selector:@selector(updateData) 
+                                                          userInfo:nil 
+                                                           repeats:YES];
+
     
     return YES;
 }
@@ -94,7 +155,7 @@
     [persistentStoreCoordinator release];
 }
 
-
+/*
 - (void)applicationDidFinishLaunching:(UIApplication*)application 
 {
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -113,7 +174,7 @@
     [window addSubview:navigationController.view];
     [window makeKeyAndVisible];
     [window layoutSubviews];    
-}
+} */
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

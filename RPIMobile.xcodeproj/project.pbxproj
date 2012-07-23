@@ -1741,9 +1741,9 @@
 				GCC_PREFIX_HEADER = "RPIMobile/RPIMobile-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"${SDKROOT}/usr/include/libxml2/**",
+					"\"$(SRCROOT)/RPIMobile/TapkuLibrary\"/**",
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
-					"\"~/Google Drive/RPIMobile/RPIMobile/TapkuLibrary",
 				);
 				INFOPLIST_FILE = "RPIMobile/RPIMobile-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -1774,9 +1774,9 @@
 				GCC_PREFIX_HEADER = "RPIMobile/RPIMobile-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"${SDKROOT}/usr/include/libxml2/**",
+					"\"$(SRCROOT)/RPIMobile/TapkuLibrary\"/**",
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
-					"\"~/Google Drive/RPIMobile/RPIMobile/TapkuLibrary",
 				);
 				INFOPLIST_FILE = "RPIMobile/RPIMobile-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

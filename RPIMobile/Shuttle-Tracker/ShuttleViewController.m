@@ -14,6 +14,7 @@
 #import "Shuttle.h"
 #import "Stop.h"
 
+#import "EtasViewController.h"
 #import "AppDelegate.h"
 
 
@@ -224,6 +225,14 @@ typedef enum {
     return self;
 }
 
+-(void) swapViews {
+    //Show ETA's view controller
+    EtasViewController *etaView = [[EtasViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    etaView.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentModalViewController:etaView animated:YES];
+    [etaView release];
+
+}
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
     self.title = NSLocalizedString(@"Shuttles", @"Shuttles");
@@ -265,12 +274,16 @@ typedef enum {
     
 	[m_dataManager loadRoutesAndStops];
     
+    // Refresh button for feed
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"ETAs" style:UIBarButtonItemStylePlain target:self action:@selector(swapViews)];
+
     [self vehicleCleanup];
     m_shuttleCleanupTimer = [NSTimer scheduledTimerWithTimeInterval:CLEANUP_INTERVAL 
                                                              target:self 
                                                            selector:@selector(vehicleCleanup) 
                                                            userInfo:nil 
                                                             repeats:YES];
+    
 }
 
 - (void)viewDidUnload {

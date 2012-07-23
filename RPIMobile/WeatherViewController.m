@@ -13,11 +13,38 @@
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
 
+/*
+ To-do for RPI Weather page:
+    -Add better design elements, especially images for corresponding weather conditions
+    -Downsize images so that they aren't the main focus of the page
+    -Clickable tableview cells with details such as humidity, wind speed, etc (expandable?)
+    -Indicators on when data was last loaded?
+ */
+
+/* Settings for RPI Weather page:
+    -Custom zip-code?
+    -Cache period
+    -Badge support for current temp on launch screen
+ */
+
 @implementation WeatherCondition
 @synthesize dayOfWeek, tempC, tempF, low, high, iconURL, condition, wind, humidity;
-
 @end
 
+/*Solution found on http://atastypixel.com/blog/easy-rounded-corners-on-uitableviewcell-image-view/ */
+@interface UIImage (TPAdditions)
+- (UIImage*)imageScaledToSize:(CGSize)size;
+@end
+
+@implementation UIImage (TPAdditions)
+- (UIImage*)imageScaledToSize:(CGSize)size {
+    UIGraphicsBeginImageContext(size);
+    [self drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+@end
 
 @implementation WeatherViewController
 
@@ -170,6 +197,12 @@
     [PrettyShadowPlainTableview setUpTableView:self.tableView];
 }
 
+-(void) downloadData {
+    weatherRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com/ig/api?weather=12180"] usingCache:[ASIHTTPRequest defaultCache]];
+    weatherRequest.delegate = self;
+    weatherRequest.secondsToCache = 60*60*2; //Cache for 2 hours
+    [weatherRequest startAsynchronous];
+}
 
 - (void)viewDidLoad
 {
@@ -179,28 +212,34 @@
     self.tableView.scrollEnabled = NO;
     weatherArr = [[NSMutableArray alloc] init];
     
-    weatherRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com/ig/api?weather=12180"] usingCache:[ASIHTTPRequest defaultCache]];
-    weatherRequest.delegate = self;
-    weatherRequest.secondsToCache = 60*60*2; //Cache for 2 hours
-    [weatherRequest startAsynchronous];
+    [self downloadData];
     
-    self.tableView.rowHeight = 70;
+    self.tableView.rowHeight = 75;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
     [self setUpShadows];
+    
+    // Refresh button for feed
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh 
+																							target:self 
+																							action:@selector(downloadData)] autorelease];
 }
+
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    [ASIHTTPRequest cancelPreviousPerformRequestsWithTarget:self];
 }
 -(void) dealloc {
     [super dealloc];
     [weatherArr release];
     [currentStringValue release];
+    [weatherRequest release];
+    [weatherParser release];
+    [weatherDic release];
+    [condition release];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -236,14 +275,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     return [weatherArr count];
+
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-//    return tableView.rowHeight + [PrettyTableViewCell tableView:tableView neededHeightForIndexPath:indexPath];
-    return self.tableView.frame.size.height/5;
+    return tableView.frame.size.height/5;
 }
 
 
@@ -260,16 +298,21 @@
         cell.gradientEndColor = end_color;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.detailTextLabel.backgroundColor = [UIColor clearColor];
-    
+
     if([weatherArr count] > 0) {
         WeatherCondition *cellCondition = [weatherArr objectAtIndex:indexPath.row];   
 
-        //Replaced google image api weather icons with local icons. Higher quality, fits user design guidelines much better
         NSString *imageName = [[cellCondition.iconURL componentsSeparatedByString:@"/ig/images/weather/"] lastObject];
         NSString *fileName = [[imageName componentsSeparatedByString:@".gif"] objectAtIndex:0];
-        cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileName]];
+            
+        //Uses category defined above to resize UITableViewCell imageview image elegantly
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileName]];
+        if (image) {
+            cell.imageView.image = [image imageScaledToSize:CGSizeMake(45, 45)];
+        }
         
         switch (indexPath.row) {
             case 0:
@@ -286,7 +329,6 @@
                 break; 
         }
     }
-    
     [cell prepareForTableView:tableView indexPath:indexPath];
 
 
@@ -294,44 +336,6 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 

@@ -17,7 +17,15 @@
 #define end_color [UIColor colorWithHex:0xDEDEDE]
 #define numToDisplay 50
 
+/*To-do for RPIVideos:
+    -Rotation support!!
+    -Add options for more channels
+    -Add ability to load further down channel if possible
+ */
 
+/*Settings for RPIVideos:
+    -Autoplay on/off
+*/
 
 @implementation VideoFeedViewController
 
@@ -174,9 +182,6 @@
     NSArray *secondStepArr = [[firstStepArr lastObject] componentsSeparatedByString:@"&feature"];
     if([secondStepArr count] > 0) {
         return [NSString stringWithFormat:@"http://img.youtube.com/vi/%@/1.jpg",[secondStepArr objectAtIndex:0]];
-//        NSLog(@"%@",thumnbail);
-//        return thumnbail;
-        
     } else {
         NSLog(@"parsing error, %@", [firstStepArr lastObject]);
     }

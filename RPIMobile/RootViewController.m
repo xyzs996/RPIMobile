@@ -21,8 +21,9 @@
 #import "RootViewController.h"
 #import "MyLauncherItem.h"
 #import "CustomBadge.h"
+#import "ASIHTTPRequest.h"
 
-//Import Views for Launcher
+//Import Views for Launcher - Add header here if you are adding an icon to the launch screen
 #import "NewsViewController.h"
 #import "DirectorySearchViewController.h"
 #import "QRViewController.h"
@@ -34,14 +35,15 @@
 #import "CalendarViewController.h"
 #import "RadioViewController.h"
 
+
 @implementation RootViewController
 
 -(void)loadView
 {    
 	[super loadView];
     self.title = @"RPI Mobile";
-
-        //Add your view controllers here to be picked up by the launcher; remember to import them above
+    
+    //Add your view controllers here to be picked up by the launcher; remember to import them above
     [[self appControllers] setObject:[NewsViewController class] forKey:@"NewsViewController"];
     [[self appControllers] setObject:[DirectorySearchViewController class] forKey:@"MasterViewController"];
     [[self appControllers] setObject:[QRViewController class] forKey:@"QRViewController"];
@@ -52,6 +54,7 @@
     [[self appControllers] setObject:[TwitterFeedViewController class] forKey:@"TwitterFeedViewController"];
     [[self appControllers] setObject:[CalendarViewController class] forKey:@"CalendarViewController"];
     [[self appControllers] setObject:[RadioViewController class] forKey:@"RadioViewController"];
+    
 	if(![self hasSavedLauncherItems])
 	{
 		[self.launcherView setPages:[NSMutableArray arrayWithObjects: 
@@ -78,7 +81,7 @@
                                                                 iPhoneImage:@"maps_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"NewsViewController" 
-                                                                targetTitle:@"Item 4 View"
+                                                                targetTitle:@"RPI Map"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Events"
                                                                 iPhoneImage:@"calendar_hdpi" 
@@ -96,32 +99,32 @@
                                                                 iPhoneImage:@"settings_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"NewsViewController" 
-                                                                targetTitle:@"Item 12 View"
+                                                                targetTitle:@"Settings"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"TV Listings"
                                                                 iPhoneImage:@"rpiTV_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"NewsViewController" 
-                                                                targetTitle:@"Item 12 View"
+                                                                targetTitle:@"RPI TV"
                                                                   deletable:NO],
                                       [[MyLauncherItem alloc] initWithTitle:@"Shuttle Tracker"
                                                                 iPhoneImage:@"shuttle_hdpi" 
                                                                   iPadImage:@"itemImage-iPad"
                                                                      target:@"ShuttleViewController" 
-                                                                targetTitle:@"Item 12 View"
+                                                                targetTitle:@"RPI Shuttles"
                                                                   deletable:NO],
                                       nil], [NSMutableArray arrayWithObjects:
                                              [[MyLauncherItem alloc] initWithTitle:@"Tour"
                                                                        iPhoneImage:@"compass_hdpi" 
                                                                          iPadImage:@"itemImage-iPad"
                                                                             target:@"NewsViewController" 
-                                                                       targetTitle:@"Item 6 View"
+                                                                       targetTitle:@"RPI Tour"
                                                                          deletable:NO],
                                              [[MyLauncherItem alloc] initWithTitle:@"Directory"
                                                                        iPhoneImage:@"phonebook_hdpi" 
                                                                          iPadImage:@"itemImage-iPad"
                                                                             target:@"MasterViewController" 
-                                                                       targetTitle:@"Item 7 View"
+                                                                       targetTitle:@"RPI Directory"
                                                                          deletable:NO],
                                              [[MyLauncherItem alloc] initWithTitle:@"QR Codes"
                                                                        iPhoneImage:@"qr_hdpi" 
@@ -150,9 +153,11 @@
         // [self.launcherView setNumberOfImmovableItems:1];
         
         // Or uncomment the line below to disable editing (moving/deleting) completely!
-//         [self.launcherView setEditingAllowed:NO];
+        // [self.launcherView setEditingAllowed:NO];
 
 	}
+    
+
     
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -167,6 +172,10 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void) dealloc {
+    [super dealloc];
+
+}
 - (void)viewDidUnload 
 {
     [super viewDidUnload];

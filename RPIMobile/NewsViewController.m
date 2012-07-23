@@ -16,6 +16,13 @@
 #define end_color [UIColor colorWithHex:0xDEDEDE]
 #define numToDisplay 20
 
+/*
+ To-do for RPI News page: 
+    -Add caching. Try implementing NSData reader for MWFeedParser using old pull request.
+    -Dynamically size UITableViewCell based on length of summary label
+    -Remove readability stamp on the bottom of mobile webpages. Javascript injection?
+    -RPIAthletics should not need readability. Mobile site is sufficient
+ */
 
 @implementation NewsViewController
 @synthesize newsItems, launcherImage, newsTable;
@@ -105,6 +112,8 @@
 
 #pragma mark - View lifecycle
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -116,18 +125,20 @@
     self.newsTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.newsTable.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     
-    self.items = [NSArray arrayWithObjects:@"All News", @"Academics", @"Faculty", @"Research", @"Arts", @"Community", @"Calendar", @"Research Review", @"Athletics", nil];    
+    self.items = [NSArray arrayWithObjects:@"All News", @"Academics", @"Faculty", @"Research", @"Arts", @"Community", @"Calendar", @"Athletics", nil];    
     [self.horizMenu reloadData];
     
-    newsFeeds = [[NSMutableDictionary dictionaryWithObjectsAndKeys:@"http://www.rpi.edu/news/rss/allnews.xml", @"All News", @"http://www.rpi.edu/news/rss/academics.xml", @"Academics", @"http://www.rpi.edu/news/rss/faculty.xml", @"Faculty", @"http://www.rpi.edu/news/rss/research.xml", @"Research", @"http://www.rpi.edu/news/rss/arts.xml", @"Arts", @"http://www.rpi.edu/news/rss/community.xml", @"Community", @"http://www.rpi.edu/dept/cct/apps/oth/data/rpiTodaysEvents.rss", @"Calendar", @"http://www.rpi.edu/research/magazine/rpi_research_review.xml", @"Research Review", @"http://www.rpiathletics.com/rss.aspx", @"Athletics",nil] retain];
+    newsFeeds = [[NSMutableDictionary dictionaryWithObjectsAndKeys:@"http://www.rpi.edu/news/rss/allnews.xml", @"All News", @"http://www.rpi.edu/news/rss/academics.xml", @"Academics", @"http://www.rpi.edu/news/rss/faculty.xml", @"Faculty", @"http://www.rpi.edu/news/rss/research.xml", @"Research", @"http://www.rpi.edu/news/rss/arts.xml", @"Arts", @"http://www.rpi.edu/news/rss/community.xml", @"Community", @"http://www.rpi.edu/dept/cct/apps/oth/data/rpiTodaysEvents.rss", @"Calendar", @"http://www.rpiathletics.com/rss.aspx", @"Athletics",nil] retain];
 
-
+    //Initial value for news feed menubar
     [self.horizMenu setSelectedIndex:0 animated:YES];
 	self.title = @"Loading...";
-	formatter = [[NSDateFormatter alloc] init];
+	
+    formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"dd MMM yyyy HH:mm:ss zzz"];
 	[formatter setTimeStyle:NSDateFormatterShortStyle];
-	parsedItems = [[NSMutableArray alloc] init];
+	
+    parsedItems = [[NSMutableArray alloc] init];
 	self.newsItems = [NSArray array];
 	
 	// Refresh button for feed
@@ -362,7 +373,6 @@
 -(void) horizMenu:(MKHorizMenu *)horizMenu itemSelectedAtIndex:(NSUInteger)index
 {  
      NSLog(@"Item at index: %@", [self.items objectAtIndex:index]);
-
     [self parseNewFeed:[self.items objectAtIndex:index]];
     
 }

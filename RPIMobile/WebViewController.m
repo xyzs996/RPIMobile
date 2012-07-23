@@ -8,6 +8,10 @@
 
 #import "WebViewController.h"
 
+/*To-do for Web View:
+    -Add rotation support!
+    -Clean up memory management
+ */
 
 @implementation WebViewController
 @synthesize athleteView, athleteURL, isVideo;
@@ -17,6 +21,7 @@
     NSLog(@"Refreshing with URL: %@", athleteURL);
 }
 
+//StackOverflow trick to find YouTube button and press play automatically
 - (UIButton *)findButtonInView:(UIView *)view {
     UIButton *button = nil;
     
@@ -38,6 +43,7 @@
     if(isVideo) {
         UIButton *b = [self findButtonInView:_webView];
         [b sendActionsForControlEvents:UIControlEventTouchUpInside];
+        [self shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight];
     }
 }
 
@@ -54,20 +60,22 @@
 {
     [super viewDidLoad];
 
-        [self.athleteView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:athleteURL]]];
+    [self.athleteView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:athleteURL]]];
     // Refresh button for feed
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh 
 																							target:self 
 																							action:@selector(refresh)] autorelease];
-    
-    // Do any additional setup after loading the view from its nib.
 }
 
+-(void) dealloc {
+    [super dealloc];
+    [athleteView release];
+    [athleteURL release];
+}
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    [self.athleteView stopLoading];
 }
 
 //Need to add support for landscape video/webview

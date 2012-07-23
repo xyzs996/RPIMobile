@@ -37,9 +37,7 @@
     
     [ASIHTTPRequest setDefaultCache:[ASIDownloadCache sharedCache]];
     
-	navigationController = [[PrettyNavigationController alloc] initWithRootViewController:
-							[[RootViewController alloc] init]];
-    //	navigationController.navigationBar.tintColor = COLOR(2, 100, 162);
+	navigationController = [[PrettyNavigationController alloc] initWithRootViewController:[[RootViewController alloc] init]];
 	
     [window addSubview:navigationController.view];
     [window makeKeyAndVisible];
@@ -47,7 +45,7 @@
     
     //Added support for RPI Shuttle Tracker below
     // Override point for customization after application launch.
-        DataManager *dataManager = [[DataManager alloc] init];
+    DataManager *dataManager = [[DataManager alloc] init];
     self.dataManager = dataManager;
     [dataManager release];
     [self.dataManager setParserManagedObjectContext:self.managedObjectContext];
@@ -58,7 +56,6 @@
     
     // Check if 12 or 24 hour mode
     BOOL use24Time = NO;
-//    self.window.rootViewController = mapViewController; -- Not necessary as rootViewController controls the views for the app
     
     NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
     [timeFormatter setTimeStyle:NSDateFormatterMediumStyle];

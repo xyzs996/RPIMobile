@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MWFeedParser.h"
-@interface TwitterFeedViewController : UITableViewController <MWFeedParserDelegate> {
-    MWFeedParser *feedParser;
-    NSMutableArray *feedItems;
-    NSArray *newsItems;
+#import "ASIHTTPRequest.h"
+#import "XMLReader.h"
+
+@interface TwitterFeedViewController : UITableViewController <ASIHTTPRequestDelegate, NSXMLParserDelegate> {
+    NSDictionary *feedDictionary;
+    NSMutableArray *newsItems;
+    NSArray *sortedItems;
     NSDateFormatter *formatter;
 }
-
-@property (nonatomic, retain) NSArray *newsItems;
+@property (nonatomic, retain) NSMutableArray *newsItems;
+@property (nonatomic, retain) NSArray *sortedItems;
 
 @end

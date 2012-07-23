@@ -127,6 +127,7 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    [ASIHTTPRequest cancelPreviousPerformRequestsWithTarget:self]; //Test
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }

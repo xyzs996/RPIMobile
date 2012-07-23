@@ -34,7 +34,11 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    return tableView.rowHeight + [PrettyTableViewCell tableView:tableView neededHeightForIndexPath:indexPath];
+    if(indexPath.row == 0) {
+        return 47 + [PrettyTableViewCell tableView:tableView neededHeightForIndexPath:indexPath];
+    } else {
+        return tableView.rowHeight + [PrettyTableViewCell tableView:tableView neededHeightForIndexPath:indexPath];
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -185,10 +189,10 @@
     self.currentLink = [self getLink:0];
     [self findPictureLink];
     
-    listItems = [[NSArray alloc]initWithObjects:[NSString stringWithFormat:@"%@'s %@", currentGender, sportName], @"News", @"Roster", @"Schedule & Results", @"Archives", nil];
+    listItems = [[NSArray alloc]initWithObjects:[NSString stringWithFormat:@"%@'s %@", currentGender, sportName], @"News", @"Roster", @"Schedule & Results", nil];
     
     //Table customization
-    self.menuList.rowHeight = 47;
+    self.menuList.rowHeight = 63;
     self.menuList.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.menuList.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     

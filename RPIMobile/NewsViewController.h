@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MWFeedParser.h"
 #import "MKHorizMenu.h"
-#import "NewsViewCellController.h"
 
 @interface NewsViewController : UIViewController <MWFeedParserDelegate, MKHorizMenuDataSource, MKHorizMenuDelegate, UITableViewDelegate, UITableViewDataSource> {
     NSMutableDictionary *newsFeeds;

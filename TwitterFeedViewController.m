@@ -7,18 +7,38 @@
 //
 
 #import "TwitterFeedViewController.h"
-#import "PrettyKit.h"
 #import "NSString+HTML.h"
 #import "UIImageView+WebCache.h"
+#import "ASIHTTPRequest.h"
+#import "XMLReader.h"
 
 #define start_color [UIColor colorWithHex:0xEEEEEE]
 #define end_color [UIColor colorWithHex:0xDEDEDE]
 #define numToDisplay 50
+#define kFeedURL @"http://api.twitter.com/1/stephensilber/lists/rpimobile/statuses.atom"
 
-//Feed URL: http://api.twitter.com/1/stephensilber/lists/rpimobile/statuses.atom
+/* To-do for RPI Twitter page:
+    -Add custom view for UITableViewCell that allows for clickable links, has the timestamp of the tweet, and dynamically sizes cell based on text content
+    -Pull to refresh
+    -TweetDetails page with either a separate view or expanded tableview cell. MGBox looks promising
+ */
+
+@interface feedItem : NSObject {
+    NSString *username, *tweet, *avatarURL, *date;
+}
+
+@property (nonatomic, retain) NSString *username, *tweet, *avatarURL, *date;
+
+@end
+
+@implementation feedItem
+@synthesize username, tweet, avatarURL, date;
+@end
+
 
 @implementation TwitterFeedViewController
-@synthesize newsItems;
+@synthesize newsItems, sortedItems;
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -28,50 +48,76 @@
     return self;
 }
 
-- (void) setUpShadows {
-    [PrettyShadowPlainTableview setUpTableView:self.tableView];
-}
-
 // Reset and reparse
 - (void)refresh {
 	self.title = @"Refreshing...";
-	[feedItems removeAllObjects];
+    feedDictionary = [[NSDictionary alloc] init];
     [self fetchFeed];
 }
 
+//ASIHTTPRequest Delegate function
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    //Called with successful data from atom feed for twitter list, parse into dictionary
+    self.title = @"RPI Twitter";    
+    NSError *parseError = nil;
+    feedDictionary = [XMLReader dictionaryForXMLString:[request responseString] error:&parseError];
+    feedDictionary = [[feedDictionary objectForKey:@"feed"] objectForKey:@"entry"];
+    
+    newsItems = [[NSMutableArray alloc] init];
+    
+    //Read objects into an array for easy UITableView display and 
+    for(id entry in feedDictionary) {
+        
+        feedItem *newItem = [[feedItem alloc] init];
+        
+        newItem.username = [[[entry objectForKey:@"author"] objectForKey:@"name"] objectForKey:@"text"];
+        newItem.tweet = [[entry objectForKey:@"content"] objectForKey:@"text"];
+        newItem.avatarURL = [[[entry objectForKey:@"link"] objectAtIndex:1] objectForKey:@"href"];
+        newItem.date = [[entry objectForKey:@"published"] objectForKey:@"text"];
+
+        //Clean up whitespace and other garbage from the parsed feed
+        newItem.username = [newItem.username stringByRemovingNewLinesAndWhitespace];
+        newItem.tweet = [newItem.tweet stringByRemovingNewLinesAndWhitespace];        
+        
+        [newsItems addObject:newItem];
+
+        [newItem release];
+    }
+    
+    //Set NSArray with NSMutableArray
+    sortedItems = newsItems;
+    
+    [self.tableView reloadData];
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    //Called if atom feed for twitter list cannot be downloaded
+    NSError *error = [request error];
+    self.title = @"Error";
+    NSLog(@"Could not download: %@", error);
+}
 
 -(void) fetchFeed {
-    // Create feed parser and pass the URL of the feed
-    NSURL *feedURL = [NSURL URLWithString:@"http://api.twitter.com/1/stephensilber/lists/rpimobile/statuses.atom"];
-    feedParser = [[MWFeedParser alloc] initWithFeedURL:feedURL];
-    feedParser.delegate = self;
-    // Parse the feeds info (title, link) and all feed items
-    feedParser.feedParseType = ParseTypeFull;
-    // Connection type
-    feedParser.connectionType = ConnectionTypeAsynchronously;
-    // Begin parsing
-    [feedParser parse];
-    
-
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:kFeedURL]];
+    request.delegate = self;
+    [request startAsynchronous];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-
+    sortedItems = [NSArray array];
+    
     formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"dd MMM yyyy HH:mm:ss zzz"];
 	[formatter setTimeStyle:NSDateFormatterShortStyle];
-    feedItems = [[NSMutableArray alloc] init];
-    
-    
+
     self.tableView.rowHeight = 70;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     
     [self fetchFeed];
-    [self setUpShadows]; 
 
     // Refresh button for feed
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh 
@@ -82,10 +128,9 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    
     // Stop feed download / parsing
-    [feedParser stopParsing];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    [ASIHTTPRequest cancelPreviousPerformRequestsWithTarget:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -94,7 +139,7 @@
 }
 
 - (void)updateTableWithParsedItems {
-	self.newsItems = [feedItems sortedArrayUsingDescriptors:
+	self.sortedItems = [sortedItems sortedArrayUsingDescriptors:
                       [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"date" 
                                                                             ascending:NO] autorelease]]];
 	self.tableView.userInteractionEnabled = YES;
@@ -102,56 +147,16 @@
 	[self.tableView reloadData];
 }
 
-#pragma mark MWFeedParserDelegate
-
-- (void)feedParserDidStart:(MWFeedParser *)parser {
-	NSLog(@"Started Parsing: %@", parser.url);
+-(void) dealloc {
+    [super dealloc];
+    [newsItems release];
+    [sortedItems release];
+    [formatter release];
+    [feedDictionary release];
 }
-
-- (void)feedParser:(MWFeedParser *)parser didParseFeedInfo:(MWFeedInfo *)info {
-	NSLog(@"Parsed Feed Info: “%@”", info.title);
-}
-
-- (void)feedParser:(MWFeedParser *)parser didParseFeedItem:(MWFeedItem *)item {
-	NSLog(@"Parsed Feed Item: “%@”", item.title);
-	if (item) [feedItems addObject:item];	
-    if([feedItems count] > 30) {
-        [feedParser stopParsing];
-    }
-}
-
-- (void)feedParserDidFinish:(MWFeedParser *)parser {
-	NSLog(@"Finished Parsing%@", (parser.stopped ? @" (Stopped)" : @""));
-    self.title = @"RPI Twitter Feed";
-    [self updateTableWithParsedItems];
-}
-
-- (void)feedParser:(MWFeedParser *)parser didFailWithError:(NSError *)error {
-	NSLog(@"Finished Parsing With Error: %@", error);
-    if (feedItems.count == 0) {
-        self.title = @"Failed"; // Show failed message in title
-    } else {
-        // Failed but some items parsed, so show and inform of error
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Parsing Incomplete"
-                                                         message:@"There was an error during the parsing of this feed. Not all of the feed items could parsed."
-                                                        delegate:nil
-                                               cancelButtonTitle:@"Dismiss"
-                                               otherButtonTitles:nil] autorelease];
-        [alert show];
-    }
-    [self updateTableWithParsedItems];
-}
-
-
 
 
 #pragma mark - Table view data source
-
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-    return tableView.rowHeight + [PrettyTableViewCell tableView:tableView neededHeightForIndexPath:indexPath];
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -162,97 +167,46 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [newsItems count];
+    return [sortedItems count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     
-    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-        cell.tableViewBackgroundColor = tableView.backgroundColor;        
-        cell.gradientStartColor = start_color;
-        cell.gradientEndColor = end_color;
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+//        cell.tableViewBackgroundColor = tableView.backgroundColor;        
+//        cell.gradientStartColor = start_color;
+//        cell.gradientEndColor = end_color;
     }
     
     
     // Configure the cell.
-	MWFeedItem *item = [newsItems objectAtIndex:indexPath.row];
+	feedItem *item = [sortedItems objectAtIndex:indexPath.row];
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     
 	if (item) {
 		
-		// Process
-		NSString *itemTitle = item.title ? [item.title stringByConvertingHTMLToPlainText] : @"[No Title]";
-        NSMutableArray *post = [NSMutableArray arrayWithArray:[itemTitle componentsSeparatedByString:@":"]];
-        
-        cell.textLabel.text = [post objectAtIndex:0];;
+        cell.textLabel.text = item.username;
         cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
         cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
         [cell.textLabel setNumberOfLines:2];
-        
-        [post removeObjectAtIndex:0];
-        
-        //Rest of twitter post is the tweet
-        NSString *detailText = @"";
-        for(id chunk in post)
-            detailText = [detailText stringByAppendingString:chunk];
 
-        cell.detailTextLabel.text = detailText;
+        cell.detailTextLabel.text = item.tweet;
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
         cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
         [cell.detailTextLabel setNumberOfLines:3];
-		
 	} else {
         cell.textLabel.text = @"Error";
     }
-    [cell prepareForTableView:tableView indexPath:indexPath];
-
+//    [cell prepareForTableView:tableView indexPath:indexPath];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:item.avatarURL] placeholderImage:[UIImage imageNamed:@"Placeholder.png"]];
     
     return cell;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 

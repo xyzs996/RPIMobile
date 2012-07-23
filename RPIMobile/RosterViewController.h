@@ -11,7 +11,7 @@
 #import "ASIDownloadCache.h"
 
 
-@interface RosterViewController : UITableViewController <ASIHTTPRequestDelegate> {
+@interface RosterViewController : UITableViewController <ASIHTTPRequestDelegate, NSXMLParserDelegate> {
 
     ASIHTTPRequest *httprequest;
     NSString *rosterURL;

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BeamMusicPlayerViewController.h"
 
 @class AudioStreamer;
-@interface RadioViewController : UIViewController {
+@interface RadioViewController : UIViewController <BeamMusicPlayerDelegate>{
     AudioStreamer *streamer;
     NSTimer *progressUpdateTimer;
 }
